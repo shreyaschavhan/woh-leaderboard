@@ -518,8 +518,8 @@ def generate_html_leaderboard(data):
                 <div class="logo">
                     <i class="fas fa-leaf"></i>
                 </div>
-                <h1>Flower Collection Leaderboard</h1>
-                <p class="subtitle">Track your progress and compete with other trainers in flower collection</p>
+                <h1>Consistency Leaderboard</h1>
+                <p class="subtitle">Track your progress and compete with other group member</p>
             </header>
 
             <div class="top-three">
@@ -621,7 +621,7 @@ def generate_html_leaderboard(data):
             </div>
 
             <footer>
-                <p>Leaderboard updates every 6 hours | Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> for the Focumon community</p>
+                <p>Leaderboard updates every 6 hours | Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> for the Warriors of Hell community</p>
             </footer>
         </div>
 
