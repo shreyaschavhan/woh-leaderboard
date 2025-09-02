@@ -27,7 +27,7 @@ urls = [
     "https://www.focumon.com/trainers/nees"
 ]
 
-def extract_flowers_and_name(url):
+def extract_flowers_name_and_avatars(url):
     try:
         response = requests.get(url, timeout=10)
         response.raise_for_status()
@@ -38,16 +38,38 @@ def extract_flowers_and_name(url):
         display_name = name_tag.text.strip() if name_tag else "Unknown"
         
         # Find text containing "last 7 days"
+        flowers = 0
         matches = soup.find_all(string=re.compile(r'last 7 days', re.I))
         for match in matches:
             num_match = re.search(r'\d+', match)
             if num_match:
-                return display_name, int(num_match.group())
+                flowers = int(num_match.group())
+                break
         
-        return display_name, 0
+        # Extract trainer and focumon avatars
+        avatar_container = soup.find('div', class_='flex gap-x-2 justify-center items-end mb-2 font-sans font-bold')
+        trainer_avatar = None
+        focumon_avatar = None
+        
+        if avatar_container:
+            # Get trainer avatar
+            trainer_div = avatar_container.find('div', class_='z-20')
+            if trainer_div:
+                trainer_img = trainer_div.find('img')
+                if trainer_img and trainer_img.get('src'):
+                    trainer_avatar = "https://www.focumon.com" + trainer_img['src'] if trainer_img['src'].startswith('/') else trainer_img['src']
+            
+            # Get focumon avatar
+            focumon_div = avatar_container.find('div', class_='z-10')
+            if focumon_div:
+                focumon_img = focumon_div.find('img')
+                if focumon_img and focumon_img.get('src'):
+                    focumon_avatar = "https://www.focumon.com" + focumon_img['src'] if focumon_img['src'].startswith('/') else focumon_img['src']
+        
+        return display_name, flowers, trainer_avatar, focumon_avatar
     except Exception as e:
         print(f"Error fetching {url}: {str(e)}")
-        return "Error", 0
+        return "Error", 0, None, None
 
 def generate_html_leaderboard(data):
     # Sort by flowers collected (descending order)
@@ -69,16 +91,14 @@ def generate_html_leaderboard(data):
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <style>
             :root {{
-                --primary: #4CAF50;
-                --primary-light: #80e27e;
-                --secondary: #ff6d00;
-                --accent: #ffab40;
-                --dark: #2c3e50;
-                --light: #ecf0f1;
-                --gray: #95a5a6;
-                --white: #ffffff;
-                --card-bg: rgba(255, 255, 255, 0.95);
-                --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                --bg-dark-red: #3a0e0e;
+                --card-red: #4a1e1e;
+                --text-light: wheat;
+                --text-muted: rgba(245, 222, 179, 0.7);
+                --rank-gold: #FFD700;
+                --rank-silver: #C0C0C0;
+                --rank-bronze: #CD7F32;
+                --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
                 --transition: all 0.3s ease;
             }}
 
@@ -90,21 +110,13 @@ def generate_html_leaderboard(data):
 
             body {{
                 font-family: 'Poppins', sans-serif;
-                background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-                background-size: 400% 400%;
-                animation: gradientBG 15s ease infinite;
-                color: var(--dark);
+                background-color: var(--bg-dark-red);
+                color: var(--text-light);
                 min-height: 100vh;
                 padding: 20px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-            }}
-
-            @keyframes gradientBG {{
-                0% {{ background-position: 0% 50%; }}
-                50% {{ background-position: 100% 50%; }}
-                100% {{ background-position: 0% 50%; }}
             }}
 
             .container {{
@@ -116,13 +128,12 @@ def generate_html_leaderboard(data):
             header {{
                 text-align: center;
                 margin: 20px 0 40px;
-                color: var(--white);
+                color: var(--text-light);
             }}
 
             .logo {{
                 font-size: 3.5rem;
                 margin-bottom: 10px;
-                color: var(--white);
                 text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             }}
 
@@ -138,7 +149,7 @@ def generate_html_leaderboard(data):
                 font-weight: 300;
                 max-width: 600px;
                 margin: 0 auto;
-                opacity: 0.9;
+                color: var(--text-muted);
             }}
 
             .top-three {{
@@ -151,93 +162,95 @@ def generate_html_leaderboard(data):
             }}
 
             .podium-card {{
-                background: var(--card-bg);
+                background: var(--card-red);
                 border-radius: 16px;
                 box-shadow: var(--shadow);
-                padding: 25px;
+                padding: 30px 20px;
                 text-align: center;
                 transition: var(--transition);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                border: 1px solid rgba(255, 255, 255, 0.1);
             }}
 
             .podium-card:hover {{
                 transform: translateY(-10px);
-                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             }}
 
             .second-place {{
-                width: 250px;
+                width: 280px;
                 order: 1;
             }}
 
             .first-place {{
-                width: 300px;
+                width: 320px;
                 order: 2;
                 margin: 0 10px;
             }}
 
             .third-place {{
-                width: 250px;
+                width: 280px;
                 order: 3;
             }}
 
             .rank-badge {{
-                width: 60px;
-                height: 60px;
+                width: 45px;
+                height: 45px;
                 border-radius: 50%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 1.5rem;
+                font-size: 1.4rem;
                 font-weight: 700;
-                margin: 0 auto 15px;
-                color: var(--white);
+                margin: 0 auto 20px;
+                color: #2c3e50;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.2);
             }}
 
             .rank-1 {{
-                background: linear-gradient(to right, #FFD700, #FFA500);
-                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
-                width: 80px;
-                height: 80px;
-                font-size: 2rem;
+                background-color: var(--rank-gold);
+                width: 55px;
+                height: 55px;
+                font-size: 1.8rem;
             }}
 
             .rank-2 {{
-                background: linear-gradient(to right, #C0C0C0, #A9A9A9);
-                box-shadow: 0 4px 15px rgba(192, 192, 192, 0.5);
+                background-color: var(--rank-silver);
             }}
 
             .rank-3 {{
-                background: linear-gradient(to right, #CD7F32, #8C6B46);
-                box-shadow: 0 4px 15px rgba(205, 127, 50, 0.5);
+                background-color: var(--rank-bronze);
             }}
 
-            .player-avatar {{
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                background: linear-gradient(to right, var(--primary), var(--primary-light));
+            .avatar-container {{
                 display: flex;
-                align-items: center;
                 justify-content: center;
-                color: var(--white);
-                font-weight: 600;
-                margin: 0 auto 15px;
-                font-size: 2.5rem;
+                align-items: flex-end;
+                margin: 0 auto 20px;
+                height: 130px; 
             }}
 
-            .first-place .player-avatar {{
-                width: 120px;
-                height: 120px;
-                font-size: 3rem;
+            .trainer-avatar, .focumon-avatar {{
+                height: 128px;
+                width: auto;
+                object-fit: contain;
+                image-rendering: -moz-crisp-edges;
+                image-rendering: -webkit-crisp-edges;
+                image-rendering: pixelated;
+                image-rendering: crisp-edges;
+            }}
+
+            .focumon-avatar {{
+                margin-left: -20px;
             }}
 
             .player-name {{
                 font-size: 1.4rem;
                 font-weight: 600;
-                margin-bottom: 10px;
-                color: var(--dark);
+                margin-bottom: 20px;
+                color: var(--text-light);
             }}
 
             .first-place .player-name {{
@@ -247,7 +260,7 @@ def generate_html_leaderboard(data):
             .player-stats {{
                 display: flex;
                 justify-content: space-around;
-                margin-top: 15px;
+                width: 100%;
             }}
 
             .stat {{
@@ -258,38 +271,30 @@ def generate_html_leaderboard(data):
             .stat-value {{
                 font-size: 1.4rem;
                 font-weight: 700;
+                color: var(--text-light);
             }}
-
+            
             .first-place .stat-value {{
                 font-size: 1.6rem;
             }}
 
             .stat-label {{
                 font-size: 0.9rem;
-                color: var(--gray);
-            }}
-
-            .flowers-stat {{
-                color: var(--primary);
-            }}
-
-            .hours-stat {{
-                color: var(--secondary);
+                color: var(--text-muted);
             }}
 
             .leaderboard-card {{
-                background: var(--card-bg);
+                background: var(--card-red);
                 border-radius: 16px;
                 box-shadow: var(--shadow);
                 overflow: hidden;
                 margin-bottom: 30px;
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
             }}
 
             .leaderboard-header {{
-                background: linear-gradient(to right, var(--primary), var(--primary-light));
-                color: var(--white);
+                background: #3a0e0e;
+                color: var(--text-light);
                 padding: 20px;
                 display: flex;
                 justify-content: space-between;
@@ -305,6 +310,7 @@ def generate_html_leaderboard(data):
                 font-size: 0.9rem;
                 display: flex;
                 align-items: center;
+                color: var(--text-muted);
             }}
 
             .last-updated i {{
@@ -317,12 +323,12 @@ def generate_html_leaderboard(data):
             }}
 
             th {{
-                background-color: #f5f5f5;
+                background-color: #5c2a2a;
                 padding: 18px 15px;
                 text-align: left;
                 font-weight: 600;
-                color: var(--dark);
-                border-bottom: 2px solid #e0e0e0;
+                color: var(--text-light);
+                border-bottom: 2px solid var(--bg-dark-red);
             }}
 
             th:nth-child(1) {{ width: 10%; }}
@@ -332,12 +338,17 @@ def generate_html_leaderboard(data):
 
             td {{
                 padding: 16px 15px;
-                border-bottom: 1px solid #e0e0e0;
+                border-bottom: 1px solid #5c2a2a;
                 transition: var(--transition);
+                color: var(--text-light);
+            }}
+
+            tr:last-child td {{
+                border-bottom: none;
             }}
 
             tr:hover td {{
-                background-color: #f9f9f9;
+                background-color: #5c2a2a;
             }}
 
             .rank {{
@@ -356,52 +367,55 @@ def generate_html_leaderboard(data):
                 height: 30px;
                 line-height: 30px;
                 border-radius: 50%;
-                background-color: #f0f0f0;
+                background-color: #3a0e0e;
+                color: var(--text-light);
             }}
-
-            .table-rank-4, .table-rank-5, .table-rank-6 {{
-                background: linear-gradient(to right, #6c5ce7, #a29bfe);
-                color: white;
+            
+            /* MODIFIED: Styling for avatar images in the table */
+            .avatar {{
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                margin-right: 15px;
+                object-fit: cover;
+                background-color: #3a0e0e; /* Fallback bg color */
+                border: 2px solid #5c2a2a;
+                image-rendering: pixelated;
             }}
-
+            
+            /* NEW: Styling for the placeholder if an image is missing */
+            .avatar-placeholder {{
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                background: #5c2a2a;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--text-light);
+                font-weight: 600;
+                margin-right: 15px;
+                font-size: 1.2rem;
+            }}
+            
             .player {{
                 display: flex;
                 align-items: center;
             }}
 
-            .avatar {{
-                width: 45px;
-                height: 45px;
-                border-radius: 50%;
-                background: linear-gradient(to right, var(--primary), var(--primary-light));
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: var(--white);
-                font-weight: 600;
-                margin-right: 15px;
-                font-size: 1.2rem;
-            }}
-
-            .player-name {{
+            .player-name-text {{
                 font-weight: 500;
+                color: var(--text-light);
             }}
 
             .flowers, .hours {{
                 font-weight: 500;
-            }}
-
-            .flowers {{
-                color: var(--primary);
-            }}
-
-            .hours {{
-                color: var(--secondary);
+                color: var(--text-light);
             }}
 
             .progress-bar {{
                 height: 8px;
-                background-color: #e0e0e0;
+                background-color: #3a0e0e;
                 border-radius: 4px;
                 margin-top: 8px;
                 overflow: hidden;
@@ -409,7 +423,7 @@ def generate_html_leaderboard(data):
 
             .progress {{
                 height: 100%;
-                background: linear-gradient(to right, var(--primary), var(--primary-light));
+                background: linear-gradient(to right, #ffd700, #f0c300);
                 border-radius: 4px;
             }}
 
@@ -421,7 +435,7 @@ def generate_html_leaderboard(data):
             }}
 
             .stat-card {{
-                background: var(--card-bg);
+                background: var(--card-red);
                 border-radius: 12px;
                 padding: 20px;
                 margin: 10px;
@@ -429,32 +443,32 @@ def generate_html_leaderboard(data):
                 min-width: 250px;
                 box-shadow: var(--shadow);
                 text-align: center;
+                border: 1px solid rgba(255, 255, 255, 0.1);
             }}
 
             .stat-card i {{
                 font-size: 2.5rem;
                 margin-bottom: 15px;
-                color: var(--primary);
+                color: var(--rank-gold);
             }}
 
             .stat-card h3 {{
                 font-size: 1.2rem;
                 margin-bottom: 10px;
-                color: var(--dark);
+                color: var(--text-muted);
             }}
 
             .stat-card p {{
                 font-size: 1.8rem;
                 font-weight: 700;
-                color: var(--secondary);
+                color: var(--text-light);
             }}
 
             footer {{
                 text-align: center;
                 margin-top: 40px;
-                color: var(--white);
+                color: var(--text-muted);
                 font-size: 0.9rem;
-                opacity: 0.8;
             }}
 
             @media (max-width: 900px) {{
@@ -482,7 +496,7 @@ def generate_html_leaderboard(data):
                     gap: 10px;
                 }}
                 
-                .avatar {{
+                .avatar, .avatar-placeholder {{
                     width: 35px;
                     height: 35px;
                     font-size: 1rem;
@@ -526,23 +540,28 @@ def generate_html_leaderboard(data):
     """
     
     # Generate top 3 cards
-    for i, (trainer_id, display_name, flowers, hours) in enumerate(data[:3]):
+    for i, (trainer_id, display_name, flowers, hours, trainer_avatar, focumon_avatar) in enumerate(data[:3]):
         rank_class = f"rank-{i+1}"
         card_class = "first-place" if i == 0 else "second-place" if i == 1 else "third-place"
-        initials = ''.join([name[0] for name in display_name.split()[:2]]).upper()
+        
+        trainer_img = f'<img src="{trainer_avatar}" class="trainer-avatar" alt="{display_name}">' if trainer_avatar else f'<div class="trainer-avatar"></div>'
+        focumon_img = f'<img src="{focumon_avatar}" class="focumon-avatar" alt="Focumon">' if focumon_avatar else f'<div class="focumon-avatar"></div>'
         
         html_content += f"""
                 <div class="podium-card {card_class}">
                     <div class="rank-badge {rank_class}">{i+1}</div>
-                    <div class="player-avatar">{initials}</div>
+                    <div class="avatar-container">
+                        {trainer_img}
+                        {focumon_img}
+                    </div>
                     <div class="player-name">{display_name}</div>
                     <div class="player-stats">
                         <div class="stat">
-                            <span class="stat-value flowers-stat">{flowers}</span>
+                            <span class="stat-value">{flowers}</span>
                             <span class="stat-label">Flowers</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-value hours-stat">{hours}</span>
+                            <span class="stat-value">{hours}</span>
                             <span class="stat-label">Hours</span>
                         </div>
                     </div>
@@ -574,17 +593,23 @@ def generate_html_leaderboard(data):
     """
     
     # Generate table rows for remaining participants
-    for i, (trainer_id, display_name, flowers, hours) in enumerate(data[3:], start=4):
-        initials = ''.join([name[0] for name in display_name.split()[:2]]).upper()
+    for i, (trainer_id, display_name, flowers, hours, trainer_avatar, focumon_avatar) in enumerate(data[3:], start=4):
         progress_percent = (flowers / data[0][2]) * 100 if data[0][2] > 0 else 0
         
+        # MODIFIED: Use avatar image if available, otherwise use a placeholder with initials
+        if trainer_avatar:
+            avatar_html = f'<img src="{trainer_avatar}" class="avatar" alt="{display_name}">'
+        else:
+            initial = display_name[0].upper() if display_name else '?'
+            avatar_html = f'<div class="avatar-placeholder">{initial}</div>'
+
         html_content += f"""
                         <tr>
-                            <td><div class="rank"><span class="table-rank table-rank-{i}">{i}</span></div></td>
+                            <td><div class="rank"><span class="table-rank">{i}</span></div></td>
                             <td>
                                 <div class="player">
-                                    <div class="avatar">{initials}</div>
-                                    <div class="player-name">{display_name}</div>
+                                    {avatar_html}
+                                    <div class="player-name-text">{display_name}</div>
                                 </div>
                             </td>
                             <td>
@@ -609,7 +634,7 @@ def generate_html_leaderboard(data):
                     <p>{len(data)}</p>
                 </div>
                 <div class="stat-card">
-                    <i class="fas fa-flower"></i>
+                    <i class="fas fa-leaf"></i>
                     <h3>Total Flowers Collected</h3>
                     <p>{total_flowers}</p>
                 </div>
@@ -626,25 +651,6 @@ def generate_html_leaderboard(data):
         </div>
 
         <script>
-            // Update the time displayed
-            function updateTime() {{
-                const now = new Date();
-                const options = {{ 
-                    year: 'numeric', 
-                    month: 'short', 
-                    day: 'numeric',
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                }};
-                document.querySelector('.last-updated').textContent = 'Updated: ' + now.toLocaleDateString('en-US', options) + ' UTC';
-            }}
-            
-            // Initialize
-            updateTime();
-            
-            // Update time every minute
-            setInterval(updateTime, 60000);
-            
             // Add subtle animation to rows on load
             document.addEventListener('DOMContentLoaded', function() {{
                 const cards = document.querySelectorAll('.podium-card');
@@ -681,10 +687,11 @@ def main():
     data = []
     for url in urls:
         trainer_id = url.split('/')[-1].replace('.html', '')
-        display_name, flowers = extract_flowers_and_name(url)
+        display_name, flowers, trainer_avatar, focumon_avatar = extract_flowers_name_and_avatars(url)
         # Calculate hours spent (1 flower = 20 minutes)
         hours_spent = round((flowers * 20) / 60, 2) if flowers else 0
-        data.append((trainer_id, display_name, flowers, hours_spent))
+        data.append((trainer_id, display_name, flowers, hours_spent, trainer_avatar, focumon_avatar))
+        print(f"Processed {display_name}: {flowers} flowers, {hours_spent} hours")
     
     # Generate HTML
     html_content = generate_html_leaderboard(data)
