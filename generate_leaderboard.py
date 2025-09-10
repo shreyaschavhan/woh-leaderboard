@@ -30,7 +30,8 @@ urls = [
     "https://www.focumon.com/trainers/Elden_lord_xY0b",
     "https://www.focumon.com/trainers/bhvrvt",
     "https://www.focumon.com/trainers/Ivoclib009_xBCe",
-    "https://www.focumon.com/trainers/chaithu_QmSm"
+    "https://www.focumon.com/trainers/chaithu_QmSm",
+    "https://www.focumon.com/trainers/SShbounty_cbhK"
 ]
 
 def load_history():
