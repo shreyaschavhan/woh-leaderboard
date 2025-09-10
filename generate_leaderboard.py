@@ -26,7 +26,8 @@ urls = [
     "https://www.focumon.com/trainers/anonymousp_jqMr",
     "https://www.focumon.com/trainers/nees",
     "https://www.focumon.com/trainers/Hafiz_hGGm",
-    "https://www.focumon.com/trainers/t3po"
+    "https://www.focumon.com/trainers/t3po",
+    "https://www.focumon.com/trainers/Elden_lord_xY0b"
 ]
 
 def load_history():
@@ -143,11 +144,15 @@ def generate_top_three_html(data):
         """
     return top_three_html
 
+# Update generate_table_rows_html function in generate_leaderboard.py
 def generate_table_rows_html(data):
     """Generate HTML for the table rows."""
     table_rows_html = ""
     for i, (trainer_id, display_name, flowers, hours, trainer_avatar, focumon_avatar, rank_change) in enumerate(data, start=1):
         progress_percent = (flowers / data[0][2]) * 100 if data[0][2] > 0 else 0
+        
+        # Check if player is in danger zone (less than 75 flowers)
+        is_danger_zone = flowers < 75
         
         if trainer_avatar:
             avatar_html = f'<img src="{trainer_avatar}" class="avatar" alt="{display_name}">'
@@ -166,8 +171,11 @@ def generate_table_rows_html(data):
             else:
                 change_html = '<span class="rank-change neutral">-</span>'
 
+        # Add danger zone class if applicable
+        row_class = 'class="danger-zone"' if is_danger_zone else ''
+
         table_rows_html += f"""
-                        <tr>
+                        <tr {row_class}>
                             <td><div class="rank"><span class="table-rank">{i}</span></div></td>
                             <td>
                                 <div class="player">

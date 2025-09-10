@@ -457,3 +457,64 @@ footer .fa-heart {
         flex-direction: column;
     }
 }
+
+/* Add to style.css */
+.danger-zone {
+    background-color: #1a1a1a !important;
+    position: relative;
+}
+
+.danger-zone:hover {
+    background-color: #1f1f1f !important;
+}
+
+.danger-zone td {
+    color: #ff4444 !important;
+}
+
+.danger-zone .avatar,
+.danger-zone .avatar-placeholder {
+    border-color: #ff4444 !important;
+}
+
+.danger-zone .progress {
+    background: #ff4444 !important;
+}
+
+.danger-icon {
+    color: #ff4444;
+    margin-left: 8px;
+    font-size: 0.9em;
+}
+
+.danger-zone .player-name-text::after {
+    content: " ⚠️";
+}
+
+/* Tooltip styling */
+.danger-zone {
+    position: relative;
+}
+
+.danger-zone::after {
+    content: "Warning: Less than 75 flowers. Focus to climb!";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ff4444;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 100;
+}
+
+.danger-zone:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
