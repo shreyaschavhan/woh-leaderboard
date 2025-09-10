@@ -24,7 +24,8 @@ urls = [
     "https://www.focumon.com/trainers/Kheneh_V62t.html",
     "https://www.focumon.com/trainers/Cybershayk_e6yc",
     "https://www.focumon.com/trainers/anonymousp_jqMr",
-    "https://www.focumon.com/trainers/nees"
+    "https://www.focumon.com/trainers/nees",
+    "https://www.focumon.com/trainers/Hafiz_hGGm"
 ]
 
 def load_history():
