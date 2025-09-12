@@ -4,6 +4,7 @@ import re
 from datetime import datetime, timedelta
 import os
 import json
+import math
 
 # List of URLs
 urls = [
@@ -36,7 +37,7 @@ urls = [
 ]
 
 def load_history():
-    """Load historical rank data from history.json"""
+    """Load historical data from history.json"""
     try:
         with open('history.json', 'r') as f:
             return json.load(f)
@@ -44,21 +45,23 @@ def load_history():
         return {}
 
 def save_history(history):
-    """Save historical rank data to history.json"""
+    """Save historical data to history.json"""
     with open('history.json', 'w') as f:
         json.dump(history, f, indent=2)
 
-def update_history(history, current_ranks):
-    """Update history with current ranks for today, and prune data older than 7 days"""
+def update_history(history, current_dict):
+    """Update history with current flowers and rank for today, and prune data older than 7 days"""
     today = datetime.now().date().isoformat()
     seven_days_ago = (datetime.now().date() - timedelta(days=7)).isoformat()
     
-    for trainer_id, rank in current_ranks.items():
+    for trainer_id, data in current_dict.items():
+        flowers = data['flowers']
+        rank = data['rank']
         if trainer_id not in history:
             history[trainer_id] = []
         # Remove any entry for today if exists (overwrite)
         history[trainer_id] = [entry for entry in history[trainer_id] if entry['date'] != today]
-        history[trainer_id].append({'date': today, 'rank': rank})
+        history[trainer_id].append({'date': today, 'rank': rank, 'flowers': flowers})
         # Remove entries older than 7 days
         history[trainer_id] = [entry for entry in history[trainer_id] if entry['date'] >= seven_days_ago]
     return history
@@ -72,6 +75,35 @@ def get_rank_change(history, trainer_id):
         if entry['date'] == seven_days_ago:
             return entry['rank']
     return None
+
+def get_title(history_entries):
+    """Assign a title based on the last 7 days of flower data."""
+    if not history_entries or len(history_entries) < 7:
+        return "Newcomer"
+    
+    # Sort entries by date and get last 7 days of flowers
+    sorted_entries = sorted(history_entries, key=lambda x: x['date'])
+    flowers_list = [entry['flowers'] for entry in sorted_entries][-7:]
+    
+    # Calculate average of first 6 days and compare to last day
+    avg_old = sum(flowers_list[:-1]) / 6
+    last_day = flowers_list[-1]
+    
+    if last_day > avg_old * 1.5:
+        return "Rising Star"
+    elif last_day < avg_old * 0.5:
+        return "Slumping"
+    else:
+        mean = sum(flowers_list) / 7
+        if mean < 75:
+            return "Average"
+        variance = sum((x - mean) ** 2 for x in flowers_list) / 7
+        std_dev = math.sqrt(variance)
+        coeff_var = std_dev / mean
+        if coeff_var < 0.1:
+            return "Consistent Performer"
+        else:
+            return "Average"
 
 def extract_flowers_name_and_avatars(url):
     try:
@@ -120,7 +152,7 @@ def extract_flowers_name_and_avatars(url):
 def generate_top_three_html(data):
     """Generate HTML for the top three cards."""
     top_three_html = ""
-    for i, (trainer_id, display_name, flowers, hours, trainer_avatar, focumon_avatar, rank_change) in enumerate(data[:3]):
+    for i, (trainer_id, display_name, flowers, hours, trainer_avatar, focumon_avatar, rank_change, title) in enumerate(data[:3]):
         rank_class = f"rank-{i+1}"
         card_class = "first-place" if i == 0 else "second-place" if i == 1 else "third-place"
         
@@ -135,6 +167,7 @@ def generate_top_three_html(data):
                         {focumon_img}
                     </div>
                     <div class="player-name">{display_name}</div>
+                    <div class="player-title">{title}</div>
                     <div class="player-stats">
                         <div class="stat">
                             <span class="stat-value">{flowers}</span>
@@ -149,14 +182,11 @@ def generate_top_three_html(data):
         """
     return top_three_html
 
-# Update generate_table_rows_html function in generate_leaderboard.py
 def generate_table_rows_html(data):
     """Generate HTML for the table rows."""
     table_rows_html = ""
-    for i, (trainer_id, display_name, flowers, hours, trainer_avatar, focumon_avatar, rank_change) in enumerate(data, start=1):
+    for i, (trainer_id, display_name, flowers, hours, trainer_avatar, focumon_avatar, rank_change, title) in enumerate(data, start=1):
         progress_percent = (flowers / data[0][2]) * 100 if data[0][2] > 0 else 0
-        
-        # Check if player is in danger zone (less than 75 flowers)
         is_danger_zone = flowers < 75
         
         if trainer_avatar:
@@ -165,7 +195,6 @@ def generate_table_rows_html(data):
             initial = display_name[0].upper() if display_name else '?'
             avatar_html = f'<div class="avatar-placeholder">{initial}</div>'
 
-        # Determine rank change display
         if rank_change is None:
             change_html = '<span class="rank-change neutral">-</span>'
         else:
@@ -176,7 +205,6 @@ def generate_table_rows_html(data):
             else:
                 change_html = '<span class="rank-change neutral">-</span>'
 
-        # Add danger zone class if applicable
         row_class = 'class="danger-zone"' if is_danger_zone else ''
 
         table_rows_html += f"""
@@ -185,7 +213,10 @@ def generate_table_rows_html(data):
                             <td>
                                 <div class="player">
                                     {avatar_html}
-                                    <div class="player-name-text">{display_name}</div>
+                                    <div>
+                                        <div class="player-name-text">{display_name}</div>
+                                        <div class="player-title">{title}</div>
+                                    </div>
                                 </div>
                             </td>
                             <td>
@@ -209,22 +240,22 @@ def main():
     for url in urls:
         trainer_id = url.split('/')[-1].replace('.html', '')
         display_name, flowers, trainer_avatar, focumon_avatar = extract_flowers_name_and_avatars(url)
-        # Calculate hours spent (1 flower = 20 minutes)
         hours_spent = round((flowers * 20) / 60, 2) if flowers else 0
         data.append((trainer_id, display_name, flowers, hours_spent, trainer_avatar, focumon_avatar))
         print(f"Processed {display_name}: {flowers} flowers, {hours_spent} hours")
     
     # Sort data by flowers to assign current ranks
     data.sort(key=lambda x: x[2], reverse=True)
-    current_ranks = {}
+    current_dict = {}
     for idx, item in enumerate(data):
         trainer_id = item[0]
-        current_ranks[trainer_id] = idx + 1  # 1-based rank
+        flowers = item[2]
+        current_dict[trainer_id] = {'flowers': flowers, 'rank': idx + 1}
     
-    # Update history with current ranks
-    history = update_history(history, current_ranks)
+    # Update history with current data
+    history = update_history(history, current_dict)
     
-    # Enhance data with rank change
+    # Enhance data with rank change and title
     enhanced_data = []
     for item in data:
         trainer_id = item[0]
@@ -232,8 +263,14 @@ def main():
         if previous_rank is None:
             rank_change = None
         else:
-            rank_change = previous_rank - current_ranks[trainer_id]  # positive means improved
-        enhanced_data.append(item + (rank_change,))
+            current_rank = current_dict[trainer_id]['rank']
+            rank_change = previous_rank - current_rank  # positive means improved
+        
+        # Get title from flower history
+        hist_entries = history.get(trainer_id, [])
+        title = get_title(hist_entries)
+        
+        enhanced_data.append(item + (rank_change, title))
     
     # Save updated history
     save_history(history)

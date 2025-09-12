@@ -588,3 +588,30 @@ footer .fa-heart {
     opacity: 1;
     visibility: visible;
 }
+
+/* Add to style.css */
+.player-title {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-top: 4px;
+}
+
+/* For top three cards */
+.podium-card .player-title {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.first-place .player-title {
+    color: var(--rank-gold);
+}
+
+.second-place .player-title {
+    color: var(--rank-silver);
+}
+
+.third-place .player-title {
+    color: var(--rank-bronze);
+}
