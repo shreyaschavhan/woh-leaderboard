@@ -8,8 +8,8 @@
     --accent-green: #4ec9b0;
     --accent-orange: #ce9178;
     --rank-gold: #ffd700;
-    --rank-silver: #c0c0c0;
-    --rank-bronze: #cd7f32;
+    --rank-silver: #E5E4E2;
+    --rank-bronze: #CD7F32;
     --shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     --transition: all 0.3s ease;
 }
@@ -91,22 +91,97 @@ h1 {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
 }
 
-.second-place {
-    width: 280px;
-    order: 1;
-}
-
+/* -- Enhanced Top Three Styling -- */
 .first-place {
-    width: 320px;
+    width: 340px;
     order: 2;
     margin: 0 10px;
+    background: linear-gradient(135deg, var(--bg-card) 0%, #3a3a3a 100%);
+    border: 2px solid var(--rank-gold);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.4), var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.first-place::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+    animation: shimmer 6s infinite linear;
+    z-index: 0;
+}
+
+@keyframes shimmer {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.second-place, .third-place {
+    width: 300px;
+    background: linear-gradient(135deg, var(--bg-card) 0%, #2f2f2f 100%);
+    border: 1px solid;
+}
+
+.second-place {
+    order: 1;
+    border-color: var(--rank-silver);
+    box-shadow: 0 0 15px rgba(192, 192, 192, 0.3);
 }
 
 .third-place {
-    width: 280px;
     order: 3;
+    border-color: var(--rank-bronze);
+    box-shadow: 0 0 15px rgba(205, 127, 50, 0.3);
 }
 
+.first-place .rank-badge {
+    background-color: var(--rank-gold);
+    color: #2c3e50;
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+    box-shadow: 0 0 15px var(--rank-gold);
+    position: relative;
+    z-index: 2; /* Ensure it's above the shimmer */
+}
+
+.second-place .rank-badge {
+    background-color: var(--rank-silver);
+    color: #2c3e50;
+    box-shadow: 0 0 10px var(--rank-silver);
+}
+
+.third-place .rank-badge {
+    background-color: var(--rank-bronze);
+    color: #2c3e50;
+    box-shadow: 0 0 10px var(--rank-bronze);
+}
+
+.first-place .player-name {
+    font-size: 1.8rem;
+    color: var(--rank-gold);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    position: relative;
+    z-index: 2;
+}
+
+.second-place .player-name {
+    color: var(--rank-silver);
+}
+
+.third-place .player-name {
+    color: var(--rank-bronze);
+}
+
+.first-place .stat-value {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+}
+/* -- End Enhanced Top Three Styling -- */
 .rank-badge {
     width: 45px;
     height: 45px;
@@ -164,9 +239,6 @@ h1 {
     color: var(--text-primary);
 }
 
-.first-place .player-name {
-    font-size: 1.6rem;
-}
 
 .player-stats {
     display: flex;
@@ -186,9 +258,7 @@ h1 {
     font-family: 'Source Code Pro', monospace;
 }
 
-.first-place .stat-value {
-    font-size: 1.6rem;
-}
+
 
 .stat-label {
     font-size: 0.9rem;
@@ -474,11 +544,11 @@ footer .fa-heart {
 
 .danger-zone .avatar,
 .danger-zone .avatar-placeholder {
-    border-color: #ff4444 !important;
+    border-color: #FF9D00 !important;
 }
 
 .danger-zone .progress {
-    background: #ff4444 !important;
+    background: #FF9D00 !important;
 }
 
 .danger-icon {
@@ -497,12 +567,12 @@ footer .fa-heart {
 }
 
 .danger-zone::after {
-    content: "Warning: Less than 75 flowers. Focus to climb!";
+    content: "Challenge: You're close! Focus to break past 75!";
     position: absolute;
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #ff4444;
+    background-color: #FF9D00;
     color: white;
     padding: 5px 10px;
     border-radius: 4px;
