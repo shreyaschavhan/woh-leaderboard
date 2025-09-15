@@ -47,7 +47,7 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add index.html history.json
+        git add index.html history*.json users/ style.css script.js trail.js
         git diff --quiet && git diff --staged --quiet || git commit -m "Update leaderboard data"
         git push
         
