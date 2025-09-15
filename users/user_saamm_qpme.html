@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard for saamm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--bg-secondary);
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            font-family: 'Source Code Pro', monospace;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        .period-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .period-btn {
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--accent-blue);
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .period-btn:hover,
+        .period-btn.active {
+            background: var(--accent-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .chart-container {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--bg-secondary);
+        }
+        
+        .chart-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: var(--transition);
+            margin: 20px 0;
+            border: 1px solid var(--accent-blue);
+        }
+        
+        .back-link:hover {
+            background: var(--accent-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Light theme for charts */
+        .chart-area {
+            background: white;
+            border-radius: 6px;
+            padding: 15px;
+        }
+        
+        canvas {
+            background: white;
+            border-radius: 6px;
+            padding: 15px;
+        }
+    </style>
+   <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4NJMY5MRXY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-4NJMY5MRXY');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <h1>User Dashboard</h1>
+            <p class="subtitle">Detailed analytics for saamm</p>
+        </header>
+
+        <div class="dashboard-container">
+            <div class="stats-summary">
+                <div class="stat-card">
+                    <div class="stat-value" id="current-flowers">0</div>
+                    <div class="stat-label">Current Flowers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="current-rank">0</div>
+                    <div class="stat-label">Current Rank</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="best-rank">0</div>
+                    <div class="stat-label">Best Rank</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="total-hours">0</div>
+                    <div class="stat-label">Total Hours</div>
+                </div>
+            </div>
+            
+            <div class="period-buttons">
+                <button class="period-btn active" onclick="updateCharts(7)">7 Days</button>
+                <button class="period-btn" onclick="updateCharts(15)">15 Days</button>
+                <button class="period-btn" onclick="updateCharts(30)">1 Month</button>
+                <button class="period-btn" onclick="updateCharts(90)">3 Months</button>
+                <button class="period-btn" onclick="updateCharts(365)">1 Year</button>
+                <button class="period-btn" onclick="updateCharts(0)">All Time</button>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-title">Flowers Collected Over Time</div>
+                <div class="chart-area">
+                    <canvas id="flowersChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-title">Rank Progress Over Time</div>
+                <div class="chart-area">
+                    <canvas id="rankChart"></canvas>
+                </div>
+            </div>
+            
+            <center>
+                <a href="../index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Leaderboard
+                </a>
+            </center>
+        </div>
+    </div>
+
+    <script>
+        const allDates = ["2025-09-09", "2025-09-09", "2025-09-10", "2025-09-10", "2025-09-11", "2025-09-11", "2025-09-12", "2025-09-12", "2025-09-13", "2025-09-13", "2025-09-14", "2025-09-14", "2025-09-15", "2025-09-15"];
+        const allFlowers = [0, 0, 0, 0, 0, 0, 61, 61, 47, 47, 42, 42, 23, 23];
+        const allRanks = [16, 16, 19, 19, 19, 19, 18, 18, 24, 24, 28, 28, 28, 28];
+        
+        // Calculate total hours
+        const totalHours = allFlowers.reduce((total, flowers) => total + (flowers * 20 / 60), 0).toFixed(1);
+        
+        // Update summary stats
+        document.getElementById('current-flowers').textContent = allFlowers.length > 0 ? allFlowers[allFlowers.length - 1] : 0;
+        document.getElementById('current-rank').textContent = allRanks.length > 0 ? allRanks[allRanks.length - 1] : '-';
+        document.getElementById('best-rank').textContent = allRanks.length > 0 ? Math.min(...allRanks.filter(r => r > 0)) : '-';
+        document.getElementById('total-hours').textContent = totalHours;
+
+        let flowersChart;
+        let rankChart;
+        let currentPeriod = 7;
+
+        // Set active button style
+        function setActiveButton(period) {
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            currentPeriod = period;
+        }
+
+        function updateCharts(days) {
+            setActiveButton(days);
+            
+            let filteredDates, filteredFlowers, filteredRanks;
+            if (days === 0) {
+                filteredDates = allDates;
+                filteredFlowers = allFlowers;
+                filteredRanks = allRanks;
+            } else {
+                const today = new Date();
+                const cutoffDate = new Date();
+                cutoffDate.setDate(today.getDate() - days);
+                const cutoffStr = cutoffDate.toISOString().split('T')[0];
+                
+                filteredDates = [];
+                filteredFlowers = [];
+                filteredRanks = [];
+                for (let i = 0; i < allDates.length; i++) {
+                    if (allDates[i] >= cutoffStr) {
+                        filteredDates.push(allDates[i]);
+                        filteredFlowers.push(allFlowers[i]);
+                        filteredRanks.push(allRanks[i]);
+                    }
+                }
+            }
+
+            flowersChart.data.labels = filteredDates;
+            flowersChart.data.datasets[0].data = filteredFlowers;
+            flowersChart.update();
+
+            rankChart.data.labels = filteredDates;
+            rankChart.data.datasets[0].data = filteredRanks;
+            rankChart.update();
+        }
+
+        window.onload = function() {
+            // Flowers chart with light theme
+            const ctx1 = document.getElementById('flowersChart').getContext('2d');
+            flowersChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: allDates,
+                    datasets: [{
+                        label: 'Flowers Collected',
+                        data: allFlowers,
+                        borderColor: '#4ec9b0',
+                        backgroundColor: 'rgba(78, 201, 176, 0.1)',
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#4ec9b0',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#2d2d30',
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            titleColor: '#2d2d30',
+                            bodyColor: '#2d2d30',
+                            borderColor: '#4ec9b0',
+                            borderWidth: 1,
+                            padding: 10,
+                            boxPadding: 5,
+                            usePointStyle: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return `Flowers: ${context.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(45, 45, 48, 0.1)'
+                            },
+                            ticks: {
+                                color: '#2d2d30',
+                                font: {
+                                    family: "'Source Code Pro', monospace"
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Flowers Collected',
+                                color: '#2d2d30',
+                                font: {
+                                    family: "'Poppins', sans-serif",
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(45, 45, 48, 0.1)'
+                            },
+                            ticks: {
+                                color: '#2d2d30',
+                                font: {
+                                    family: "'Source Code Pro', monospace"
+                                },
+                                maxRotation: 45,
+                                minRotation: 45
+                            },
+                            title: {
+                                display: true,
+                                text: 'Date',
+                                color: '#2d2d30',
+                                font: {
+                                    family: "'Poppins', sans-serif",
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                }
+            });
+
+            // Rank chart with light theme
+            const ctx2 = document.getElementById('rankChart').getContext('2d');
+            rankChart = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: allDates,
+                    datasets: [{
+                        label: 'Rank',
+                        data: allRanks,
+                        borderColor: '#007acc',
+                        backgroundColor: 'rgba(0, 122, 204, 0.1)',
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#007acc',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#2d2d30',
+                                font: {
+                                    family: "'Poppins', sans-serif"
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            titleColor: '#2d2d30',
+                            bodyColor: '#2d2d30',
+                            borderColor: '#007acc',
+                            borderWidth: 1,
+                            padding: 10,
+                            boxPadding: 5,
+                            usePointStyle: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return `Rank: ${context.raw}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            reverse: true,
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(45, 45, 48, 0.1)'
+                            },
+                            ticks: {
+                                color: '#2d2d30',
+                                font: {
+                                    family: "'Source Code Pro', monospace"
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Rank (lower is better)',
+                                color: '#2d2d30',
+                                font: {
+                                    family: "'Poppins', sans-serif",
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(45, 45, 48, 0.1)'
+                            },
+                            ticks: {
+                                color: '#2d2d30',
+                                font: {
+                                    family: "'Source Code Pro', monospace"
+                                },
+                                maxRotation: 45,
+                                minRotation: 45
+                            },
+                            title: {
+                                display: true,
+                                text: 'Date',
+                                color: '#2d2d30',
+                                font: {
+                                    family: "'Poppins', sans-serif",
+                                    weight: '500'
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                }
+            });
+        };
+    </script>
+</body>
+</html>
