@@ -39,23 +39,32 @@ urls = [
 ]
 
 def load_history():
-    """Load historical data from history.json"""
+    """Load historical data from history_current.json, or fallback to history.json for migration"""
     try:
-        with open('history.json', 'r') as f:
+        with open('history_current.json', 'r') as f:
             return json.load(f)
     except FileNotFoundError:
-        return {}
+        try:
+            with open('history.json', 'r') as f:
+                history = json.load(f)
+                # Migrate to new file name
+                with open('history_current.json', 'w') as f2:
+                    json.dump(history, f2, indent=2)
+                return history
+        except FileNotFoundError:
+            return {}
 
 def save_history(history):
-    """Save historical data to history.json"""
-    with open('history.json', 'w') as f:
+    """Save historical data to history_current.json"""
+    with open('history_current.json', 'w') as f:
         json.dump(history, f, indent=2)
 
 def update_history(history, current_dict):
-    """Update history with current flowers and rank for today, and prune data older than 7 days"""
+    """Update history with current flowers and rank for today, and move data older than 90 days to yearly archive files"""
     today = datetime.now().date().isoformat()
-    seven_days_ago = (datetime.now().date() - timedelta(days=7)).isoformat()
+    ninety_days_ago = (datetime.now().date() - timedelta(days=90)).isoformat()
     
+    # First, update the current history with today's data
     for trainer_id, data in current_dict.items():
         flowers = data['flowers']
         rank = data['rank']
@@ -64,8 +73,47 @@ def update_history(history, current_dict):
         # Remove any entry for today if exists (overwrite)
         history[trainer_id] = [entry for entry in history[trainer_id] if entry['date'] != today]
         history[trainer_id].append({'date': today, 'rank': rank, 'flowers': flowers})
-        # Remove entries older than 7 days
-        history[trainer_id] = [entry for entry in history[trainer_id] if entry['date'] >= seven_days_ago]
+    
+    # Now, remove entries older than 90 days from current history and add them to archive
+    archive_entries = {}  # key: year, value: dict of trainer_id to list of entries for that year
+    for trainer_id, entries in history.items():
+        keep_entries = []
+        for entry in entries:
+            if entry['date'] >= ninety_days_ago:
+                keep_entries.append(entry)
+            else:
+                # This entry is old, so add to archive
+                year = entry['date'][:4]  # extract year from date string
+                if year not in archive_entries:
+                    archive_entries[year] = {}
+                if trainer_id not in archive_entries[year]:
+                    archive_entries[year][trainer_id] = []
+                archive_entries[year][trainer_id].append(entry)
+        history[trainer_id] = keep_entries
+    
+    # For each year in archive_entries, load the corresponding archive file, merge entries, and save
+    for year, year_data in archive_entries.items():
+        archive_filename = f"history_{year}.json"
+        if os.path.exists(archive_filename):
+            with open(archive_filename, 'r') as f:
+                archive_history = json.load(f)
+        else:
+            archive_history = {}
+        
+        for trainer_id, entries in year_data.items():
+            if trainer_id not in archive_history:
+                archive_history[trainer_id] = []
+            # Avoid duplicates by checking dates
+            existing_dates = {entry['date'] for entry in archive_history[trainer_id]}
+            for entry in entries:
+                if entry['date'] not in existing_dates:
+                    archive_history[trainer_id].append(entry)
+            # Sort entries by date for consistency
+            archive_history[trainer_id].sort(key=lambda x: x['date'])
+        
+        with open(archive_filename, 'w') as f:
+            json.dump(archive_history, f, indent=2)
+    
     return history
 
 def get_rank_change(history, trainer_id):
@@ -212,9 +260,10 @@ def generate_table_rows_html(data):
                 change_html = '<span class="rank-change neutral">-</span>'
 
         row_class = 'class="danger-zone"' if is_danger_zone else ''
-
+        
+        # Make the entire row clickable
         table_rows_html += f"""
-                        <tr {row_class}>
+                        <tr {row_class} onclick="window.location.href='users/user_{trainer_id}.html';" style="cursor: pointer;">
                             <td><div class="rank"><span class="table-rank">{i}</span></div></td>
                             <td>
                                 <div class="player">
@@ -236,6 +285,92 @@ def generate_table_rows_html(data):
                         </tr>
         """
     return table_rows_html
+
+def get_user_history(trainer_id):
+    """Load all historical data for a given trainer from current and yearly files."""
+    history = []
+    # Load from current history file
+    try:
+        with open('history_current.json', 'r') as f:
+            current_data = json.load(f)
+            if trainer_id in current_data:
+                history.extend(current_data[trainer_id])
+    except FileNotFoundError:
+        pass
+    except json.JSONDecodeError:
+        pass
+    
+    # Find all yearly files
+    yearly_files = []
+    for filename in os.listdir('.'):
+        if filename.startswith('history_') and filename.endswith('.json'):
+            yearly_files.append(filename)
+    
+    for filename in yearly_files:
+        try:
+            with open(filename, 'r') as f:
+                yearly_data = json.load(f)
+                if trainer_id in yearly_data:
+                    # Add entries from yearly file
+                    history.extend(yearly_data[trainer_id])
+        except (FileNotFoundError, json.JSONDecodeError):
+            continue
+    
+    # Sort by date
+    history.sort(key=lambda x: x['date'])
+    return history
+
+def generate_user_dashboards(data):
+    """Generate dashboard HTML pages for each user in data."""
+    # Load the user template
+    try:
+        with open('user_template.html', 'r', encoding='utf-8') as f:
+            template = f.read()
+    except FileNotFoundError:
+        print("Error: user_template.html not found. Cannot generate dashboards.")
+        return
+
+    # Create users directory if it doesn't exist
+    if not os.path.exists('users'):
+        os.makedirs('users')
+
+    for item in data:
+        trainer_id = item[0]
+        display_name = item[1]
+        # Get all history for this user
+        user_history = get_user_history(trainer_id)
+        if not user_history:
+            continue
+        
+        # Prepare data for graphs: dates, flowers, ranks
+        # Use defensive programming to handle missing keys
+        dates = []
+        flowers = []
+        ranks = []
+        for entry in user_history:
+            # Only include entries that have a date
+            if 'date' in entry:
+                dates.append(entry['date'])
+                flowers.append(entry.get('flowers', 0))  # default to 0 if missing
+                ranks.append(entry.get('rank', 0))       # default to 0 if missing
+        
+        # Convert to JSON for JavaScript usage
+        dates_json = json.dumps(dates)
+        flowers_json = json.dumps(flowers)
+        ranks_json = json.dumps(ranks)
+        
+        # Replace placeholders in the template
+        html_content = template.replace('{{ display_name }}', display_name)
+        html_content = html_content.replace('{{ dates }}', dates_json)
+        html_content = html_content.replace('{{ flowers }}', flowers_json)
+        html_content = html_content.replace('{{ ranks }}', ranks_json)
+        
+        # Write to file in users folder
+        filename = f"user_{trainer_id}.html"
+        filepath = os.path.join('users', filename)
+        with open(filepath, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+        print(f"Generated dashboard for {display_name} in users folder")
 
 def main():
     # Load historical data
@@ -280,6 +415,9 @@ def main():
     
     # Save updated history
     save_history(history)
+    
+    # Generate user dashboards
+    generate_user_dashboards(enhanced_data)
     
     # Calculate totals
     total_flowers = sum(player[2] for player in enhanced_data)
