@@ -80,13 +80,17 @@ def get_rank_change(history, trainer_id):
 
 def get_title(history_entries):
     """Assign a title based on the last 7 days of flower data."""
-    if not history_entries or len(history_entries) < 7:
+    if not history_entries:
         return "Newcomer"
     
-    # Sort entries by date and get last 7 days of flowers
+    # Sort entries by date and get entries with flowers
     sorted_entries = sorted(history_entries, key=lambda x: x['date'])
-    flowers_list = [entry['flowers'] for entry in sorted_entries][-7:]
+    # Only consider entries that have 'flowers' key
+    valid_entries = [entry for entry in sorted_entries if 'flowers' in entry]
+    if len(valid_entries) < 7:
+        return "Newcomer"
     
+    flowers_list = [entry['flowers'] for entry in valid_entries][-7:]
     # Calculate average of first 6 days and compare to last day
     avg_old = sum(flowers_list[:-1]) / 6
     last_day = flowers_list[-1]
