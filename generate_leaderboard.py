@@ -33,7 +33,6 @@ urls = [
     "https://www.focumon.com/trainers/Ivoclib009_xBCe",
     "https://www.focumon.com/trainers/chaithu_QmSm",
     "https://www.focumon.com/trainers/SShbounty_cbhK",
-    "https://www.focumon.com/trainers/whizarre_tGgK.html",
     "https://www.focumon.com/trainers/Shubham_Kh_V9WH",
     "https://www.focumon.com/trainers/uday"
 ]
