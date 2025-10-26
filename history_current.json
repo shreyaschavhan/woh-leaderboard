@@ -473,7 +473,7 @@
     },
     {
       "date": "2025-10-26",
-      "rank": 18,
+      "rank": 19,
       "flowers": 60
     }
   ],
@@ -951,7 +951,7 @@
     },
     {
       "date": "2025-10-26",
-      "rank": 17,
+      "rank": 18,
       "flowers": 60
     }
   ],
@@ -1190,8 +1190,8 @@
     },
     {
       "date": "2025-10-26",
-      "rank": 16,
-      "flowers": 72
+      "rank": 15,
+      "flowers": 76
     }
   ],
   "Kheneh_V62t": [
@@ -2385,8 +2385,8 @@
     },
     {
       "date": "2025-10-26",
-      "rank": 27,
-      "flowers": 10
+      "rank": 26,
+      "flowers": 16
     }
   ],
   "IndianB0nd_Dyz5": [
@@ -2625,7 +2625,7 @@
     {
       "date": "2025-10-26",
       "rank": 2,
-      "flowers": 142
+      "flowers": 154
     }
   ],
   "rabbitfoot": [
@@ -3102,8 +3102,8 @@
     },
     {
       "date": "2025-10-26",
-      "rank": 4,
-      "flowers": 117
+      "rank": 3,
+      "flowers": 133
     }
   ],
   "bugbountyhunter": [
@@ -4247,7 +4247,7 @@
     },
     {
       "date": "2025-10-26",
-      "rank": 26,
+      "rank": 27,
       "flowers": 12
     }
   ],
@@ -5423,7 +5423,7 @@
     {
       "date": "2025-10-26",
       "rank": 1,
-      "flowers": 155
+      "flowers": 167
     }
   ],
   "chaithu_QmSm": [
@@ -5892,8 +5892,8 @@
     },
     {
       "date": "2025-10-26",
-      "rank": 5,
-      "flowers": 117
+      "rank": 4,
+      "flowers": 127
     }
   ],
   "whizarre_tGgK": [
@@ -6140,7 +6140,7 @@
     },
     {
       "date": "2025-10-26",
-      "rank": 15,
+      "rank": 16,
       "flowers": 75
     }
   ],
@@ -6766,7 +6766,7 @@
     },
     {
       "date": "2025-10-26",
-      "rank": 3,
+      "rank": 5,
       "flowers": 124
     }
   ],
@@ -6813,8 +6813,8 @@
     },
     {
       "date": "2025-10-26",
-      "rank": 19,
-      "flowers": 60
+      "rank": 17,
+      "flowers": 65
     }
   ]
 }
