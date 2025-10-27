@@ -239,7 +239,7 @@
     },
     {
       "date": "2025-10-27",
-      "rank": 15,
+      "rank": 16,
       "flowers": 80
     }
   ],
@@ -727,7 +727,7 @@
     },
     {
       "date": "2025-10-27",
-      "rank": 13,
+      "rank": 14,
       "flowers": 83
     }
   ],
@@ -1216,7 +1216,7 @@
     {
       "date": "2025-10-27",
       "rank": 9,
-      "flowers": 95
+      "flowers": 101
     }
   ],
   "Kheneh_V62t": [
@@ -1459,7 +1459,7 @@
     },
     {
       "date": "2025-10-27",
-      "rank": 14,
+      "rank": 15,
       "flowers": 81
     }
   ],
@@ -2436,7 +2436,7 @@
     {
       "date": "2025-10-27",
       "rank": 26,
-      "flowers": 16
+      "flowers": 19
     }
   ],
   "IndianB0nd_Dyz5": [
@@ -6265,8 +6265,8 @@
     },
     {
       "date": "2025-10-27",
-      "rank": 16,
-      "flowers": 75
+      "rank": 13,
+      "flowers": 84
     }
   ],
   "uday": [
@@ -6959,14 +6959,14 @@
     {
       "date": "2025-10-27",
       "rank": 11,
-      "flowers": 87
+      "flowers": 90
     }
   ],
   "xiaozhi_6MbD": [
     {
       "date": "2025-10-27",
       "rank": 1,
-      "flowers": 156
+      "flowers": 168
     }
   ]
 }
