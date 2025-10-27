@@ -36,7 +36,8 @@ urls = [
     "https://www.focumon.com/trainers/uday",
     "https://focumon.com/trainers/Momehrust_l0E4",
     "https://www.focumon.com/trainers/Srishti_QuOP",
-    "https://www.focumon.com/trainers/Yash_fren"
+    "https://www.focumon.com/trainers/Yash_fren",
+    "https://www.focumon.com/trainers/xiaozhi_6MbD"
 ]
 
 def load_history():
