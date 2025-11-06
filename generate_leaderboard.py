@@ -16,7 +16,7 @@ urls = [
     "https://www.focumon.com/trainers/Epic186_LmHD.html",
     "https://www.focumon.com/trainers/Dr4g0n_lQ3J",
     "https://www.focumon.com/trainers/bokuwa_tobi",
-    "https://www.focumon.com/trainers/IndianB0nd_Dyz5.html",
+    "https://www.focumon.com/trainers/Harshit_777",
     "https://www.focumon.com/trainers/ali_8Luq",
     "https://www.focumon.com/trainers/zix_",
     "https://www.focumon.com/trainers/saamm_qpme",
@@ -37,7 +37,7 @@ urls = [
     "https://focumon.com/trainers/Momehrust_l0E4",
     "https://www.focumon.com/trainers/Srishti_QuOP",
     "https://www.focumon.com/trainers/Yash_fren",
-    "https://www.focumon.com/trainers/xiaozhi_6MbD",
+    "https://www.focumon.com/trainers/AH_6MbD",
     "https://www.focumon.com/trainers/Atom_le_Bi_2yjR",
     "https://www.focumon.com/trainers/0x04ft"
 ]
