@@ -24,8 +24,6 @@ urls = [
     "https://www.focumon.com/trainers/bugbountyhunter.html",
     "https://www.focumon.com/trainers/Kheneh_V62t.html",
     "https://www.focumon.com/trainers/anonymousp_jqMr",
-    "https://www.focumon.com/trainers/nees",
-    "https://www.focumon.com/trainers/Hafiz_hGGm",
     "https://www.focumon.com/trainers/t3po",
     "https://www.focumon.com/trainers/Elden_lord_xY0b",
     "https://www.focumon.com/trainers/bhvrvt",
