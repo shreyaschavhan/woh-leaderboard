@@ -27,7 +27,6 @@ urls = [
     "https://www.focumon.com/trainers/t3po",
     "https://www.focumon.com/trainers/Elden_lord_xY0b",
     "https://www.focumon.com/trainers/bhvrvt",
-    "https://www.focumon.com/trainers/Ivoclib009_xBCe",
     "https://www.focumon.com/trainers/chaithu_QmSm",
     "https://www.focumon.com/trainers/SShbounty_cbhK",
     "https://www.focumon.com/trainers/Shubham_Kh_V9WH",
