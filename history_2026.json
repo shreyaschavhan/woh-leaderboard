@@ -4,6 +4,11 @@
       "date": "2026-01-01",
       "rank": 10,
       "flowers": 78
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 15,
+      "flowers": 63
     }
   ],
   "shreyas": [
@@ -11,6 +16,11 @@
       "date": "2026-01-01",
       "rank": 21,
       "flowers": 41
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 14,
+      "flowers": 68
     }
   ],
   "Epic186_LmHD": [
@@ -18,6 +28,11 @@
       "date": "2026-01-01",
       "rank": 12,
       "flowers": 72
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 9,
+      "flowers": 96
     }
   ],
   "RitikBhardwaj": [
@@ -25,6 +40,11 @@
       "date": "2026-01-01",
       "rank": 8,
       "flowers": 93
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 5,
+      "flowers": 105
     }
   ],
   "Dr4g0n_lQ3J": [
@@ -32,6 +52,11 @@
       "date": "2026-01-01",
       "rank": 9,
       "flowers": 92
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 7,
+      "flowers": 98
     }
   ],
   "Kheneh_V62t": [
@@ -39,11 +64,21 @@
       "date": "2026-01-01",
       "rank": 27,
       "flowers": 4
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 28,
+      "flowers": 8
     }
   ],
   "akkubhosle1": [
     {
       "date": "2026-01-01",
+      "rank": 2,
+      "flowers": 134
+    },
+    {
+      "date": "2026-01-02",
       "rank": 2,
       "flowers": 134
     }
@@ -53,11 +88,21 @@
       "date": "2026-01-01",
       "rank": 25,
       "flowers": 19
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 23,
+      "flowers": 27
     }
   ],
   "ali_8Luq": [
     {
       "date": "2026-01-01",
+      "rank": 29,
+      "flowers": 0
+    },
+    {
+      "date": "2026-01-02",
       "rank": 29,
       "flowers": 0
     }
@@ -67,6 +112,11 @@
       "date": "2026-01-01",
       "rank": 24,
       "flowers": 24
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 25,
+      "flowers": 17
     }
   ],
   "rabbitfoot": [
@@ -74,11 +124,21 @@
       "date": "2026-01-01",
       "rank": 17,
       "flowers": 57
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 18,
+      "flowers": 58
     }
   ],
   "zix_": [
     {
       "date": "2026-01-01",
+      "rank": 26,
+      "flowers": 13
+    },
+    {
+      "date": "2026-01-02",
       "rank": 26,
       "flowers": 13
     }
@@ -88,6 +148,11 @@
       "date": "2026-01-01",
       "rank": 22,
       "flowers": 30
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 21,
+      "flowers": 44
     }
   ],
   "saamm_qpme": [
@@ -95,6 +160,11 @@
       "date": "2026-01-01",
       "rank": 15,
       "flowers": 65
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 19,
+      "flowers": 54
     }
   ],
   "NamikazeMi_JoWH": [
@@ -102,12 +172,22 @@
       "date": "2026-01-01",
       "rank": 28,
       "flowers": 0
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 27,
+      "flowers": 9
     }
   ],
   "t3po": [
     {
       "date": "2026-01-01",
       "rank": 19,
+      "flowers": 51
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 20,
       "flowers": 51
     }
   ],
@@ -116,6 +196,11 @@
       "date": "2026-01-01",
       "rank": 14,
       "flowers": 70
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 22,
+      "flowers": 40
     }
   ],
   "bhvrvt": [
@@ -123,11 +208,21 @@
       "date": "2026-01-01",
       "rank": 16,
       "flowers": 58
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 16,
+      "flowers": 60
     }
   ],
   "chaithu_QmSm": [
     {
       "date": "2026-01-01",
+      "rank": 30,
+      "flowers": 0
+    },
+    {
+      "date": "2026-01-02",
       "rank": 30,
       "flowers": 0
     }
@@ -137,6 +232,11 @@
       "date": "2026-01-01",
       "rank": 6,
       "flowers": 101
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 11,
+      "flowers": 87
     }
   ],
   "Shubham_Kh_V9WH": [
@@ -144,12 +244,22 @@
       "date": "2026-01-01",
       "rank": 3,
       "flowers": 127
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 3,
+      "flowers": 125
     }
   ],
   "uday": [
     {
       "date": "2026-01-01",
       "rank": 5,
+      "flowers": 103
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 6,
       "flowers": 103
     }
   ],
@@ -158,6 +268,11 @@
       "date": "2026-01-01",
       "rank": 7,
       "flowers": 98
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 8,
+      "flowers": 98
     }
   ],
   "Srishti_QuOP": [
@@ -165,6 +280,11 @@
       "date": "2026-01-01",
       "rank": 13,
       "flowers": 72
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 17,
+      "flowers": 60
     }
   ],
   "Yash_fren": [
@@ -172,6 +292,11 @@
       "date": "2026-01-01",
       "rank": 18,
       "flowers": 57
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 13,
+      "flowers": 77
     }
   ],
   "Atom_le_Bi_2yjR": [
@@ -179,11 +304,21 @@
       "date": "2026-01-01",
       "rank": 23,
       "flowers": 26
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 24,
+      "flowers": 26
     }
   ],
   "0x04ft": [
     {
       "date": "2026-01-01",
+      "rank": 31,
+      "flowers": 0
+    },
+    {
+      "date": "2026-01-02",
       "rank": 31,
       "flowers": 0
     }
@@ -193,6 +328,11 @@
       "date": "2026-01-01",
       "rank": 4,
       "flowers": 120
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 4,
+      "flowers": 108
     }
   ],
   "Harshit_777": [
@@ -200,11 +340,21 @@
       "date": "2026-01-01",
       "rank": 11,
       "flowers": 76
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 12,
+      "flowers": 85
     }
   ],
   "Apoorv_S6ag": [
     {
       "date": "2026-01-01",
+      "rank": 1,
+      "flowers": 163
+    },
+    {
+      "date": "2026-01-02",
       "rank": 1,
       "flowers": 163
     }
@@ -214,6 +364,11 @@
       "date": "2026-01-01",
       "rank": 20,
       "flowers": 48
+    },
+    {
+      "date": "2026-01-02",
+      "rank": 10,
+      "flowers": 96
     }
   ]
 }
