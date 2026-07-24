@@ -1,11 +1,6 @@
 {
   "anonymousp_jqMr": [
     {
-      "date": "2026-04-24",
-      "rank": 12,
-      "flowers": 38
-    },
-    {
       "date": "2026-04-25",
       "rank": 10,
       "flowers": 46
@@ -454,14 +449,14 @@
       "date": "2026-07-23",
       "rank": 7,
       "flowers": 53
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 7,
+      "flowers": 53
     }
   ],
   "shreyas": [
-    {
-      "date": "2026-04-24",
-      "rank": 19,
-      "flowers": 0
-    },
     {
       "date": "2026-04-25",
       "rank": 19,
@@ -911,14 +906,14 @@
       "date": "2026-07-23",
       "rank": 11,
       "flowers": 11
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 11,
+      "flowers": 11
     }
   ],
   "Epic186_LmHD": [
-    {
-      "date": "2026-04-24",
-      "rank": 21,
-      "flowers": 0
-    },
     {
       "date": "2026-04-25",
       "rank": 21,
@@ -1368,14 +1363,14 @@
       "date": "2026-07-23",
       "rank": 16,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 16,
+      "flowers": 0
     }
   ],
   "RitikBhardwaj": [
-    {
-      "date": "2026-04-24",
-      "rank": 15,
-      "flowers": 26
-    },
     {
       "date": "2026-04-25",
       "rank": 16,
@@ -1825,14 +1820,14 @@
       "date": "2026-07-23",
       "rank": 14,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 14,
+      "flowers": 0
     }
   ],
   "Dr4g0n_lQ3J": [
-    {
-      "date": "2026-04-24",
-      "rank": 22,
-      "flowers": 0
-    },
     {
       "date": "2026-04-25",
       "rank": 22,
@@ -2280,17 +2275,17 @@
     },
     {
       "date": "2026-07-23",
+      "rank": 17,
+      "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
       "rank": 17,
       "flowers": 0
     }
   ],
   "Kheneh_V62t": [
     {
-      "date": "2026-04-24",
-      "rank": 26,
-      "flowers": 0
-    },
-    {
       "date": "2026-04-25",
       "rank": 26,
       "flowers": 0
@@ -2739,14 +2734,14 @@
       "date": "2026-07-23",
       "rank": 23,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 23,
+      "flowers": 0
     }
   ],
   "akkubhosle1": [
-    {
-      "date": "2026-04-24",
-      "rank": 8,
-      "flowers": 60
-    },
     {
       "date": "2026-04-25",
       "rank": 8,
@@ -3196,14 +3191,14 @@
       "date": "2026-07-23",
       "rank": 8,
       "flowers": 24
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 8,
+      "flowers": 24
     }
   ],
   "bokuwa_tobi": [
-    {
-      "date": "2026-04-24",
-      "rank": 23,
-      "flowers": 0
-    },
     {
       "date": "2026-04-25",
       "rank": 23,
@@ -3651,17 +3646,17 @@
     },
     {
       "date": "2026-07-23",
+      "rank": 18,
+      "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
       "rank": 18,
       "flowers": 0
     }
   ],
   "ali_8Luq": [
     {
-      "date": "2026-04-24",
-      "rank": 24,
-      "flowers": 0
-    },
-    {
       "date": "2026-04-25",
       "rank": 24,
       "flowers": 0
@@ -4110,14 +4105,14 @@
       "date": "2026-07-23",
       "rank": 20,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 20,
+      "flowers": 0
     }
   ],
   "kuro_M3Cr": [
-    {
-      "date": "2026-04-24",
-      "rank": 14,
-      "flowers": 27
-    },
     {
       "date": "2026-04-25",
       "rank": 13,
@@ -4567,15 +4562,15 @@
       "date": "2026-07-23",
       "rank": 9,
       "flowers": 21
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 9,
+      "flowers": 21
     }
   ],
   "IndianB0nd_Dyz5": [],
   "rabbitfoot": [
-    {
-      "date": "2026-04-24",
-      "rank": 20,
-      "flowers": 0
-    },
     {
       "date": "2026-04-25",
       "rank": 20,
@@ -5025,14 +5020,14 @@
       "date": "2026-07-23",
       "rank": 13,
       "flowers": 6
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 13,
+      "flowers": 6
     }
   ],
   "zix_": [
-    {
-      "date": "2026-04-24",
-      "rank": 25,
-      "flowers": 0
-    },
     {
       "date": "2026-04-25",
       "rank": 25,
@@ -5482,14 +5477,14 @@
       "date": "2026-07-23",
       "rank": 21,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 21,
+      "flowers": 0
     }
   ],
   "bugbountyhunter": [
-    {
-      "date": "2026-04-24",
-      "rank": 17,
-      "flowers": 12
-    },
     {
       "date": "2026-04-25",
       "rank": 17,
@@ -5939,14 +5934,14 @@
       "date": "2026-07-23",
       "rank": 22,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 22,
+      "flowers": 0
     }
   ],
   "saamm_qpme": [
-    {
-      "date": "2026-04-24",
-      "rank": 18,
-      "flowers": 3
-    },
     {
       "date": "2026-04-25",
       "rank": 18,
@@ -6396,15 +6391,15 @@
       "date": "2026-07-23",
       "rank": 12,
       "flowers": 10
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 12,
+      "flowers": 10
     }
   ],
   "Cybershayk_e6yc": [],
   "NamikazeMi_JoWH": [
-    {
-      "date": "2026-04-24",
-      "rank": 11,
-      "flowers": 48
-    },
     {
       "date": "2026-04-25",
       "rank": 12,
@@ -6854,16 +6849,16 @@
       "date": "2026-07-23",
       "rank": 15,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 15,
+      "flowers": 0
     }
   ],
   "nees": [],
   "Hafiz_hGGm": [],
   "t3po": [
-    {
-      "date": "2026-04-24",
-      "rank": 13,
-      "flowers": 38
-    },
     {
       "date": "2026-04-25",
       "rank": 14,
@@ -7313,14 +7308,14 @@
       "date": "2026-07-23",
       "rank": 10,
       "flowers": 13
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 10,
+      "flowers": 13
     }
   ],
   "Elden_lord_xY0b": [
-    {
-      "date": "2026-04-24",
-      "rank": 16,
-      "flowers": 16
-    },
     {
       "date": "2026-04-25",
       "rank": 15,
@@ -7770,14 +7765,14 @@
       "date": "2026-07-23",
       "rank": 24,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 24,
+      "flowers": 0
     }
   ],
   "bhvrvt": [
-    {
-      "date": "2026-04-24",
-      "rank": 2,
-      "flowers": 110
-    },
     {
       "date": "2026-04-25",
       "rank": 4,
@@ -8227,15 +8222,15 @@
       "date": "2026-07-23",
       "rank": 25,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 25,
+      "flowers": 0
     }
   ],
   "Ivoclib009_xBCe": [],
   "chaithu_QmSm": [
-    {
-      "date": "2026-04-24",
-      "rank": 27,
-      "flowers": 0
-    },
     {
       "date": "2026-04-25",
       "rank": 27,
@@ -8685,14 +8680,14 @@
       "date": "2026-07-23",
       "rank": 26,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 26,
+      "flowers": 0
     }
   ],
   "SShbounty_cbhK": [
-    {
-      "date": "2026-04-24",
-      "rank": 6,
-      "flowers": 82
-    },
     {
       "date": "2026-04-25",
       "rank": 5,
@@ -9142,15 +9137,15 @@
       "date": "2026-07-23",
       "rank": 5,
       "flowers": 80
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 5,
+      "flowers": 83
     }
   ],
   "whizarre_tGgK": [],
   "Shubham_Kh_V9WH": [
-    {
-      "date": "2026-04-24",
-      "rank": 7,
-      "flowers": 72
-    },
     {
       "date": "2026-04-25",
       "rank": 7,
@@ -9600,14 +9595,14 @@
       "date": "2026-07-23",
       "rank": 6,
       "flowers": 72
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 6,
+      "flowers": 72
     }
   ],
   "uday": [
-    {
-      "date": "2026-04-24",
-      "rank": 28,
-      "flowers": 0
-    },
     {
       "date": "2026-04-25",
       "rank": 28,
@@ -10057,14 +10052,14 @@
       "date": "2026-07-23",
       "rank": 27,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 27,
+      "flowers": 0
     }
   ],
   "Momehrust_l0E4": [
-    {
-      "date": "2026-04-24",
-      "rank": 9,
-      "flowers": 58
-    },
     {
       "date": "2026-04-25",
       "rank": 9,
@@ -10514,14 +10509,14 @@
       "date": "2026-07-23",
       "rank": 3,
       "flowers": 132
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 3,
+      "flowers": 124
     }
   ],
   "Srishti_QuOP": [
-    {
-      "date": "2026-04-24",
-      "rank": 1,
-      "flowers": 168
-    },
     {
       "date": "2026-04-25",
       "rank": 1,
@@ -10971,14 +10966,14 @@
       "date": "2026-07-23",
       "rank": 1,
       "flowers": 168
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 1,
+      "flowers": 168
     }
   ],
   "Yash_fren": [
-    {
-      "date": "2026-04-24",
-      "rank": 3,
-      "flowers": 108
-    },
     {
       "date": "2026-04-25",
       "rank": 2,
@@ -11428,15 +11423,15 @@
       "date": "2026-07-23",
       "rank": 4,
       "flowers": 95
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 4,
+      "flowers": 95
     }
   ],
   "xiaozhi_6MbD": [],
   "Atom_le_Bi_2yjR": [
-    {
-      "date": "2026-04-24",
-      "rank": 30,
-      "flowers": 0
-    },
     {
       "date": "2026-04-25",
       "rank": 30,
@@ -11886,14 +11881,14 @@
       "date": "2026-07-23",
       "rank": 29,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 29,
+      "flowers": 0
     }
   ],
   "0x04ft": [
-    {
-      "date": "2026-04-24",
-      "rank": 31,
-      "flowers": 0
-    },
     {
       "date": "2026-04-25",
       "rank": 31,
@@ -12341,17 +12336,17 @@
     },
     {
       "date": "2026-07-23",
+      "rank": 30,
+      "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
       "rank": 30,
       "flowers": 0
     }
   ],
   "AH_6MbD": [
     {
-      "date": "2026-04-24",
-      "rank": 29,
-      "flowers": 0
-    },
-    {
       "date": "2026-04-25",
       "rank": 29,
       "flowers": 0
@@ -12800,14 +12795,14 @@
       "date": "2026-07-23",
       "rank": 28,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 28,
+      "flowers": 0
     }
   ],
   "Harshit_777": [
-    {
-      "date": "2026-04-24",
-      "rank": 5,
-      "flowers": 82
-    },
     {
       "date": "2026-04-25",
       "rank": 6,
@@ -13257,14 +13252,14 @@
       "date": "2026-07-23",
       "rank": 19,
       "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 19,
+      "flowers": 0
     }
   ],
   "Apoorv_S6ag": [
-    {
-      "date": "2026-04-24",
-      "rank": 4,
-      "flowers": 108
-    },
     {
       "date": "2026-04-25",
       "rank": 3,
@@ -13714,14 +13709,14 @@
       "date": "2026-07-23",
       "rank": 2,
       "flowers": 144
+    },
+    {
+      "date": "2026-07-24",
+      "rank": 2,
+      "flowers": 151
     }
   ],
   "Sidduuuuu": [
-    {
-      "date": "2026-04-24",
-      "rank": 10,
-      "flowers": 58
-    },
     {
       "date": "2026-04-25",
       "rank": 11,
@@ -14169,6 +14164,11 @@
     },
     {
       "date": "2026-07-23",
+      "rank": 31,
+      "flowers": 0
+    },
+    {
+      "date": "2026-07-24",
       "rank": 31,
       "flowers": 0
     }
