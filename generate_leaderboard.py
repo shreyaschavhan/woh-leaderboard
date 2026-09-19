@@ -5,6 +5,77 @@ from datetime import datetime, timedelta
 import os
 import json
 import math
+from html import escape
+try:
+    from PIL import Image
+except ImportError:  # Pillow is optional; without it sprites stay remote
+    Image = None
+
+SPRITE_DIR = os.path.join('assets', 'sprites')
+SPRITE_SCALE = 4
+FETCH_HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36',
+    'Referer': 'https://www.focumon.com/',
+}
+
+def _scale2x(px, w, h):
+    """One Scale2x (EPX) pass over an RGBA pixel list; smooths diagonals without blurring."""
+    out = [None] * (w * h * 4)
+    W2 = w * 2
+    for y in range(h):
+        for x in range(w):
+            p = px[y * w + x]
+            a = px[(y - 1) * w + x] if y > 0 else p
+            d = px[(y + 1) * w + x] if y < h - 1 else p
+            c = px[y * w + x - 1] if x > 0 else p
+            b = px[y * w + x + 1] if x < w - 1 else p
+            e0 = e1 = e2 = e3 = p
+            if a != d and c != b:
+                if c == a: e0 = a
+                if a == b: e1 = b
+                if d == c: e2 = c
+                if b == d: e3 = b
+            i = (y * 2) * W2 + x * 2
+            out[i] = e0
+            out[i + 1] = e1
+            out[i + W2] = e2
+            out[i + W2 + 1] = e3
+    return out
+
+def smooth_sprite(src_bytes):
+    """Upscale a pixel-art sprite 4x with two Scale2x passes. Returns a PIL image."""
+    import io
+    im = Image.open(io.BytesIO(src_bytes)).convert('RGBA')
+    w, h = im.size
+    px = list(im.getdata())
+    for _ in range(2):
+        px = _scale2x(px, w, h)
+        w, h = w * 2, h * 2
+    out = Image.new('RGBA', (w, h))
+    out.putdata(px)
+    return out
+
+def localize_sprite(url):
+    """Download a sprite once, store a smoothed 4x copy locally, and return its relative path.
+    Falls back to the remote URL when anything is unavailable."""
+    if not url or Image is None:
+        return url
+    name = url.rstrip('/').split('/')[-1].rsplit('.', 1)[0]
+    kind = 'focumon' if '/focumon/' in url else 'trainer'
+    filename = f"{kind}-{name}@{SPRITE_SCALE}x.png"
+    path = os.path.join(SPRITE_DIR, filename)
+    rel = f"assets/sprites/{filename}"
+    if os.path.exists(path):
+        return rel
+    try:
+        response = requests.get(url, headers=FETCH_HEADERS, timeout=15)
+        response.raise_for_status()
+        os.makedirs(SPRITE_DIR, exist_ok=True)
+        smooth_sprite(response.content).save(path, optimize=True)
+        return rel
+    except Exception as e:
+        print(f"Sprite fetch failed for {url}: {e}")
+        return url
 
 # List of URLs
 urls = [
@@ -206,126 +277,577 @@ def extract_flowers_name_and_avatars(url):
         print(f"Error fetching {url}: {str(e)}")
         return "Error", 0, None, None
 
+# ---------------------------------------------------------------------------
+# Presentation helpers
+# ---------------------------------------------------------------------------
+
+FLOWER_COLORS = ['#4f7cff', '#ff7a59', '#b48cff', '#3ddc97']
+METAL_COLORS = {1: '#ffc542', 2: '#cdd5ea', 3: '#d9925a'}
+CONSISTENCY_LINE = 75
+
+def _avatar_img(src, css_class, alt):
+    """Return an <img> for an avatar URL, or nothing when it is missing."""
+    if src:
+        return f'<img src="{escape(src)}" class="{css_class}" alt="{escape(alt)}">'
+    return ''
+
+def format_hours(hours):
+    """Format hours compactly: 53.0 -> '53', 32.67 -> '32.7'."""
+    if float(hours).is_integer():
+        return str(int(hours))
+    return f"{hours:.1f}"
+
+def rank_change_html(rank_change):
+    """Return a pill showing the 7-day rank movement."""
+    if rank_change is None:
+        return '<span class="pill pill-new" title="No data from 7 days ago">new</span>'
+    if rank_change > 0:
+        return f'<span class="pill pill-up"><span aria-hidden="true">&#9650;</span>{rank_change}<span class="sr-only"> places up</span></span>'
+    if rank_change < 0:
+        return f'<span class="pill pill-down"><span aria-hidden="true">&#9660;</span>{abs(rank_change)}<span class="sr-only"> places down</span></span>'
+    return '<span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span>'
+
+def _week_bars(d):
+    """Seven tiny bars for the last week, coloured against the line."""
+    vals = d['series30'][-7:]
+    top = max([v for v in vals if v is not None] + [CONSISTENCY_LINE, 1])
+    out = ''
+    for v in vals:
+        if v is None:
+            out += '<i class="wb wb-na"></i>'
+        else:
+            out += f'<i class="wb {"wb-up" if v >= CONSISTENCY_LINE else "wb-low"}" style="height:{max(12, v / top * 100):.0f}%"></i>'
+    return out
+
+def podium_change_html(d):
+    """Two short lines under a podium block: flowers vs last week, then rank movement."""
+    g = d['gain7']
+    rc = d['rank_change']
+    gtxt = '&plusmn;0' if g == 0 else ('&#8212;' if g is None else (f'+{g}' if g > 0 else f'&minus;{abs(g)}'))
+    gcls = 'delta-up' if (g or 0) > 0 else ('delta-down' if (g or 0) < 0 else 'delta-flat')
+    if rc is None or rc == 0:
+        return f'<span class="delta {gcls}">Held #{d["rank"]} &middot; <span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
+    if rc > 0:
+        return f'<span class="delta {gcls}"><span class="delta-arrow" aria-hidden="true">&#9650;</span>Up {rc} to #{d["rank"]} &middot; <span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
+    return f'<span class="delta {gcls}"><span class="delta-arrow" aria-hidden="true">&#9660;</span>Down {abs(rc)} to #{d["rank"]} &middot; <span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
+    # (unreachable legacy branches kept below for reference)
+    if g is None:
+        first = '<span class="delta delta-flat">First week on the board</span>'
+    elif g > 0:
+        first = f'<span class="delta delta-up"><span class="delta-arrow" aria-hidden="true">&#9650;</span><span class="delta-num">+{g}</span><span class="delta-word"> flowers</span><span class="delta-rest"> vs last week</span></span>'
+    elif g < 0:
+        first = f'<span class="delta delta-down"><span class="delta-arrow" aria-hidden="true">&#9660;</span><span class="delta-num">&minus;{abs(g)}</span><span class="delta-word"> flowers</span><span class="delta-rest"> vs last week</span></span>'
+    else:
+        first = '<span class="delta delta-flat">&plusmn;0 flowers vs last week</span>'
+    if rc is None or rc == 0:
+        second = '<span class="delta delta-muted">Held the spot</span>'
+    elif rc > 0:
+        second = f'<span class="delta delta-up">Up {rc} place{"s" if rc != 1 else ""}</span>'
+    else:
+        second = f'<span class="delta delta-down">Down {abs(rc)} place{"s" if abs(rc) != 1 else ""}</span>'
+    return first + second
+
+def gain_html(gain):
+    """Return a signed flower delta versus 7 days ago."""
+    if gain is None:
+        return '<span class="gain gain-none">&#8212;</span>'
+    if gain > 0:
+        return f'<span class="gain gain-up">+{gain}</span>'
+    if gain < 0:
+        return f'<span class="gain gain-down">&minus;{abs(gain)}</span>'
+    return '<span class="gain gain-flat">0</span>'
+
+# ---------------------------------------------------------------------------
+# Analytics derived from history
+# ---------------------------------------------------------------------------
+
+def _history_map(entries):
+    return {e['date']: e for e in entries if 'date' in e}
+
+def compute_extras(history, trainer_id, flowers):
+    """Return (series14, gain7, days_above_line_30, days_tracked_30) for a trainer."""
+    today = datetime.now().date()
+    hm = _history_map(history.get(trainer_id, []))
+
+    series14 = []
+    for i in range(13, -1, -1):
+        entry = hm.get((today - timedelta(days=i)).isoformat())
+        series14.append(entry['flowers'] if entry and 'flowers' in entry else None)
+    series30 = []
+    for i in range(29, -1, -1):
+        entry = hm.get((today - timedelta(days=i)).isoformat())
+        series30.append(entry['flowers'] if entry and 'flowers' in entry else None)
+
+    week_ago = hm.get((today - timedelta(days=7)).isoformat())
+    gain7 = flowers - week_ago['flowers'] if week_ago and 'flowers' in week_ago else None
+
+    tracked = above = 0
+    for i in range(30):
+        entry = hm.get((today - timedelta(days=i)).isoformat())
+        if entry and 'flowers' in entry:
+            tracked += 1
+            if entry['flowers'] >= CONSISTENCY_LINE:
+                above += 1
+    return series14, series30, gain7, above, tracked
+
+def group_series(history, days=30):
+    """Total flowers across all trainers for each of the last `days` days."""
+    today = datetime.now().date()
+    totals = {}
+    for entries in history.values():
+        for e in entries:
+            if 'date' in e and 'flowers' in e:
+                totals[e['date']] = totals.get(e['date'], 0) + e['flowers']
+    out = []
+    for i in range(days - 1, -1, -1):
+        out.append(totals.get((today - timedelta(days=i)).isoformat()))
+    return out
+
+def pick_spotlights(data):
+    """Choose three spotlights, never featuring the same trainer twice."""
+    used = set()
+    spots = []
+
+    def take(label, candidates, key, detail):
+        pool = [d for d in candidates if d['id'] not in used]
+        if not pool:
+            return
+        best = max(pool, key=key)
+        used.add(best['id'])
+        spots.append((label, best, detail(best)))
+
+    take('Most improved', [d for d in data if d['gain7'] is not None and d['gain7'] > 0],
+         lambda d: d['gain7'], lambda d: f"+{d['gain7']} flowers this week")
+    take('Most consistent', [d for d in data if d['days30'] >= 7 and d['above30'] > 0],
+         lambda d: (d['above30'] / d['days30'], d['flowers']), lambda d: f"{d['above30']} of {d['days30']} days above {CONSISTENCY_LINE}")
+    take('Biggest climb', [d for d in data if d['rank_change'] is not None and d['rank_change'] > 0],
+         lambda d: (d['rank_change'], d['flowers']), lambda d: f"up {d['rank_change']} places to #{d['rank']}")
+    if len(spots) < 3:
+        take('Closest to the line', [d for d in data if 0 < d['flowers'] < CONSISTENCY_LINE],
+             lambda d: d['flowers'], lambda d: f"{CONSISTENCY_LINE - d['flowers']} flowers short of {CONSISTENCY_LINE}")
+    if len(spots) < 3:
+        take('Most hours', [d for d in data if d['flowers'] > 0],
+             lambda d: d['flowers'], lambda d: f"{format_hours(d['hours'])} hours of focus this week")
+    return spots[:3]
+
+# ---------------------------------------------------------------------------
+# Inline SVG generators
+# ---------------------------------------------------------------------------
+
+def _path_from_points(points):
+    d, pen_down = [], False
+    for p in points:
+        if p is None:
+            pen_down = False
+            continue
+        x, y = p
+        d.append(f"{'L' if pen_down else 'M'}{x:.1f},{y:.1f}")
+        pen_down = True
+    return ' '.join(d)
+
+def sparkline_svg(values, scale_max, width=160, height=36, line=CONSISTENCY_LINE):
+    """Small 14-day trend line with the consistency line drawn through it."""
+    pad = 3
+    n = max(len(values), 2)
+    scale_max = max(scale_max, 1)
+    x = lambda i: pad + i * (width - 2 * pad) / (n - 1)
+    y = lambda v: height - pad - (min(v, scale_max) / scale_max) * (height - 2 * pad)
+    points = [(x(i), y(v)) if v is not None else None for i, v in enumerate(values)]
+    path = _path_from_points(points)
+    last = next((p for p in reversed(points) if p is not None), None)
+    dot = f'<circle class="spark-dot" cx="{last[0]:.1f}" cy="{last[1]:.1f}" r="2.2"/>' if last else ''
+    line_svg = ''
+    if line <= scale_max:
+        ly = y(line)
+        line_svg = f'<line class="spark-line" x1="0" x2="{width}" y1="{ly:.1f}" y2="{ly:.1f}"/>'
+    return (f'<svg class="spark" viewBox="0 0 {width} {height}" width="{width}" height="{height}" aria-hidden="true">'
+            f'{line_svg}<path class="spark-path" d="{path}"/>{dot}</svg>')
+
+def group_chart_svg(series, width=600, height=110):
+    """Full-width area chart of the group's total flowers over the last 30 days."""
+    vals = [v for v in series if v is not None]
+    if not vals:
+        return ''
+    pad = 3
+    n = max(len(series), 2)
+    top = max(vals) or 1
+    lo = min(vals) * 0.8
+    span = max(top - lo, 1)
+    x = lambda i: pad + i * (width - 2 * pad) / (n - 1)
+    y = lambda v: height - pad - ((v - lo) / span) * (height - 2 * pad)
+    points = [(x(i), y(v)) if v is not None else None for i, v in enumerate(series)]
+    line = _path_from_points(points)
+    solid = [p for p in points if p is not None]
+    area = f"M{solid[0][0]:.1f},{height} " + ' '.join(f"L{px:.1f},{py:.1f}" for px, py in solid) + f" L{solid[-1][0]:.1f},{height} Z"
+    last = solid[-1]
+    band_x = x(max(0, n - 7))
+    return (f'<svg class="group-spark" viewBox="0 0 {width} {height}" preserveAspectRatio="none" aria-hidden="true">'
+            f'<defs><linearGradient id="bandg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity="0.22"/><stop offset="1" stop-color="currentColor" stop-opacity="0.02"/></linearGradient></defs>'
+            f'<rect class="group-band" x="{band_x:.1f}" y="0" width="{width - band_x:.1f}" height="{height}"/>'
+            f'<path class="group-area" d="{area}"/><path class="group-line" d="{line}" vector-effect="non-scaling-stroke"/></svg>'
+            f'<span class="group-dot" style="left:{last[0] / width * 100:.1f}%;top:{last[1] / height * 100:.1f}%"></span>')
+
+def community_delta(series):
+    """Week-on-week change of the community total, as (delta, percent) or None."""
+    vals = [v for v in series if v is not None]
+    if len(series) < 8 or series[-1] is None or series[-8] is None or not series[-8]:
+        return None
+    delta = series[-1] - series[-8]
+    return delta, round(delta / series[-8] * 100)
+
+def _pixel_flower(flowers, max_flowers, color, idx, avatar=None, rank=None, show_count=False):
+    """Return SVG for one flower drawn relative to its base at (0, 0). The head is the trainer's face."""
+    ratio = (flowers / max_flowers) if max_flowers > 0 else 0
+    import math as _m
+    seedling = flowers <= 0
+    podium = rank is not None and rank <= 3
+    if seedling:
+        stem_h, r = 30, 7.5
+    else:
+        stem_h = 22 + ratio * 208
+        r = (9 + ratio * 10) * (1.0 if podium else 0.8)   # head radius; mid ranks stay smaller than the leaders
+    u = r * 0.62                # petal size
+    face_opacity = 0.5 if seedling else 1
+    cx, cy = 0, -stem_h
+    leaf_y = -stem_h * (0.45 + 0.1 * (idx % 3))
+    leaf_side = -1 if idx % 2 else 1
+    petals = ''
+    for k in range(6):
+        ang = k * _m.pi / 3 + _m.pi / 6
+        px_, py_ = cx + _m.cos(ang) * (r + u * 0.55), cy + _m.sin(ang) * (r + u * 0.55)
+        petals += (f'<rect x="{px_ - u / 2:.1f}" y="{py_ - u / 2:.1f}" width="{u:.1f}" height="{u:.1f}" rx="{u * 0.28:.1f}" '
+                   f'fill="{color}" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate({k * 60 + 30:.0f} {px_:.1f} {py_:.1f})"/>')
+    if not seedling and flowers >= CONSISTENCY_LINE:
+        ly2 = -stem_h * 0.72
+        petals += (f'<rect x="{2 if leaf_side < 0 else -9}" y="{ly2:.1f}" width="7" height="4" fill="#57b85f"/>'
+                   f'<rect x="{-9 if leaf_side < 0 else 2}" y="{ly2 + 12:.1f}" width="7" height="4" fill="#57b85f"/>')
+    head = ''
+    if avatar:
+        w = r * 3.0
+        head = (f'<clipPath id="fc{idx}"><circle cx="{cx}" cy="{cy:.1f}" r="{r - 1:.1f}"/></clipPath>'
+                f'<circle cx="{cx}" cy="{cy:.1f}" r="{r:.1f}" fill="{"#c9d0e6" if seedling else "#fff3b0"}"/>'
+                f'<image href="{escape(avatar)}" x="{cx - w / 2:.1f}" y="{cy - w * 0.27:.1f}" width="{w:.1f}" height="{w:.1f}" clip-path="url(#fc{idx})" preserveAspectRatio="xMidYMid slice" opacity="{face_opacity}"/>'
+                f'<circle cx="{cx}" cy="{cy:.1f}" r="{r:.1f}" fill="none" stroke="{color}" stroke-width="{1.8 if seedling else 2.5}"/>'
+                f'<circle cx="{cx}" cy="{cy + 0.6:.1f}" r="{r + 1.6:.1f}" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.4"/>')
+    else:
+        head = f'<circle cx="{cx}" cy="{cy:.1f}" r="{r:.1f}" fill="#fff3b0" stroke="{color}" stroke-width="2.5"/>'
+    if seedling:
+        head = (f'<circle cx="{cx}" cy="{cy:.1f}" r="{r:.1f}" fill="#dfe6ff" stroke="{color}" stroke-width="1.8"/>'
+                f'<circle cx="{cx}" cy="{cy:.1f}" r="{r * 0.4:.1f}" fill="{color}"/>')
+        return (f'<g class="sprout"><rect x="-2" y="{-stem_h:.1f}" width="4" height="{stem_h:.1f}" fill="#3f9d4c"/>'
+                f'<rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/>{petals}{head}</g>')
+    extras = ''
+    if rank is not None and rank <= 3:
+        bx, by = cx - r * 0.85, cy - r * 0.85
+        extras += (f'<circle cx="{bx:.1f}" cy="{by:.1f}" r="7.5" fill="#fff" stroke="{color}" stroke-width="1.5"/>'
+                   f'<text class="flower-rank" x="{bx:.1f}" y="{by + 3.4:.1f}" text-anchor="middle">{rank}</text>')
+    if show_count:
+        extras += f'<text class="flower-count{"" if podium else " flower-count-sm"}" x="{cx}" y="{cy - r - u - 5:.1f}" text-anchor="middle">{flowers}</text>'
+    return (f'<rect x="-2" y="{-stem_h:.1f}" width="4" height="{stem_h:.1f}" fill="#3f9d4c"/>'
+            f'<rect x="{leaf_side * 2 if leaf_side > 0 else -9}" y="{leaf_y:.1f}" width="7" height="4" fill="#57b85f"/>'
+            f'{petals}{head}{extras}')
+
+def garden_svg(data, max_flowers):
+    """The hero scene: every trainer is a flower whose height is their flower count."""
+    W, H = 1000, 400
+    back_ground = 330   # where the flowers are planted
+    front_ground = 372  # the path where the leaders stand
+    n = len(data)
+    centre = 520
+    kmax = max(2, n // 2)
+    spacing = (440 - 92) / max(1, kmax - 2)
+    parts = []
+
+    # Distant hills and the flower bed
+    parts.append('<g class="hills">'
+                 '<ellipse cx="180" cy="332" rx="260" ry="46" fill="#2f7a3d"/>'
+                 '<ellipse cx="620" cy="336" rx="320" ry="52" fill="#2c7239"/>'
+                 '<ellipse cx="930" cy="334" rx="220" ry="40" fill="#2f7a3d"/></g>')
+    parts.append(f'<rect class="bed" x="0" y="{back_ground}" width="{W}" height="{front_ground - back_ground}" fill="#3a8a45"/>')
+    tufts = ''.join(f'<rect x="{(i * 137 + (i % 3) * 11) % W}" y="{back_ground - 2 - (i % 4) * 2}" width="{3 + i % 3}" height="{3 + (i % 4) * 2}" fill="{'#5cc46a' if i % 2 else '#4db35c'}"/>' for i in range(30))
+    parts.append(f'<g class="tufts">{tufts}</g>')
+
+    # Trees on the hills and a pond on the bed
+    def tree(x, base, h, shade):
+        return (f'<g class="tree"><rect x="{x - 5}" y="{base - h}" width="10" height="{h}" fill="#5a3d2b"/>'
+                f'<rect x="{x - 26}" y="{base - h - 4}" width="52" height="20" fill="{shade}"/>'
+                f'<rect x="{x - 20}" y="{base - h - 20}" width="40" height="18" fill="{shade}"/>'
+                f'<rect x="{x - 12}" y="{base - h - 34}" width="24" height="16" fill="{shade}"/></g>')
+    parts.append('<g class="trees">' + tree(70, back_ground - 2, 46, '#2b7a3b') + tree(150, back_ground - 6, 36, '#33934a')
+                 + tree(905, back_ground - 4, 42, '#2b7a3b') + tree(965, back_ground - 8, 30, '#33934a') + '</g>')
+    parts.append(f'<g class="pond"><ellipse cx="120" cy="{back_ground + 20}" rx="58" ry="9" fill="#2f7fb0"/>'
+                 f'<ellipse cx="120" cy="{back_ground + 19}" rx="50" ry="6" fill="#4cc9f0"/>'
+                 f'<rect class="pond-glint" x="100" y="{back_ground + 15}" width="10" height="2" fill="#dff7ff"/></g>')
+
+    # Consistency line
+    if max_flowers >= CONSISTENCY_LINE:
+        line_y = back_ground - (22 + (CONSISTENCY_LINE / max_flowers) * 208)
+        parts.append(f'<g class="line75"><line x1="0" x2="{W}" y1="{line_y:.1f}" y2="{line_y:.1f}"/>'
+                     f'<text x="{W - 12}" y="{line_y - 6:.1f}" text-anchor="end">{CONSISTENCY_LINE} flowers</text>'
+                     f'<text class="line75-m" x="706" y="{line_y - 6:.1f}" text-anchor="end">{CONSISTENCY_LINE}</text></g>')
+
+    # Flowers: leader in the centre, then alternating outward by rank
+    flowers = []
+    podium_x = {1: 500, 2: 330, 3: 670}
+    dead = {500: 130, 330: 84, 670: 84}
+    flower_x = {1: 452, 2: 394, 3: 712}   # stems clear of the sprites standing on the blocks
+
+    def head_of(d):
+        ratio = (d['flowers'] / max_flowers) if max_flowers > 0 else 0
+        if d['flowers'] <= 0:
+            return 7.5, 30
+        return (9 + ratio * 10) * (1.0 if d['rank'] <= 3 else 0.8), 22 + ratio * 208
+
+    placed = []  # (x, head_radius, stem_h)
+    for c, dz in dead.items():
+        placed.append((c, 0, 0))
+
+    def clear(x, r, h):
+        for c, dz in dead.items():
+            if abs(x - c) < dz:
+                return False
+        for px_, pr, ph in placed:
+            if pr == 0:
+                continue
+            if abs(x - px_) < (r + pr) * 1.25 and abs(h - ph) < (r + pr) * 1.6:
+                return False
+        return True
+
+    positions = {}
+    side = 1
+    for d in data:
+        if d['rank'] in podium_x:
+            x = flower_x[d['rank']]
+            r, h = head_of(d)
+            positions[d['id']] = x
+            placed.append((x, r, h))
+            continue
+        if d['flowers'] <= 0:
+            continue  # seedlings are spread separately below
+        r, h = head_of(d)
+        x = None
+        offset = 0
+        while offset <= 470:
+            for s_ in (side, -side):
+                cand = 500 + s_ * offset
+                if 40 <= cand <= 960 and clear(cand, r, h):
+                    x = cand
+                    break
+            if x is not None:
+                break
+            offset += 14
+        if x is None:  # no clear slot left: fall back to the emptiest edge
+            x = 40 + (len(placed) * 37) % 920
+        side = -side
+        positions[d['id']] = x
+        placed.append((x, r, h))
+
+    seedlings = [d for d in data if d['flowers'] <= 0]
+    free = [sx for sx in range(40, 961, 4) if all(abs(sx - c) > dz - 10 for c, dz in dead.items())]
+    for i, d in enumerate(seedlings):
+        j = int((i + 0.5) / max(len(seedlings), 1) * len(free))
+        positions[d['id']] = free[min(j, len(free) - 1)]
+
+    for idx, d in enumerate(data):
+        x = positions[d['id']]
+        jitter = ((idx * 7) % 9) - 4
+        if d['flowers'] <= 0:
+            jitter = 2 + (idx % 2) * 10   # two loose rows
+        color = METAL_COLORS.get(d['rank']) or FLOWER_COLORS[idx % len(FLOWER_COLORS)]
+        delay = (idx * 0.37) % 3
+        flowers.append(
+            f'<g class="flower" data-id="{escape(d["id"])}" data-name="{escape(d["name"])}" data-flowers="{d["flowers"]}" data-rank="{d["rank"]}" '
+            f'transform="translate({x:.1f},{back_ground + jitter})" tabindex="0" role="link" aria-label="{escape(d["name"])}, rank {d["rank"]}, {d["flowers"]} flowers">'
+            f'<g class="sway" style="--g:{(idx % 12) * 0.06:.2f}s;--sd:-{delay:.2f}s">{_pixel_flower(d["flowers"], max_flowers, color, idx, d["avatar"], d["rank"], d["flowers"] >= CONSISTENCY_LINE)}</g></g>')
+    parts.append('<g class="flowers">' + ''.join(flowers) + '</g>')
+
+    # Front path
+    parts.append(f'<rect class="path" x="0" y="{front_ground}" width="{W}" height="{H - front_ground}" fill="#6b4a33"/>')
+    parts.append(f'<rect x="0" y="{front_ground}" width="{W}" height="3" fill="#8a6446"/>')
+
+
+    # Night-only fireflies
+    fireflies = ''.join(f'<circle class="firefly" cx="{(i * 211) % W}" cy="{170 + (i * 53) % 150}" r="2" style="animation-delay:-{(i * 0.9) % 6:.1f}s"/>' for i in range(14))
+    parts.append(f'<g class="fireflies">{fireflies}</g>')
+
+    return (f'<svg class="garden" viewBox="0 0 {W} {H}" preserveAspectRatio="xMidYMax meet" aria-label="Garden of {n} trainers; taller flowers mean more flowers collected">'
+            + ''.join(parts) + '</svg>')
+
+# ---------------------------------------------------------------------------
+# HTML fragments
+# ---------------------------------------------------------------------------
+
+def trainer_json(data):
+    """Per-trainer data embedded in the page for the in-place trainer card."""
+    total = len(data)
+    payload = [{
+        'id': d['id'], 'name': d['name'], 'rank': d['rank'], 'total': total,
+        'flowers': d['flowers'], 'gain7': d['gain7'], 'rank_change': d['rank_change'],
+        'title': d['title'], 'above30': d['above30'], 'days30': d['days30'],
+        'avatar': d['avatar'], 'focumon': d['focumon'], 'series30': d['series30'],
+        'line': CONSISTENCY_LINE, 'end': datetime.now().date().isoformat(),
+    } for d in data]
+    return json.dumps(payload, separators=(',', ':')).replace('</', '<\\/')
+
 def generate_top_three_html(data):
-    """Generate HTML for the top three cards."""
-    top_three_html = ""
-    for i, (trainer_id, display_name, flowers, hours, trainer_avatar, focumon_avatar, rank_change, title) in enumerate(data[:3]):
-        rank_class = f"rank-{i+1}"
-        card_class = "first-place" if i == 0 else "second-place" if i == 1 else "third-place"
-        
-        trainer_img = f'<img src="{trainer_avatar}" class="trainer-avatar" alt="{display_name}">' if trainer_avatar else '<div class="trainer-avatar"></div>'
-        focumon_img = f'<img src="{focumon_avatar}" class="focumon-avatar" alt="Focumon">' if focumon_avatar else '<div class="focumon-avatar"></div>'
-        
-        top_three_html += f"""
-                <div class="podium-card {card_class}">
-                    <div class="rank-badge {rank_class}">{i+1}</div>
-                    <div class="avatar-container">
-                        {trainer_img}
-                        {focumon_img}
-                    </div>
-                    <div class="player-name">{display_name}</div>
-                    <div class="player-title">{title}</div>
-                    <div class="player-stats">
-                        <div class="stat">
-                            <span class="stat-value">{flowers}</span>
-                            <span class="stat-label">Flowers</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-value">{hours}</span>
-                            <span class="stat-label">Hours</span>
-                        </div>
-                    </div>
-                </div>
+    """Podium cards for the top three."""
+    html = ''
+    for d in data[:3]:
+        name = escape(d['name'])
+        html += f"""
+            <a class="podium-card place-{d['rank']}" href="users/user_{escape(d['id'])}.html" data-id="{escape(d['id'])}">
+                <span class="place-badge" aria-label="Rank {d['rank']}">{d['rank']}</span>
+                <span class="podium-avatars">
+                    {_avatar_img(d['avatar'], 'trainer-avatar', d['name'])}
+                    {_avatar_img(d['focumon'], 'focumon-avatar', 'Focumon partner')}
+                </span>
+                <span class="podium-name">{name}</span>
+                <span class="podium-title">{d['above30']} of {d['days30']} days above {CONSISTENCY_LINE}</span>
+                <span class="podium-stats">
+                    <span class="podium-stat"><span class="num count" data-count="{d['flowers']}">{d['flowers']}</span><span class="label">flowers</span></span>
+                    <span class="podium-stat"><span class="num count" data-count="{format_hours(d['hours'])}">{format_hours(d['hours'])}</span><span class="label">hours</span></span>
+                </span>
+                <span class="podium-change">{podium_change_html(d)}</span>
+                <span class="podium-week" aria-hidden="true">{_week_bars(d)}</span>
+            </a>
         """
-    return top_three_html
+    return html
+
+def _spot_viz(label, d):
+    """A small visual that makes each spotlight self-explanatory."""
+    if label == 'Most improved':
+        before = d['flowers'] - (d['gain7'] or 0)
+        top = max(d['flowers'], before, 1)
+        return (f'<span class="spot-viz spot-bars"><span class="spot-bar"><i style="height:{before / top * 100:.0f}%"></i><b>{before}</b></span>'
+                f'<span class="spot-arrow" aria-hidden="true">&rarr;</span>'
+                f'<span class="spot-bar is-now"><i style="height:{d["flowers"] / top * 100:.0f}%"></i><b>{d["flowers"]}</b></span></span>')
+    if label == 'Most consistent':
+        dots = ''.join(f'<i class="{"on" if v is not None and v >= CONSISTENCY_LINE else ("off" if v is not None else "na")}"></i>' for v in d['series30'][-28:])
+        return f'<span class="spot-viz spot-dots" aria-hidden="true">{dots}</span>'
+    if label == 'Biggest climb':
+        return (f'<span class="spot-viz spot-climb"><span class="spot-rank was">#{d["rank"] + d["rank_change"]}</span>'
+                f'<span class="spot-chev" aria-hidden="true">&rsaquo;</span>'
+                f'<span class="spot-rank now">#{d["rank"]}</span></span>')
+    return ''
+
+def generate_spotlights_html(data):
+    items = ''
+    for label, d, detail in pick_spotlights(data):
+        avatar = f'<span class="spot-avatar"><img src="{escape(d["avatar"])}" alt="" class="spot-sprite"></span>' if d['avatar'] else '<span class="spot-avatar"></span>'
+        items += f"""
+                <a class="spot" href="users/user_{escape(d['id'])}.html">
+                    {avatar}
+                    <span class="spot-text"><span class="spot-label">{label}</span><span class="spot-name">{escape(d['name'])}</span><span class="spot-detail">{detail}</span></span>
+                    {_spot_viz(label, d)}
+                </a>"""
+    return items
 
 def generate_table_rows_html(data):
-    """Generate HTML for the table rows."""
-    table_rows_html = ""
-    for i, (trainer_id, display_name, flowers, hours, trainer_avatar, focumon_avatar, rank_change, title) in enumerate(data, start=1):
-        progress_percent = (flowers / data[0][2]) * 100 if data[0][2] > 0 else 0
-        is_danger_zone = flowers < 75
-        
-        if trainer_avatar:
-            avatar_html = f'<img src="{trainer_avatar}" class="avatar" alt="{display_name}">'
-        else:
-            initial = display_name[0].upper() if display_name else '?'
-            avatar_html = f'<div class="avatar-placeholder">{initial}</div>'
+    """Rows of the standings table, with the consistency divider inserted."""
+    html = ''
+    top = data[0]['flowers'] if data else 0
+    spark_max = max([v for d in data for v in d['series14'] if v is not None] + [CONSISTENCY_LINE])
+    divider_done = False
+    group_done = False
+    inactive_total = sum(1 for d in data if d['flowers'] == 0)
+    for d in data:
+        if not group_done and d['flowers'] == 0 and inactive_total >= 3:
+            html += f"""
+                    <tr class="group-row"><td colspan="7"><button type="button" class="group-toggle" aria-expanded="false"><span class="group-count">{inactive_total}</span> trainers with no flowers this week <span class="group-arrow" aria-hidden="true">&#9662;</span></button></td></tr>"""
+            group_done = True
+        if not divider_done and d['flowers'] < CONSISTENCY_LINE:
+            html += f"""
+                    <tr class="line-row" aria-hidden="true"><td colspan="7"><span>{CONSISTENCY_LINE}-flower line</span></td></tr>"""
+            divider_done = True
 
-        if rank_change is None:
-            change_html = '<span class="rank-change neutral">-</span>'
-        else:
-            if rank_change > 0:
-                change_html = f'<span class="rank-change positive">▲ {abs(rank_change)}</span>'
-            elif rank_change < 0:
-                change_html = f'<span class="rank-change negative">▼ {abs(rank_change)}</span>'
-            else:
-                change_html = '<span class="rank-change neutral">-</span>'
+        pct = round((d['flowers'] / top) * 100, 1) if top > 0 else 0
+        name = escape(d['name'])
+        href = f"users/user_{escape(d['id'])}.html"
+        classes = []
+        if d['flowers'] == 0:
+            classes.append('is-inactive')
+        elif d['flowers'] < CONSISTENCY_LINE:
+            classes.append('is-low')
+        if d['rank'] <= 3:
+            classes.append(f"is-top place-{d['rank']}")
+        class_attr = f' class="{" ".join(classes)}"' if classes else ''
 
-        row_class = 'class="danger-zone"' if is_danger_zone else ''
-        
-        # Make the entire row clickable
-        table_rows_html += f"""
-                        <tr {row_class} onclick="window.location.href='users/user_{trainer_id}.html';" style="cursor: pointer;">
-                            <td><div class="rank"><span class="table-rank">{i}</span></div></td>
-                            <td>
-                                <div class="player">
-                                    {avatar_html}
-                                    <div>
-                                        <div class="player-name-text">{display_name}</div>
-                                        <div class="player-title">{title}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="flowers">{flowers}</div>
-                                <div class="progress-bar">
-                                    <div class="progress" style="width: {progress_percent}%"></div>
-                                </div>
-                            </td>
-                            <td class="hours">{hours}</td>
-                            <td class="rank-change">{change_html}</td>
-                        </tr>
-        """
-    return table_rows_html
+        if d['avatar']:
+            avatar = f'<span class="avatar"><img src="{escape(d["avatar"])}" class="avatar-img" alt="" loading="lazy"></span>'
+        else:
+            avatar = f'<span class="avatar avatar-placeholder" aria-hidden="true">{escape(d["name"][:1].upper() or "?")}</span>'
+
+        gain_sort = d['gain7'] if d['gain7'] is not None else -10**6
+        change_sort = d['rank_change'] if d['rank_change'] is not None else -10**6
+        html += f"""
+                    <tr{class_attr} style="--i:{d['rank']}" data-id="{escape(d['id'])}" data-name="{name.lower()}" data-href="{href}" data-rank="{d['rank']}" data-flowers="{d['flowers']}" data-gain="{gain_sort}" data-change="{change_sort}">
+                        <td class="col-rank"><span class="rank-num">{d['rank']}</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="{href}">
+                                {avatar}
+                                <span class="player-meta">
+                                    <span class="player-name">{name}<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">{escape(d['title'])}</span><span class="hours-inline"> &middot; {format_hours(d['hours'])} h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">{d['flowers']}</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: {pct}%"></span></span>
+                            <span class="m-chip">{gain_html(d['gain7'])} {rank_change_html(d['rank_change'])}</span>
+                        </td>
+                        <td class="col-trend">{sparkline_svg(d['series14'], spark_max)}</td>
+                        <td class="col-gain">{gain_html(d['gain7'])}</td>
+                        <td class="col-change">{rank_change_html(d['rank_change'])}</td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="{escape(d['id'])}" aria-pressed="false" aria-label="Mark {name} as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>"""
+    return html
+
+# ---------------------------------------------------------------------------
+# Trainer dashboards
+# ---------------------------------------------------------------------------
 
 def get_user_history(trainer_id):
     """Load all historical data for a given trainer from current and yearly files."""
     history = []
-    # Load from current history file
     try:
         with open('history_current.json', 'r') as f:
             current_data = json.load(f)
-            if trainer_id in current_data:
-                history.extend(current_data[trainer_id])
-    except FileNotFoundError:
+            history.extend(current_data.get(trainer_id, []))
+    except (FileNotFoundError, json.JSONDecodeError):
         pass
-    except json.JSONDecodeError:
-        pass
-    
-    # Find all yearly files
-    yearly_files = []
-    for filename in os.listdir('.'):
-        if filename.startswith('history_') and filename.endswith('.json'):
-            yearly_files.append(filename)
-    
-    for filename in yearly_files:
-        try:
-            with open(filename, 'r') as f:
-                yearly_data = json.load(f)
-                if trainer_id in yearly_data:
-                    # Add entries from yearly file
-                    history.extend(yearly_data[trainer_id])
-        except (FileNotFoundError, json.JSONDecodeError):
-            continue
-    
-    # Sort by date
-    history.sort(key=lambda x: x['date'])
-    return history
+
+    for filename in sorted(os.listdir('.')):
+        if filename.startswith('history_') and filename.endswith('.json') and filename != 'history_current.json':
+            try:
+                with open(filename, 'r') as f:
+                    history.extend(json.load(f).get(trainer_id, []))
+            except (FileNotFoundError, json.JSONDecodeError):
+                continue
+
+    # Deduplicate by date (later entries win) and sort chronologically
+    by_date = {}
+    for entry in history:
+        if 'date' in entry:
+            by_date[entry['date']] = entry
+    return [by_date[d] for d in sorted(by_date)]
+
+def profile_flower_svg(d, max_flowers, idx, avatar=None):
+    """A single flower at the trainer's real relative height for the profile header."""
+    color = METAL_COLORS.get(d['rank']) or FLOWER_COLORS[idx % len(FLOWER_COLORS)]
+    return (f'<svg class="profile-flower" viewBox="-60 0 120 260" width="120" height="260" aria-hidden="true">'
+            f'<g transform="translate(0,252)">{_pixel_flower(d["flowers"], max_flowers, color, 900 + idx, avatar, None, d["flowers"] > 0)}</g></svg>')
+
+def profile_line_offset(max_flowers):
+    """Pixels above the grass where the 75 line sits in the trainer header (260px flower box)."""
+    if max_flowers < CONSISTENCY_LINE:
+        return None
+    return 22 + (CONSISTENCY_LINE / max_flowers) * 208
 
 def generate_user_dashboards(data):
-    """Generate dashboard HTML pages for each user in data."""
-    # Load the user template
+    """Generate a dashboard page for each trainer."""
     try:
         with open('user_template.html', 'r', encoding='utf-8') as f:
             template = f.read()
@@ -333,121 +855,129 @@ def generate_user_dashboards(data):
         print("Error: user_template.html not found. Cannot generate dashboards.")
         return
 
-    # Create users directory if it doesn't exist
-    if not os.path.exists('users'):
-        os.makedirs('users')
-
-    for item in data:
-        trainer_id = item[0]
-        display_name = item[1]
-        # Get all history for this user
-        user_history = get_user_history(trainer_id)
+    os.makedirs('users', exist_ok=True)
+    total = len(data)
+    max_flowers = data[0]['flowers'] if data else 0
+    up = lambda p: ('../' + p) if p and not p.startswith('http') else p
+    for idx, d in enumerate(data):
+        user_history = get_user_history(d['id'])
         if not user_history:
             continue
-        
-        # Prepare data for graphs: dates, flowers, ranks
-        # Use defensive programming to handle missing keys
-        dates = []
-        flowers = []
-        ranks = []
-        for entry in user_history:
-            # Only include entries that have a date
-            if 'date' in entry:
-                dates.append(entry['date'])
-                flowers.append(entry.get('flowers', 0))  # default to 0 if missing
-                ranks.append(entry.get('rank', 0))       # default to 0 if missing
-        
-        # Convert to JSON for JavaScript usage
-        dates_json = json.dumps(dates)
-        flowers_json = json.dumps(flowers)
-        ranks_json = json.dumps(ranks)
-        
-        # Replace placeholders in the template
-        html_content = template.replace('{{ display_name }}', display_name)
-        html_content = html_content.replace('{{ dates }}', dates_json)
-        html_content = html_content.replace('{{ flowers }}', flowers_json)
-        html_content = html_content.replace('{{ ranks }}', ranks_json)
-        
-        # Write to file in users folder
-        filename = f"user_{trainer_id}.html"
-        filepath = os.path.join('users', filename)
-        with open(filepath, 'w', encoding='utf-8') as f:
-            f.write(html_content)
-        print(f"Generated dashboard for {display_name} in users folder")
+        dates = [e['date'] for e in user_history]
+        flowers = [e.get('flowers', 0) for e in user_history]
+        ranks = [e.get('rank', 0) for e in user_history]
+
+        page = template
+        for key, value in {
+            'display_name': escape(d['name']),
+            'trainer_id': escape(d['id']),
+            'title': escape(d['title']),
+            'rank': str(d['rank']),
+            'total_participants': str(total),
+            'rank_change': rank_change_html(d['rank_change']),
+            'gain': gain_html(d['gain7']),
+            'trainer_avatar': _avatar_img(up(d['avatar']), 'trainer-avatar', d['name']),
+            'focumon_avatar': _avatar_img(up(d['focumon']), 'focumon-avatar', 'Focumon partner'),
+            'avatar_url': escape(up(d['avatar']) or ''),
+            'flower_svg': profile_flower_svg(d, max_flowers, idx, up(d['avatar'])),
+            'line_offset': f"{profile_line_offset(max_flowers) or 0:.0f}",
+            'seed_bed': ''.join(f'<i style="left:{6 + (k * 37) % 88}%;--h:{14 + (k * 5) % 9}px"></i>' for k in range(14)),
+            'above30': str(d['above30']),
+            'days30': str(d['days30']),
+            'dates': json.dumps(dates),
+            'flowers': json.dumps(flowers),
+            'ranks': json.dumps(ranks),
+            'line': str(CONSISTENCY_LINE),
+        }.items():
+            page = page.replace('{{ ' + key + ' }}', value)
+
+        with open(os.path.join('users', f"user_{d['id']}.html"), 'w', encoding='utf-8') as f:
+            f.write(page)
+        print(f"Generated dashboard for {d['name']} in users folder")
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
 
 def main():
-    # Load historical data
     history = load_history()
-    
+
     # Collect current data
-    data = []
+    raw = []
     for url in urls:
         trainer_id = url.split('/')[-1].replace('.html', '')
         display_name, flowers, trainer_avatar, focumon_avatar = extract_flowers_name_and_avatars(url)
         hours_spent = round((flowers * 20) / 60, 2) if flowers else 0
-        data.append((trainer_id, display_name, flowers, hours_spent, trainer_avatar, focumon_avatar))
+        raw.append({'id': trainer_id, 'name': display_name, 'flowers': flowers, 'hours': hours_spent,
+                    'avatar': trainer_avatar, 'focumon': focumon_avatar})
         print(f"Processed {display_name}: {flowers} flowers, {hours_spent} hours")
-    
-    # Sort data by flowers to assign current ranks
-    data.sort(key=lambda x: x[2], reverse=True)
-    current_dict = {}
-    for idx, item in enumerate(data):
-        trainer_id = item[0]
-        flowers = item[2]
-        current_dict[trainer_id] = {'flowers': flowers, 'rank': idx + 1}
-    
-    # Update history with current data
-    history = update_history(history, current_dict)
-    
-    # Enhance data with rank change and title
-    enhanced_data = []
-    for item in data:
-        trainer_id = item[0]
-        previous_rank = get_rank_change(history, trainer_id)
-        if previous_rank is None:
-            rank_change = None
-        else:
-            current_rank = current_dict[trainer_id]['rank']
-            rank_change = previous_rank - current_rank  # positive means improved
-        
-        # Get title from flower history
-        hist_entries = history.get(trainer_id, [])
-        title = get_title(hist_entries)
-        
-        enhanced_data.append(item + (rank_change, title))
-    
-    # Save updated history
+
+    for d in raw:
+        d['avatar'] = localize_sprite(d['avatar'])
+        d['focumon'] = localize_sprite(d['focumon'])
+
+    raw.sort(key=lambda d: d['flowers'], reverse=True)
+    current = {}
+    for idx, d in enumerate(raw, start=1):
+        d['rank'] = idx
+        current[d['id']] = {'flowers': d['flowers'], 'rank': idx}
+
+    history = update_history(history, current)
+
+    data = []
+    for d in raw:
+        previous_rank = get_rank_change(history, d['id'])
+        d['rank_change'] = None if previous_rank is None else previous_rank - d['rank']
+        d['title'] = get_title(history.get(d['id'], []))
+        d['series14'], d['series30'], d['gain7'], d['above30'], d['days30'] = compute_extras(history, d['id'], d['flowers'])
+        data.append(d)
+
     save_history(history)
-    
-    # Generate user dashboards
-    generate_user_dashboards(enhanced_data)
-    
-    # Calculate totals
-    total_flowers = sum(player[2] for player in enhanced_data)
-    total_hours = round(sum((player[2] * 20) / 60 for player in enhanced_data), 2)
-    total_participants = len(enhanced_data)
+    generate_user_dashboards(data)
+
+    total_flowers = sum(d['flowers'] for d in data)
+    total_hours = round(sum((d['flowers'] * 20) / 60 for d in data), 2)
+    above_line = sum(1 for d in data if d['flowers'] >= CONSISTENCY_LINE)
+    max_flowers = data[0]['flowers'] if data else 0
     last_updated = datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC")
-    
-    # Generate HTML snippets
-    top_three_html = generate_top_three_html(enhanced_data)
-    table_rows_html = generate_table_rows_html(enhanced_data)
-    
-    # Read template
-    with open('template.html', 'r') as f:
+
+    with open('template.html', 'r', encoding='utf-8') as f:
         template = f.read()
-    
-    # Replace placeholders
-    html_content = template.replace('{{ top_three }}', top_three_html)
-    html_content = html_content.replace('{{ table_rows }}', table_rows_html)
-    html_content = html_content.replace('{{ total_participants }}', str(total_participants))
-    html_content = html_content.replace('{{ total_flowers }}', str(total_flowers))
-    html_content = html_content.replace('{{ total_hours }}', str(total_hours))
-    html_content = html_content.replace('{{ last_updated }}', last_updated)
-    
-    # Write final HTML
+
+    series = group_series(history)
+    cd = community_delta(series)
+    if cd is None:
+        community_delta_html = '<span class="delta delta-muted">No comparison yet</span>'
+    elif cd[0] > 0:
+        community_delta_html = f'<span class="delta delta-up"><span class="delta-arrow" aria-hidden="true">&#9650;</span>+{cd[0]} ({cd[1]:+d}%) vs last week</span>'
+    elif cd[0] < 0:
+        community_delta_html = f'<span class="delta delta-down"><span class="delta-arrow" aria-hidden="true">&#9660;</span>&minus;{abs(cd[0])} ({cd[1]:+d}%) vs last week</span>'
+    else:
+        community_delta_html = '<span class="delta delta-flat">Same as last week</span>'
+
+    page = template
+    for key, value in {
+        'garden': garden_svg(data, max_flowers),
+        'trainer_json': trainer_json(data),
+        'group_chart': group_chart_svg(series),
+        'community_delta': community_delta_html,
+        'community_start': str(next((v for v in series if v is not None), '')),
+        'community_high': str(max(v for v in series if v is not None)) if any(v is not None for v in series) else '',
+        'community_low': str(min(v for v in series if v is not None)) if any(v is not None for v in series) else '',
+        'spotlights': generate_spotlights_html(data),
+        'top_three': generate_top_three_html(data),
+        'table_rows': generate_table_rows_html(data),
+        'total_participants': str(len(data)),
+        'total_flowers': str(total_flowers),
+        'total_hours': format_hours(total_hours),
+        'above_line': str(above_line),
+        'line': str(CONSISTENCY_LINE),
+        'last_updated': last_updated,
+    }.items():
+        page = page.replace('{{ ' + key + ' }}', value)
+
     with open('index.html', 'w', encoding='utf-8') as f:
-        f.write(html_content)
-    
+        f.write(page)
     print("Leaderboard HTML generated successfully!")
 
 if __name__ == "__main__":

@@ -4,9 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consistency Leaderboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="description" content="Weekly flower-collection standings for the Warriors of Hell Focumon group. Updated every 6 hours.">
+    <meta name="theme-color" content="#0b0d1f">
+    <meta property="og:title" content="Consistency Leaderboard">
+    <meta property="og:description" content="{{ total_participants }} trainers, {{ total_flowers }} flowers this week. See who is above the {{ line }}-flower line.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 5' shape-rendering='crispEdges'%3E%3Crect x='2' y='0' width='1' height='1' fill='%23ff6b8a'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23ff6b8a'/%3E%3Crect x='4' y='2' width='1' height='1' fill='%23ff6b8a'/%3E%3Crect x='2' y='4' width='1' height='1' fill='%23ff6b8a'/%3E%3Crect x='1' y='1' width='3' height='3' fill='%23ff6b8a'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23fff3b0'/%3E%3C/svg%3E">
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('woh-theme');
+                if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4NJMY5MRXY"></script>
@@ -17,70 +30,136 @@
         gtag('config', 'G-4NJMY5MRXY');
     </script>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-leaf"></i>
+<body class="home">
+    <a class="skip-link" href="#standings">Skip to standings</a>
+    <div class="page">
+        <nav class="topbar">
+            <span class="brand">
+                <svg class="brand-mark" viewBox="0 0 5 5" width="18" height="18" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="1" y="1" width="3" height="3"/><rect class="brand-core" x="2" y="2" width="1" height="1"/></svg>
+                Warriors of Hell
+            </span>
+            <div class="topbar-actions">
+            <button type="button" class="chip sky-chip" id="sky-toggle" title="Change the sky" data-sky="day">
+                <svg class="sky-ico sky-ico-day" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                <svg class="sky-ico sky-ico-dawn sky-ico-dusk" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17h18M5 17a7 7 0 0 1 14 0"/><path d="M12 4v3M4.5 8.5l2 2M19.5 8.5l-2 2"/></svg>
+                <svg class="sky-ico sky-ico-night" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                <span class="sky-label">day</span>
+            </button>
+            <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle light or dark theme" title="Toggle theme">
+                <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+            </button>
             </div>
-            <h1>Consistency Leaderboard</h1>
-            <p class="subtitle">Track your progress and compete with other group members</p>
+        </nav>
+
+        <header class="hero sky-day" id="hero">
+            <div class="sky sky-layer-dawn" aria-hidden="true"></div>
+            <div class="sky sky-layer-day" aria-hidden="true"></div>
+            <div class="sky sky-layer-dusk" aria-hidden="true"></div>
+            <div class="sky sky-layer-night" aria-hidden="true"></div>
+            <div class="stars" aria-hidden="true"></div>
+            <div class="hero-copy">
+                <h1>Consistency Leaderboard</h1>
+                <p class="lede">
+                    <span class="nowrap"><span class="count num" data-count="{{ total_participants }}">{{ total_participants }}</span> trainers &middot;</span>
+                    <span class="nowrap"><span class="count num" data-count="{{ total_flowers }}">{{ total_flowers }}</span> flowers &middot;</span>
+                    <span class="nowrap"><span class="count num" data-count="{{ total_hours }}">{{ total_hours }}</span> hours this week.</span>
+                    <span class="lede-line"><span class="count num" data-count="{{ above_line }}">{{ above_line }}</span> trainers above the <span class="nowrap">{{ line }}&#8209;flower line</span>.</span>
+                </p>
+                <p class="hero-hint">Every flower is a trainer. Tap one.</p>
+            </div>
+            <div class="petals" id="petals" aria-hidden="true"></div>
+            <div class="sun" aria-hidden="true"></div>
+            <div class="moon" aria-hidden="true"></div>
+            <div class="clouds" aria-hidden="true"><span></span><span></span><span></span></div>
+            {{ garden }}
+            <div class="garden-tip" id="garden-tip" role="tooltip" hidden></div>
         </header>
 
-        <div class="top-three">
-            {{ top_three }}
+        <div class="stage">
+            <section class="podium" aria-label="Top three trainers">
+                {{ top_three }}
+            </section>
         </div>
 
-        <div class="leaderboard-card">
-            <div class="leaderboard-header">
-                <div class="leaderboard-title">Other Participants</div>
-                <div class="last-updated">
-                    <i class="fas fa-sync-alt"></i>
-                    Updated: {{ last_updated }}
+        <div class="content">
+
+        <section class="spotlights" aria-label="This week's spotlights">
+            <div class="spot-list">{{ spotlights }}</div>
+            <div class="community">
+                <div class="community-text">
+                    <span class="spot-label">Community</span>
+                    <span class="community-value"><span class="count num" data-count="{{ total_flowers }}">{{ total_flowers }}</span> flowers this week</span>
+                    {{ community_delta }}
+                </div>
+                <div class="community-chart" aria-label="Community flowers over the last 30 days"><span class="community-ticks"><span>{{ community_high }}</span><span>{{ community_low }}</span></span>{{ group_chart }}<span class="community-axis"><span>30 days ago &middot; <b>{{ community_start }}</b></span><span class="community-axis-end">last 7 days highlighted &middot; <b>{{ total_flowers }}</b> today</span></span></div>
+            </div>
+        </section>
+
+        <section class="standings" id="standings">
+            <div class="standings-head">
+                <div>
+                    <h2>Full standings</h2>
+                    <p class="standings-note">Ranked by flowers in the last 7 days. Click a column to sort. Star yourself to keep your row in view.</p>
+                </div>
+                <div class="standings-tools">
+                    <button type="button" class="chip" id="jump-me" hidden title="Jump to my row">
+                        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        <span class="chip-text">Jump to me</span>
+                    </button>
+                    <label class="search">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                        <span class="sr-only">Find a trainer</span>
+                        <input type="search" id="trainer-search" placeholder="Find a trainer" autocomplete="off" spellcheck="false">
+                    </label>
                 </div>
             </div>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Player</th>
-                        <th>Flowers Collected</th>
-                        <th>Hours Spent</th>
-                        <th>Rank Change (7d)</th>
-                    </tr>
-                </thead>
-                <tbody>
+
+            <div class="table-wrap">
+                <table class="standings-table" id="standings-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="col-rank" aria-sort="ascending"><button type="button" class="sort" data-sort="rank" data-dir="asc">#</button></th>
+                            <th scope="col" class="col-player"><button type="button" class="sort" data-sort="name" data-dir="asc">Trainer</button></th>
+                            <th scope="col" class="col-flowers"><button type="button" class="sort" data-sort="flowers" data-dir="desc">Flowers</button></th>
+                            <th scope="col" class="col-trend">14 days</th>
+                            <th scope="col" class="col-gain"><button type="button" class="sort" data-sort="gain" data-dir="desc"><span class="th-long">Gain 7d</span><span class="th-short" aria-hidden="true">Gain</span></button></th>
+                            <th scope="col" class="col-change"><button type="button" class="sort" data-sort="change" data-dir="desc"><span class="th-long">Rank 7d</span><span class="th-short" aria-hidden="true">Rank</span></button></th>
+                            <th scope="col" class="col-me" title="Mark yourself"><svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="currentColor"/></svg><span class="sr-only">This is me</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
                     {{ table_rows }}
-
-                </tbody>
-            </table>
-        </div>
-
-        <div class="stats">
-            <div class="stat-card">
-                <i class="fas fa-users"></i>
-                <h3>Total Participants</h3>
-                <p>{{ total_participants }}</p>
+                    </tbody>
+                </table>
             </div>
-            <div class="stat-card">
-                <i class="fas fa-leaf"></i>
-                <h3>Total Flowers Collected</h3>
-                <p>{{ total_flowers }}</p>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-clock"></i>
-                <h3>Total Hours Spent</h3>
-                <p>{{ total_hours }}</p>
-            </div>
-        </div>
+            <p class="empty-state" id="search-empty" hidden>No trainer matches that name.</p>
 
-        <footer>
-            <p>Leaderboard updates every 6 hours | Made with <i class="fas fa-heart"></i> for the Warriors of Hell community</p>
+            <ul class="legend" aria-label="Legend">
+                <li><span class="legend-line"></span> The {{ line }}-flower line, also drawn through each 14-day trend</li>
+                <li><span class="gain gain-up">+12</span> Flowers gained versus 7 days ago</li>
+                <li><span class="pill pill-up"><span aria-hidden="true">&#9650;</span>2</span> Rank change versus 7 days ago</li>
+            </ul>
+        </section>
+
+        <footer class="site-footer">
+            <p>Updated <time datetime="{{ last_updated }}">{{ last_updated }}</time>, refreshes every 6 hours.</p>
+            <p>Made for the Warriors of Hell community. Data from <a href="https://www.focumon.com" rel="noopener">focumon.com</a>.</p>
         </footer>
+        </div>
     </div>
 
+    <div class="drawer" id="drawer" hidden>
+        <div class="drawer-backdrop"></div>
+        <aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-name">
+            <button type="button" class="drawer-close" aria-label="Close">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+            <div class="drawer-body"></div>
+        </aside>
+    </div>
+
+    <script type="application/json" id="trainer-data">{{ trainer_json }}</script>
     <script src="script.js"></script>
-    <script src="trail.js"></script> 
 </body>
 </html>
