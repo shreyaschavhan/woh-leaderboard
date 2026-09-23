@@ -1,0 +1,303 @@
+[
+  {
+    "viewport": 320,
+    "view": "concept",
+    "theme": "light",
+    "sky": "day",
+    "pageOverflow": false,
+    "clippedLabels": [],
+    "axisInsideCard": true,
+    "alignment": {
+      "spotlights": {
+        "x": 16,
+        "width": 273
+      },
+      "community": {
+        "x": 16,
+        "width": 273
+      },
+      "standings": {
+        "x": 16,
+        "width": 273
+      }
+    },
+    "type": {
+      "podium": {
+        "font": "\"Space Grotesk\", Inter, system-ui, sans-serif",
+        "size": "16.8px"
+      },
+      "table": {
+        "font": "\"Space Grotesk\", Inter, system-ui, sans-serif",
+        "size": "14px"
+      },
+      "spotLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "12px"
+      },
+      "tableLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "12px"
+      }
+    },
+    "gold": "#e8be59",
+    "fontsReady": "loaded"
+  },
+  {
+    "viewport": 600,
+    "view": "concept",
+    "theme": "light",
+    "sky": "day",
+    "pageOverflow": false,
+    "clippedLabels": [],
+    "axisInsideCard": true,
+    "alignment": {
+      "spotlights": {
+        "x": 24,
+        "width": 537
+      },
+      "community": {
+        "x": 24,
+        "width": 537
+      },
+      "standings": {
+        "x": 24,
+        "width": 537
+      }
+    },
+    "type": {
+      "podium": {
+        "font": "\"Space Grotesk\", Inter, system-ui, sans-serif",
+        "size": "16.8px"
+      },
+      "table": {
+        "font": "\"Space Grotesk\", Inter, system-ui, sans-serif",
+        "size": "15px"
+      },
+      "spotLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "12px"
+      },
+      "tableLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "12px"
+      }
+    },
+    "gold": "#e8be59",
+    "fontsReady": "loaded"
+  },
+  {
+    "viewport": 760,
+    "view": "concept",
+    "theme": "light",
+    "sky": "day",
+    "pageOverflow": false,
+    "clippedLabels": [],
+    "axisInsideCard": true,
+    "alignment": {
+      "spotlights": {
+        "x": 30.390625,
+        "width": 684.21875
+      },
+      "community": {
+        "x": 30.390625,
+        "width": 684.21875
+      },
+      "standings": {
+        "x": 30.390625,
+        "width": 684.21875
+      }
+    },
+    "type": {
+      "podium": {
+        "font": "\"Space Grotesk\", Inter, system-ui, sans-serif",
+        "size": "16.8px"
+      },
+      "table": {
+        "font": "\"Space Grotesk\", Inter, system-ui, sans-serif",
+        "size": "15px"
+      },
+      "spotLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "12px"
+      },
+      "tableLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "12px"
+      }
+    },
+    "gold": "#e8be59",
+    "fontsReady": "loaded"
+  },
+  {
+    "viewport": 761,
+    "view": "concept",
+    "theme": "light",
+    "sky": "day",
+    "pageOverflow": false,
+    "clippedLabels": [],
+    "axisInsideCard": true,
+    "alignment": {
+      "spotlights": {
+        "x": 30.4375,
+        "width": 685.125
+      },
+      "community": {
+        "x": 30.4375,
+        "width": 685.125
+      },
+      "standings": {
+        "x": 30.4375,
+        "width": 685.125
+      }
+    },
+    "type": {
+      "podium": {
+        "font": "\"Space Grotesk\", Inter, system-ui, sans-serif",
+        "size": "21.6px"
+      },
+      "table": {
+        "font": "\"Space Grotesk\", Inter, system-ui, sans-serif",
+        "size": "15px"
+      },
+      "spotLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "12px"
+      },
+      "tableLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "12px"
+      }
+    },
+    "gold": "#e8be59",
+    "fontsReady": "loaded"
+  },
+  {
+    "viewport": 960,
+    "view": "concept",
+    "theme": "light",
+    "sky": "day",
+    "pageOverflow": false,
+    "clippedLabels": [],
+    "axisInsideCard": true,
+    "alignment": {
+      "spotlights": {
+        "x": 38.390625,
+        "width": 868.21875
+      },
+      "community": {
+        "x": 38.390625,
+        "width": 868.21875
+      },
+      "standings": {
+        "x": 38.390625,
+        "width": 868.21875
+      }
+    },
+    "type": {
+      "podium": {
+        "font": "\"Space Grotesk\", Inter, system-ui, sans-serif",
+        "size": "21.6px"
+      },
+      "table": {
+        "font": "\"Space Grotesk\", Inter, system-ui, sans-serif",
+        "size": "15px"
+      },
+      "spotLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "12px"
+      },
+      "tableLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "12px"
+      }
+    },
+    "gold": "#e8be59",
+    "fontsReady": "loaded"
+  },
+  {
+    "viewport": 1440,
+    "view": "concept",
+    "theme": "light",
+    "sky": "day",
+    "pageOverflow": false,
+    "clippedLabels": [],
+    "axisInsideCard": true,
+    "alignment": {
+      "spotlights": {
+        "x": 122.5,
+        "width": 1180
+      },
+      "community": {
+        "x": 122.5,
+        "width": 1180
+      },
+      "standings": {
+        "x": 122.5,
+        "width": 1180
+      }
+    },
+    "type": {
+      "podium": {
+        "font": "\"Space Grotesk\", Inter, system-ui, sans-serif",
+        "size": "21.6px"
+      },
+      "table": {
+        "font": "\"Space Grotesk\", Inter, system-ui, sans-serif",
+        "size": "15px"
+      },
+      "spotLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "12px"
+      },
+      "tableLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "12px"
+      }
+    },
+    "gold": "#e8be59",
+    "fontsReady": "loaded"
+  },
+  {
+    "viewport": 1440,
+    "view": "current",
+    "theme": "light",
+    "sky": "day",
+    "pageOverflow": false,
+    "clippedLabels": [],
+    "axisInsideCard": false,
+    "alignment": {
+      "spotlights": {
+        "x": 52.5,
+        "width": 1320
+      },
+      "community": {
+        "x": 52.5,
+        "width": 1320
+      },
+      "standings": {
+        "x": 122.5,
+        "width": 1180
+      }
+    },
+    "type": {
+      "podium": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "21.6px"
+      },
+      "table": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "15px"
+      },
+      "spotLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "10.88px"
+      },
+      "tableLabel": {
+        "font": "Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+        "size": "11.2px"
+      }
+    },
+    "gold": "#e8be59",
+    "fontsReady": "loaded"
+  }
+]

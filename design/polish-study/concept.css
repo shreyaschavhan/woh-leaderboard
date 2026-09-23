@@ -1,0 +1,153 @@
+/* Design proposal only. Current mode uses the unmodified frozen baseline. */
+
+/* 1. One shared edge from the spotlight cards through the standings. */
+[data-polish="concept"] .spotlights {
+    max-width: 1180px;
+    margin-inline: auto;
+}
+
+/* 2. Give trainer names one voice; let the small labels breathe. */
+[data-polish="concept"] :is(.podium-name, .player-name) {
+    font-family: var(--display);
+}
+[data-polish="concept"] .player-name { letter-spacing: -0.01em; }
+[data-polish="concept"] :is(.spot-label, .standings-table th, .podium-stat .label) {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+}
+[data-polish="concept"] .spot-label { line-height: 1.4; }
+[data-polish="concept"] :is(.community-ticks, .community-axis, .drawer-axis) {
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+[data-polish="concept"] .community {
+    padding-bottom: 26px;
+}
+[data-polish="concept"] .community-axis { flex-wrap: wrap; gap: 2px 12px; }
+[data-polish="concept"] .community-axis span { white-space: nowrap; }
+[data-polish="concept"] .community-axis span:last-child { margin-left: auto; text-align: right; }
+[data-polish="concept"] .drawer-tile .label {
+    font-size: 0.75rem;
+    letter-spacing: 0.015em;
+    line-height: 1.45;
+    min-height: 2.9em;
+}
+
+/* 3. The trainer panel belongs to the same garden and card system. */
+[data-polish="concept"] .drawer {
+    --frame-outer: polygon(
+        8px 0, calc(100% - 8px) 0, calc(100% - 8px) 4px,
+        calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
+        100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px),
+        calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px),
+        calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 4px),
+        4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px),
+        0 8px, 4px 8px, 4px 4px, 8px 4px
+    );
+    --frame-inner: polygon(
+        7px 0, calc(100% - 7px) 0, calc(100% - 7px) 3px,
+        calc(100% - 3px) 3px, calc(100% - 3px) 7px, 100% 7px,
+        100% calc(100% - 7px), calc(100% - 3px) calc(100% - 7px),
+        calc(100% - 3px) calc(100% - 3px), calc(100% - 7px) calc(100% - 3px),
+        calc(100% - 7px) 100%, 7px 100%, 7px calc(100% - 3px),
+        3px calc(100% - 3px), 3px calc(100% - 7px), 0 calc(100% - 7px),
+        0 7px, 3px 7px, 3px 3px, 7px 3px
+    );
+}
+[data-polish="concept"] :is(.drawer-tile, .drawer-chart) {
+    position: relative;
+    isolation: isolate;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+[data-polish="concept"] :is(.drawer-tile, .drawer-chart)::before,
+[data-polish="concept"] :is(.drawer-tile, .drawer-chart)::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+}
+[data-polish="concept"] :is(.drawer-tile, .drawer-chart)::before {
+    inset: 0;
+    z-index: -2;
+    background: var(--border);
+    clip-path: var(--frame-outer);
+}
+[data-polish="concept"] :is(.drawer-tile, .drawer-chart)::after {
+    inset: 1px;
+    z-index: -1;
+    background: var(--surface);
+    clip-path: var(--frame-inner);
+}
+[data-polish="concept"] .drawer-tile { padding: 13px 12px 12px; }
+[data-polish="concept"] .drawer-chart { padding: 15px; }
+[data-polish="concept"] .drawer-area { fill: var(--accent); opacity: 0.08; }
+[data-polish="concept"] .drawer-hero {
+    --drawer-sky: linear-gradient(180deg, #394761, #718da3 58%, #c3c4b5);
+    --drawer-hill: #50645f;
+    --drawer-near: #5c7267;
+    --drawer-ledge: #a9b58d;
+    background: linear-gradient(0deg, rgb(16 15 32 / 32%), transparent 85%), var(--drawer-sky);
+}
+[data-polish="concept"] .drawer-hero.sky-dawn {
+    --drawer-sky: linear-gradient(180deg, #302842, #8a647b 58%, #d9ae97);
+    --drawer-hill: #354b47;
+    --drawer-near: #40564d;
+    --drawer-ledge: #78856b;
+}
+[data-polish="concept"] .drawer-hero.sky-dusk {
+    --drawer-sky: linear-gradient(180deg, #1e1630, #704668 58%, #ba8492);
+    --drawer-hill: #354b47;
+    --drawer-near: #40564d;
+    --drawer-ledge: #78856b;
+}
+[data-polish="concept"] .drawer-hero.sky-night {
+    --drawer-sky: linear-gradient(180deg, #100f20, #25233b 58%, #4a4058);
+    --drawer-hill: #293b3d;
+    --drawer-near: #304643;
+    --drawer-ledge: #626f67;
+}
+[data-polish="concept"] .drawer-hero::before {
+    background: var(--drawer-near);
+    border-top-color: var(--drawer-ledge);
+    box-shadow: 0 6px 0 #3b2e40;
+    filter: none;
+}
+[data-polish="concept"] .drawer-hero::after {
+    background: radial-gradient(60% 100% at 30% 100%, var(--drawer-hill) 0%, transparent 70%),
+        radial-gradient(50% 100% at 85% 100%, var(--drawer-near) 0%, transparent 70%);
+    filter: none;
+}
+[data-polish="concept"] .drawer-link {
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--text-2);
+}
+[data-polish="concept"] .drawer-link:hover {
+    background: var(--surface-2);
+    color: var(--text);
+}
+
+/* Keep the larger text intact before the existing single-column breakpoint. */
+@media (min-width: 761px) and (max-width: 1100px), (max-width: 360px) {
+    [data-polish="concept"] .spot {
+        grid-template-columns: 52px minmax(0, 1fr);
+        gap: 18px 10px;
+        padding: 16px 14px;
+    }
+    [data-polish="concept"] .spot-avatar { grid-row: 1 / span 2; width: 52px; height: 60px; }
+    [data-polish="concept"] .spot-sprite { width: 60px; height: 60px; }
+    [data-polish="concept"] .spot-viz { grid-column: 2; }
+}
+@media (max-width: 760px) {
+    [data-polish="concept"] .community { grid-template-columns: 1fr; gap: 26px; }
+}
+@media (max-width: 480px) {
+    [data-polish="concept"] .community { padding-bottom: 42px; }
+    [data-polish="concept"] .drawer-tile { padding-inline: 11px; }
+}
+@media (max-width: 360px) {
+    [data-polish="concept"] .drawer-tile { padding-inline: 9px; }
+}

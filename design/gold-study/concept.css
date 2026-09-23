@@ -1,0 +1,8 @@
+/* Champagne tones stay local to the first-place podium and its existing details. */
+[data-gold="concept"] .podium-card.place-1 {
+    --face: #d9bb77;
+    --cap: #f4e6bc;
+    --rim: #e6cea0;
+    --edge: #b49658;
+    --shade: #a4814b;
+}

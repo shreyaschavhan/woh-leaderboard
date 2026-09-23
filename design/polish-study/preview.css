@@ -1,0 +1,41 @@
+/* Review controls only; these styles are not part of the proposal. */
+html { scroll-behavior: auto; }
+.study-toolbar {
+    position: fixed;
+    z-index: 999;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px 8px 16px;
+    max-width: calc(100% - 24px);
+    white-space: nowrap;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 6px 24px #0005;
+    font: 13px 'Inter', sans-serif;
+}
+.study-label { color: var(--text-3); font-size: 11px; letter-spacing: 0.06em; }
+.study-views { display: flex; gap: 4px; }
+.study-toolbar button {
+    border: 0;
+    border-radius: 3px;
+    padding: 9px 12px;
+    background: transparent;
+    color: var(--text-2);
+    font-weight: 600;
+}
+.study-toolbar button[aria-pressed="true"] { background: var(--text); color: var(--bg); }
+.study-toolbar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.study-toolbar .study-trainer { border-left: 1px solid var(--border); border-radius: 0; padding-left: 16px; }
+html:not([data-capture]) .drawer-body { padding-bottom: 80px; }
+[data-capture] .study-toolbar { display: none; }
+@media (max-width: 480px) {
+    .study-toolbar { bottom: 12px; gap: 6px; padding: 6px; }
+    .study-label { display: none; }
+    .study-toolbar .study-trainer { padding-left: 12px; }
+}

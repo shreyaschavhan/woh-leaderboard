@@ -1,0 +1,68 @@
+/* Landscape-only proposal. The comparison keeps the original scene underneath. */
+.pixel-landscape { display: none; }
+[data-landscape="concept"] .pixel-landscape { display: inline; }
+[data-landscape="concept"] .garden .hills > ellipse,
+[data-landscape="concept"] .garden .pond > ellipse,
+[data-landscape="concept"] .garden .pond > .pond-glint,
+[data-landscape="concept"] .garden .rear-meadow,
+[data-landscape="concept"] .garden .rear-ledge { display: none; }
+
+.pixel-landscape { pointer-events: none; shape-rendering: crispEdges; }
+.pixel-hill { fill: var(--scene-hill); }
+.pixel-hill-near, .pixel-meadow { fill: var(--scene-hill-near); }
+.pixel-meadow-edge { fill: var(--scene-ledge); opacity: .36; }
+.pixel-meadow-shade { fill: var(--scene-hill); opacity: .6; }
+.pixel-meadow-grass { fill: var(--scene-leaf); opacity: .2; }
+.pixel-pond-rim { fill: var(--scene-water-rim); }
+.pixel-pond-water { fill: var(--scene-water); }
+.pixel-pond-shade { fill: var(--scene-water-rim); opacity: .55; }
+.pixel-pond-glint { fill: #dddae1; opacity: .75; }
+
+/* A sixteen-unit silhouette gives both celestial bodies the same pixel scale. */
+[data-landscape="concept"] .hero .sun,
+[data-landscape="concept"] .hero .moon {
+    border-radius: 0;
+    box-shadow: none;
+    clip-path: polygon(
+        25% 0, 75% 0, 75% 6.25%, 87.5% 6.25%, 87.5% 18.75%,
+        93.75% 18.75%, 93.75% 31.25%, 100% 31.25%, 100% 68.75%,
+        93.75% 68.75%, 93.75% 81.25%, 87.5% 81.25%, 87.5% 93.75%,
+        75% 93.75%, 75% 100%, 25% 100%, 25% 93.75%, 12.5% 93.75%,
+        12.5% 81.25%, 6.25% 81.25%, 6.25% 68.75%, 0 68.75%,
+        0 31.25%, 6.25% 31.25%, 6.25% 18.75%, 12.5% 18.75%,
+        12.5% 6.25%, 25% 6.25%
+    );
+}
+[data-landscape="concept"] .hero .sun::before,
+[data-landscape="concept"] .hero .moon::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(
+        75% 0, 100% 0, 100% 100%, 0 100%, 0 87.5%,
+        50% 87.5%, 50% 81.25%, 68.75% 81.25%, 68.75% 68.75%,
+        81.25% 68.75%, 81.25% 37.5%, 75% 37.5%
+    );
+}
+[data-landscape="concept"] .hero .sun::before { background: #d4af79; }
+[data-landscape="concept"] .hero .moon::before { background: #aaa6bd; }
+[data-landscape="concept"] .hero .sun::after {
+    content: "";
+    position: absolute;
+    left: 25%; top: 18.75%; width: 25%; height: 6.25%;
+    background: #f5dfb9;
+    box-shadow: -4px 4px 0 #f5dfb9;
+}
+[data-landscape="concept"] .hero .moon::after {
+    content: "";
+    position: absolute;
+    left: 25%; top: 31.25%; width: 12.5%; height: 12.5%;
+    background: #c2bdcf;
+    box-shadow: 12px 16px 0 -1px #c2bdcf, 20px -8px 0 -2px #c2bdcf;
+}
+@media (max-width: 760px) {
+    [data-landscape="concept"] .hero .sun::after { box-shadow: -2.75px 2.75px 0 #f5dfb9; }
+    [data-landscape="concept"] .hero .moon::after {
+        box-shadow: 8.25px 11px 0 -.7px #c2bdcf, 13.75px -5.5px 0 -1.4px #c2bdcf;
+    }
+}
