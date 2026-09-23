@@ -564,7 +564,7 @@ def garden_svg(data, max_flowers):
                  '<ellipse cx="620" cy="336" rx="320" ry="52" fill="#2c7239"/>'
                  '<ellipse cx="930" cy="334" rx="220" ry="40" fill="#2f7a3d"/></g>')
     parts.append(f'<rect class="bed" x="0" y="{back_ground}" width="{W}" height="{front_ground - back_ground}" fill="#3a8a45"/>')
-    tufts = ''.join(f'<rect x="{(i * 137 + (i % 3) * 11) % W}" y="{back_ground - 2 - (i % 4) * 2}" width="{3 + i % 3}" height="{3 + (i % 4) * 2}" fill="{'#5cc46a' if i % 2 else '#4db35c'}"/>' for i in range(30))
+    tufts = ''.join(f'<rect x="{(i * 137 + (i % 3) * 11) % W}" y="{back_ground - 2 - (i % 4) * 2}" width="{3 + i % 3}" height="{3 + (i % 4) * 2}" fill="{"#5cc46a" if i % 2 else "#4db35c"}"/>' for i in range(30))
     parts.append(f'<g class="tufts">{tufts}</g>')
 
     # Trees on the hills and a pond on the bed
