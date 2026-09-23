@@ -288,114 +288,24 @@
         });
     });
 
-    // ---- Garden composition + navigation -----------------------------------
+    // ---- Garden tooltip + navigation ---------------------------------------
     var tip = document.getElementById('garden-tip');
     var garden = document.querySelector('.garden');
-    var gardenCopy = hero && hero.querySelector('.hero-copy');
-    var gardenPodium = document.querySelector('.podium');
-    var gardenFlowers = garden ? Array.prototype.slice.call(garden.querySelectorAll('.flower')) : [];
-    var gardenCharacters = gardenPodium ? Array.prototype.slice.call(gardenPodium.querySelectorAll('.podium-avatars')) : [];
-    var gardenLine = garden && garden.querySelector('.line75');
-    var meadow = null;
-    var gardenFrame = 0;
-
-    if (garden && gardenCopy && gardenCharacters.length) {
-        meadow = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        meadow.setAttribute('aria-hidden', 'true');
-        meadow.innerHTML = '<defs><linearGradient id="garden-meadow-shade" x1="0" y1="0" x2="0" y2="1">' +
-            '<stop class="meadow-top" offset="0"/><stop class="meadow-bottom" offset="1"/>' +
-            '</linearGradient></defs><path class="rear-meadow"/>' +
-            '<path class="rear-ledge" vector-effect="non-scaling-stroke"/>';
-        garden.insertBefore(meadow, garden.firstChild);
-    }
-
-    function composeGarden() {
-        if (!meadow) return;
-        var matrix = garden.getScreenCTM();
-        if (!matrix || !matrix.a) return;
-        var heroBox = hero.getBoundingClientRect();
-        var inverse = matrix.inverse();
-        function point(x, y) {
-            return new DOMPoint(heroBox.left + x, heroBox.top + y).matrixTransform(inverse);
-        }
-
-        var narrow = window.innerWidth <= 760;
-        // Layout offsets keep the planting steady during intro, hover and scroll animations.
-        var silhouetteTop = gardenPodium.getBoundingClientRect().top - heroBox.top +
-            Math.min.apply(null, gardenCharacters.map(function (el) {
-                return el.closest('.podium-card').offsetTop + el.offsetTop;
-            }));
-        var plantingY = silhouetteTop - 24;
-        var copyBottom = gardenCopy.offsetTop + gardenCopy.offsetHeight;
-        var maxStem = narrow ? Math.min(106, (plantingY - copyBottom - 24) / 1.18) : 176;
-        var pixelUnit = Math.max(1, maxStem) / 230;
-        var scale = pixelUnit / matrix.a;
-        var startX = narrow ? 26 : Math.max(gardenCopy.offsetLeft + gardenCopy.offsetWidth + 56, heroBox.width * 0.42);
-        var endX = heroBox.width - (narrow ? 26 : 56);
-        var span = endX - startX;
-        var active = gardenFlowers.filter(function (el) { return Number(el.dataset.flowers) > 0; });
-        var seedlings = gardenFlowers.filter(function (el) { return Number(el.dataset.flowers) <= 0; });
-        var slots = [0.5, 0.29, 0.71, 0.08, 0.92, 0.18, 0.82, 0.39, 0.61, 0.02, 0.98, 0.47];
-
-        function place(flower, x, y) {
-            var p = point(x, y);
-            flower.setAttribute('transform', 'translate(' + p.x.toFixed(3) + ',' + p.y.toFixed(3) + ') scale(' + scale.toFixed(6) + ')');
-        }
-        active.forEach(function (flower, index) {
-            var slot = index < slots.length ? slots[index] : (index * 0.61803398875) % 1;
-            place(flower, startX + slot * span, plantingY);
-        });
-        seedlings.forEach(function (flower, index) {
-            place(flower, startX + (index + 0.5) / seedlings.length * span, plantingY + (index % 2 ? 3 : 0));
-        });
-
-        garden.style.setProperty('--scene-count-size', (narrow ? 11 : 13) / pixelUnit + 'px');
-        garden.style.setProperty('--scene-line-size', 10 / matrix.a + 'px');
-        var left = point(startX, plantingY + 2);
-        var right = point(endX, plantingY + 2);
-        var step = 8 / matrix.a;
-        meadow.querySelector('.rear-meadow').setAttribute('d',
-            'M' + (left.x - step * 30) + ',400Q' + (left.x - step * 15) + ',' + (left.y + step * 2) + ' ' + left.x + ',' + left.y +
-            'H' + right.x + 'Q' + (right.x + step * 15) + ',' + (left.y + step * 2) + ' ' + (right.x + step * 30) + ',400Z');
-        meadow.querySelector('.rear-ledge').setAttribute('d', 'M' + left.x + ',' + left.y + 'H' + right.x);
-
-        // Use the same height mapping as the generated flowers for the consistency line.
-        var maxFlowers = Math.max.apply(null, gardenFlowers.map(function (el) { return Number(el.dataset.flowers); }));
-        var rule = gardenLine && gardenLine.querySelector('line');
-        if (rule && maxFlowers > 0) {
-            var thresholdValue = parseFloat(gardenLine.textContent);
-            var threshold = point(0, plantingY - (22 + thresholdValue / maxFlowers * 208) * pixelUnit).y;
-            rule.setAttribute('x1', left.x);
-            rule.setAttribute('x2', right.x);
-            rule.setAttribute('y1', threshold);
-            rule.setAttribute('y2', threshold);
-            Array.prototype.forEach.call(gardenLine.querySelectorAll('text'), function (label) {
-                var mobile = label.classList.contains('line75-m');
-                label.setAttribute('x', mobile ? left.x : right.x);
-                label.setAttribute('y', threshold - 6 / matrix.a);
-                label.setAttribute('text-anchor', mobile ? 'start' : 'end');
-            });
-        }
-    }
 
     function fitGarden() {
         if (!garden) return;
-        garden.setAttribute('viewBox', window.innerWidth < 760 ? '250 0 500 400' : '0 0 1000 400');
-        garden.setAttribute('preserveAspectRatio', 'xMidYMax meet');
-        cancelAnimationFrame(gardenFrame);
-        gardenFrame = requestAnimationFrame(composeGarden);
-    }
-    if (meadow) {
-        fitGarden();
-        window.addEventListener('resize', fitGarden);
-        if (document.fonts) document.fonts.ready.then(fitGarden);
-        if (window.ResizeObserver) {
-            var gardenObserver = new ResizeObserver(fitGarden);
-            gardenObserver.observe(hero);
-            gardenObserver.observe(gardenCopy);
-            gardenObserver.observe(gardenPodium);
+        var narrow = window.innerWidth < 760;
+        if (!narrow) {
+            garden.setAttribute('viewBox', '0 0 1000 400');
+        } else {
+            garden.setAttribute('viewBox', '250 0 500 400');
+            var lbl = garden.querySelector('.line75-m');
+            if (lbl) { lbl.setAttribute('x', '262'); lbl.setAttribute('text-anchor', 'start'); }
         }
+        garden.setAttribute('preserveAspectRatio', 'xMidYMax meet');
     }
+    fitGarden();
+    window.addEventListener('resize', fitGarden);
 
     function showTip(el) {
         if (!tip || !hero) return;

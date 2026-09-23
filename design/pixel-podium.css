@@ -1,0 +1,227 @@
+/* Podium concept. Only loaded by the standalone design preview. */
+
+.podium {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1fr);
+}
+
+.podium-card {
+    --pixel-outline: #332b3f;
+    --face: #bdc5db;
+    --cap: #edf0fb;
+    --rim: #d5dced;
+    --edge: #8e9bbd;
+    --shade: #7c88ab;
+    --ink: #2b3047;
+    isolation: isolate;
+    min-width: 0;
+}
+
+.podium-card.place-1 {
+    --face: #e8be59;
+    --cap: #fff0b5;
+    --rim: #f8d77e;
+    --edge: #c89337;
+    --shade: #ad762d;
+    --ink: #3d2b22;
+}
+
+.podium-card.place-3 {
+    --face: #cd9978;
+    --cap: #f5d4b1;
+    --rim: #e7b792;
+    --edge: #af765c;
+    --shade: #915b49;
+    --ink: #412a29;
+}
+
+/* A 4px outline wraps the stepped silhouette, including its corners. */
+.podium-card::before {
+    content: "";
+    inset: calc(var(--avatar-h) - 2px) 0 0;
+    z-index: -2;
+    border: 0;
+    border-radius: 0;
+    background: var(--pixel-outline);
+    box-shadow: none;
+    clip-path: polygon(
+        12px 0, calc(100% - 12px) 0,
+        calc(100% - 12px) 4px, calc(100% - 4px) 4px,
+        calc(100% - 4px) 12px, 100% 12px,
+        100% calc(100% - 12px), calc(100% - 4px) calc(100% - 12px),
+        calc(100% - 4px) calc(100% - 4px), calc(100% - 12px) calc(100% - 4px),
+        calc(100% - 12px) 100%, 12px 100%,
+        12px calc(100% - 4px), 4px calc(100% - 4px),
+        4px calc(100% - 12px), 0 calc(100% - 12px),
+        0 12px, 4px 12px, 4px 4px, 12px 4px
+    );
+}
+
+/* Hard color stops describe the lit cap and two shaded block faces. */
+.podium-card::after,
+.podium-card.place-1::after,
+.podium-card.place-2::after,
+.podium-card.place-3::after {
+    content: "";
+    display: block;
+    position: absolute;
+    inset: calc(var(--avatar-h) + 2px) 4px 4px;
+    z-index: -1;
+    border: 0;
+    border-radius: 0;
+    background:
+        linear-gradient(90deg,
+            var(--rim) 0 4px,
+            transparent 4px calc(100% - 10px),
+            var(--edge) calc(100% - 10px)),
+        linear-gradient(180deg,
+            var(--cap) 0 8px,
+            var(--rim) 8px 16px,
+            var(--face) 16px calc(100% - 12px),
+            var(--shade) calc(100% - 12px));
+    clip-path: polygon(
+        8px 0, calc(100% - 8px) 0,
+        calc(100% - 8px) 4px, calc(100% - 4px) 4px,
+        calc(100% - 4px) 8px, 100% 8px,
+        100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px),
+        calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px),
+        calc(100% - 8px) 100%, 8px 100%,
+        8px calc(100% - 4px), 4px calc(100% - 4px),
+        4px calc(100% - 8px), 0 calc(100% - 8px),
+        0 8px, 4px 8px, 4px 4px, 8px 4px
+    );
+}
+
+.podium-avatars {
+    margin-bottom: 24px;
+}
+
+.podium .trainer-avatar,
+.podium .focumon-avatar {
+    image-rendering: pixelated;
+    filter: drop-shadow(4px 4px 0 rgb(38 28 51 / 28%));
+}
+
+/* The rank becomes a pixel medal, attached to the platform's top lip. */
+.podium .place-badge {
+    left: 18px;
+    top: calc(var(--avatar-h) - 22px);
+    width: 30px;
+    height: 30px;
+    border-radius: 0;
+    background: var(--cap);
+    color: var(--ink);
+    font-size: 0;
+    box-shadow:
+        0 -4px var(--pixel-outline),
+        0 4px var(--pixel-outline),
+        -4px 0 var(--pixel-outline),
+        4px 0 var(--pixel-outline),
+        4px 8px rgb(51 43 63 / 30%);
+}
+
+.podium .place-1 .place-badge {
+    width: 36px;
+    height: 36px;
+    top: calc(var(--avatar-h) - 28px);
+}
+
+.podium .place-badge::after {
+    content: "";
+    width: 12px;
+    height: 20px;
+    background: currentColor;
+    mask: var(--rank-pixel) center / contain no-repeat;
+}
+
+.podium .place-1 {
+    --rank-pixel: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 5' shape-rendering='crispEdges'%3E%3Cpath d='M1 0h1v4h1v1H0V4h1V2H0V1h1z'/%3E%3C/svg%3E");
+}
+
+.podium .place-2 {
+    --rank-pixel: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 5' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h3v3H1v1h2v1H0V2h2V1H0z'/%3E%3C/svg%3E");
+}
+
+.podium .place-3 {
+    --rank-pixel: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 5' shape-rendering='crispEdges'%3E%3Cpath d='M0 0h3v5H0V4h2V3H0V2h2V1H0z'/%3E%3C/svg%3E");
+}
+
+.podium-title {
+    opacity: 0.9;
+}
+
+.podium-stat .label {
+    opacity: 0.85;
+}
+
+.podium-week {
+    gap: 4px;
+}
+
+.podium .wb {
+    border-radius: 0;
+    background: var(--cap);
+    box-shadow: 0 2px 0 var(--shade);
+}
+
+.podium .wb-low {
+    background: var(--shade);
+}
+
+.podium .wb-na {
+    background: var(--edge);
+    box-shadow: none;
+}
+
+/* A quiet pixel stamp replaces the oversized translucent display numeral. */
+.podium-name::after {
+    content: "";
+    position: absolute;
+    right: 24px;
+    bottom: 22px;
+    width: 30px;
+    height: 50px;
+    background: var(--ink);
+    opacity: 0.12;
+    mask: var(--rank-pixel) center / contain no-repeat;
+    pointer-events: none;
+}
+
+@media (max-width: 760px) {
+    .podium-avatars { margin-bottom: 22px; }
+    .podium .place-badge {
+        left: 12px;
+        width: 24px;
+        height: 24px;
+        top: calc(var(--avatar-h) - 18px);
+    }
+    .podium .place-1 .place-badge {
+        width: 28px;
+        height: 28px;
+        top: calc(var(--avatar-h) - 22px);
+    }
+    .podium .place-badge::after { width: 9px; height: 15px; }
+    .podium-name::after { display: none; }
+    .podium-name { max-width: 100%; }
+    .podium-card { padding-left: 10px; padding-right: 14px; padding-bottom: 24px; }
+    .podium-card.place-1 { padding-bottom: 44px; }
+    .podium-card.place-2 { padding-bottom: 32px; }
+    .podium-card.place-3 { padding-bottom: 22px; }
+    .podium-week { max-width: 100%; gap: 3px; }
+}
+
+@media (max-width: 480px) {
+    .podium-name,
+    .place-1 .podium-name {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.4em;
+        width: 100%;
+        line-height: 1.2;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+    .podium-change { min-height: 2.8em; justify-content: center; }
+    .podium-card { padding-left: 9px; padding-right: 13px; }
+    .podium .place-badge { left: 10px; }
+}

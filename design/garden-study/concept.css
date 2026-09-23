@@ -1,0 +1,219 @@
+/* Design study: garden composition, a shared palette, and quiet pixel frames. */
+:root {
+    --bg: #161421;
+    --bg-2: #1b1828;
+    --surface: #221e31;
+    --surface-2: #2b253b;
+    --surface-3: #393149;
+    --border: #463b53;
+    --border-strong: #75647e;
+    --text: #f4eee7;
+    --text-2: #c8becf;
+    --text-3: #a397b0;
+    --accent: #b9a0d8;
+    --accent-soft: rgb(185 160 216 / 14%);
+    --accent-2: #d8ab89;
+    --accent-2-soft: rgb(216 171 137 / 14%);
+    --up: #9acbb0;
+    --down: #e49ca5;
+    --warn: #e8be59;
+    --warn-soft: rgb(232 190 89 / 12%);
+    --gold: #e8be59;
+    --silver: #bdc5db;
+    --bronze: #cd9978;
+    --shadow: none;
+    --shadow-lift: none;
+}
+
+/* Explicit themes keep the study independent of the frozen baseline tokens. */
+:root[data-theme="dark"] {
+    --bg: #161421; --bg-2: #1b1828;
+    --surface: #221e31; --surface-2: #2b253b; --surface-3: #393149;
+    --border: #463b53; --border-strong: #75647e;
+    --text: #f4eee7; --text-2: #c8becf; --text-3: #a397b0;
+    --accent: #b9a0d8; --accent-soft: rgb(185 160 216 / 14%);
+    --accent-2: #d8ab89; --accent-2-soft: rgb(216 171 137 / 14%);
+    --up: #9acbb0; --down: #e49ca5; --warn: #e8be59;
+    --gold: #e8be59; --silver: #bdc5db; --bronze: #cd9978;
+    --shadow: none; --shadow-lift: none;
+}
+:root[data-theme="light"] {
+    --bg: #eee8e7; --bg-2: #e5dcdf;
+    --surface: #fbf6ee; --surface-2: #f0e8eb; --surface-3: #e1d6df;
+    --border: #cbbbc9; --border-strong: #9b7f9d;
+    --text: #302638; --text-2: #5f5068; --text-3: #79677f;
+    --accent: #80618f; --accent-soft: rgb(128 97 143 / 12%);
+    --accent-2: #9e664e; --accent-2-soft: rgb(158 102 78 / 12%);
+    --up: #357155; --down: #a85469; --warn: #98701e;
+    --shadow: none; --shadow-lift: none;
+}
+
+body { background: var(--bg); }
+.hero {
+    --scene-hill: #354b47;
+    --scene-hill-near: #40564d;
+    --scene-bed: #465d50;
+    --scene-meadow: #505d60;
+    --scene-ledge: #78856b;
+    --scene-leaf: #8fa58a;
+    --scene-stem: #7c967b;
+    --scene-tree: #324840;
+    --scene-trunk: #514350;
+    --scene-water: #7c929a;
+    --scene-water-rim: #506a78;
+    --scene-soil: #3b2e40;
+    --scene-soil-rim: #66505f;
+    background: #21192e;
+    box-shadow: none;
+}
+.hero.sky-day {
+    --scene-hill: #50645f; --scene-hill-near: #5c7267;
+    --scene-bed: #647d69; --scene-meadow: #728674;
+    --scene-ledge: #a9b58d; --scene-tree: #455f52;
+    --scene-leaf: #b0c39a; --scene-stem: #88a180;
+    --scene-water: #99b3ba; --scene-water-rim: #668997;
+}
+.hero.sky-night {
+    --scene-hill: #293b3d; --scene-hill-near: #304643;
+    --scene-bed: #354c46; --scene-meadow: #3e514b;
+    --scene-ledge: #626f67; --scene-tree: #283d39;
+    --scene-leaf: #82958c; --scene-stem: #6c8178;
+    --scene-water: #748398; --scene-water-rim: #465c70;
+}
+.sky-layer-dawn { background: linear-gradient(180deg, #302842, #8a647b 58%, #d9ae97); }
+.sky-layer-day { background: linear-gradient(180deg, #394761, #718da3 58%, #c3c4b5); }
+.sky-layer-dusk { background: linear-gradient(180deg, #1e1630, #704668 58%, #ba8492); }
+.sky-layer-night { background: linear-gradient(180deg, #100f20, #25233b 58%, #4a4058); }
+.hero.sky-dusk, .hero.sky-dawn {
+    --cloud: rgb(241 213 193 / 48%);
+    --cloud-shade: rgb(96 72 105 / 30%);
+}
+.hero-copy { text-shadow: 0 2px 0 rgb(30 21 39 / 15%); }
+.lede { color: #eee1e6; }
+.hero-hint { color: #ccbacf; }
+.hero .sun, .hero .moon {
+    width: 64px; height: 64px;
+    right: 9%; top: 108px;
+}
+.hero .sun {
+    background: #edd1a0;
+    box-shadow: 0 0 0 8px rgb(237 209 160 / 9%);
+}
+.hero .moon {
+    background: #dcd8e2;
+    box-shadow: inset -10px -4px 0 #aaa6bd, 0 0 0 8px rgb(220 216 226 / 5%);
+}
+.hero .petals { opacity: 0.28; }
+
+/* Two scene planes: a quiet rear meadow and the existing foreground stage. */
+.hero .garden .hills, .hero .garden .trees,
+.hero .garden .bed, .hero .garden .path, .hero .garden .tufts { filter: none; }
+.garden .hills ellipse { fill: var(--scene-hill); }
+.garden .hills ellipse:nth-child(2) { fill: var(--scene-hill-near); }
+.garden .bed { fill: var(--scene-bed); }
+.garden .tufts rect { fill: var(--scene-leaf); opacity: 0.44; }
+.garden .tree rect { fill: var(--scene-tree); }
+.garden .tree rect:first-child { fill: var(--scene-trunk); }
+.garden .pond ellipse:first-child { fill: var(--scene-water-rim); }
+.garden .pond ellipse:nth-child(2) { fill: var(--scene-water); }
+.garden .pond-glint { fill: #dddae1; }
+.garden .path { fill: var(--scene-soil); }
+.garden .path + rect { fill: var(--scene-soil-rim); }
+.garden .rear-meadow { fill: url(#study-meadow-shade); }
+.garden .meadow-top { stop-color: var(--scene-meadow); }
+.garden .meadow-bottom { stop-color: var(--scene-hill); }
+.garden .rear-ledge { fill: none; stroke: var(--scene-ledge); stroke-width: 2; stroke-dasharray: 6 12; opacity: 0.6; }
+.garden .flowers { transform: none; }
+.garden .flower [fill="#3f9d4c"] { fill: var(--scene-stem); }
+.garden .flower [fill="#57b85f"] { fill: var(--scene-leaf); }
+.garden .flower .sway { filter: saturate(0.78); }
+.garden .sprout { opacity: 0.62; }
+.garden .flower-count { font-size: var(--scene-count-size, 16px); stroke-width: 2px; }
+.garden .line75 line { stroke: rgb(237 218 221 / 33%); stroke-width: 1; stroke-dasharray: 3 5; }
+.garden .line75 text {
+    font-size: var(--scene-line-size, 10px); fill: #e5d6dc;
+    font-weight: 500;
+}
+.stage,
+:root[data-theme="light"] .stage {
+    background: linear-gradient(180deg, #3b2e40, #302637 68%, var(--bg));
+    box-shadow: inset 0 4px 0 #66505f;
+}
+
+/* Fine stepped frames echo the podiums without turning text into pixel type. */
+.spot, .community, .table-wrap {
+    position: relative;
+    isolation: isolate;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+.spot::before, .community::before, .table-wrap::before {
+    content: "";
+    position: absolute; inset: 0; z-index: -2;
+    width: auto; height: auto;
+    border-radius: 0;
+    background: var(--border);
+    opacity: 1;
+    pointer-events: none;
+    clip-path: polygon(
+        8px 0, calc(100% - 8px) 0, calc(100% - 8px) 4px,
+        calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
+        100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px),
+        calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px),
+        calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 4px),
+        4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px),
+        0 8px, 4px 8px, 4px 4px, 8px 4px
+    );
+}
+.spot::after, .community::after, .table-wrap::after {
+    content: "";
+    position: absolute; inset: 1px; z-index: -1;
+    background: var(--surface);
+    pointer-events: none;
+    clip-path: polygon(
+        7px 0, calc(100% - 7px) 0, calc(100% - 7px) 3px,
+        calc(100% - 3px) 3px, calc(100% - 3px) 7px, 100% 7px,
+        100% calc(100% - 7px), calc(100% - 3px) calc(100% - 7px),
+        calc(100% - 3px) calc(100% - 3px), calc(100% - 7px) calc(100% - 3px),
+        calc(100% - 7px) 100%, 7px 100%, 7px calc(100% - 3px),
+        3px calc(100% - 3px), 3px calc(100% - 7px), 0 calc(100% - 7px),
+        0 7px, 3px 7px, 3px 3px, 7px 3px
+    );
+}
+.spot:hover::before, .spot:focus-visible::before { background: var(--accent); }
+.spot-avatar::before { display: none; }
+.spot-sprite { image-rendering: pixelated; filter: drop-shadow(2px 2px 0 rgb(24 18 31 / 25%)); }
+.spot-bar i, .spot-dots i { border-radius: 0; }
+.spot-rank { border-radius: 2px; }
+.spot-rank.now { color: var(--bg); }
+.community { padding-bottom: 20px; }
+.group-spark .group-band { fill: var(--accent); fill-opacity: 0.06; stroke-opacity: 0.25; }
+.group-spark .group-area { opacity: 0.08; }
+.group-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 0; box-shadow: none; }
+.community-axis { font-size: 0.67rem; }
+.table-wrap {
+    padding: 1px;
+    clip-path: polygon(8px 0, calc(100% - 8px) 0, calc(100% - 8px) 4px,
+        calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
+        100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px),
+        calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 8px),
+        0 calc(100% - 8px), 0 8px, 4px 8px, 4px 4px, 8px 4px);
+}
+.search, .standings-tools .chip { border-radius: 4px; }
+.rank-num { border-radius: 2px; }
+.avatar { border-radius: 4px; background: var(--surface-2); border: 1px solid var(--border); box-shadow: none; }
+.avatar-img { image-rendering: pixelated; }
+
+@media (max-width: 760px) {
+    .hero { min-height: 680px; }
+    .hero .sun, .hero .moon { width: 44px; height: 44px; top: 180px; right: 24px; }
+}
+@media (max-width: 480px) {
+    .hero { min-height: 696px; }
+    .community { padding-bottom: 24px; }
+}
+@media (max-width: 360px) {
+    .hero { min-height: 724px; }
+}
