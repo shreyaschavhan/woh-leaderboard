@@ -1,0 +1,28 @@
+/* Preserve the sprite's proportions and crop a portrait inside the existing frame. */
+.standings-table .avatar-img {
+    width: 112px;
+    height: 112px;
+    max-width: none;
+    object-fit: contain;
+    left: calc(50% + var(--portrait-x, 0px));
+    top: var(--portrait-top, 2px);
+    transform: translateX(-50%);
+    image-rendering: pixelated;
+}
+
+/* Align the head, allowing each character's pose and accessories to stay distinct. */
+.standings-table .avatar-img[src*="/trainer-001-"] { --portrait-x: 4px; --portrait-top: 0px; }
+.standings-table .avatar-img[src*="/trainer-055-"] { --portrait-x: 2px; }
+.standings-table .avatar-img[src*="/trainer-014-"] { --portrait-x: -4px; --portrait-top: 0px; }
+.standings-table .avatar-img[src*="/trainer-015-"] { --portrait-x: 6px; --portrait-top: -2px; }
+.standings-table .avatar-img[src*="/trainer-061-"] { --portrait-x: -2px; --portrait-top: 0px; }
+.standings-table .avatar-img[src*="/trainer-047-"] { --portrait-x: -4px; --portrait-top: 0px; }
+.standings-table .avatar-img[src*="/trainer-051-"] { --portrait-x: -4px; --portrait-top: 0px; }
+.standings-table .avatar-img[src*="/trainer-037-"] { --portrait-x: -8px; }
+.standings-table .avatar-img[src*="/trainer-010-"] { --portrait-x: 2px; }
+.standings-table .avatar-img[src*="/trainer-023-"] { --portrait-x: -10px; --portrait-top: 0px; }
+.standings-table .avatar-img[src*="/trainer-029-"] { --portrait-x: 6px; --portrait-top: 0px; }
+.standings-table .avatar-img[src*="/trainer-058-"] { --portrait-x: 2px; }
+.standings-table .avatar-img[src*="/trainer-012-"] { --portrait-top: -2px; }
+.standings-table .avatar-img[src*="/trainer-024-"] { --portrait-x: -4px; --portrait-top: 0px; }
+.standings-table .avatar-img[src*="/trainer-022-"] { --portrait-x: 6px; --portrait-top: -2px; }

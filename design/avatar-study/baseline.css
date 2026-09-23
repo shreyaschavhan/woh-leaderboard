@@ -886,34 +886,13 @@ tr.place-3 .rank-num { background: var(--bronze); }
     background: var(--surface-2);
     border: 1px solid var(--border);
 }
-/* Keep the source sprite proportionate and crop its portrait inside the frame. */
-.standings-table .avatar-img {
-    position: absolute;
-    left: calc(50% + var(--portrait-x, 0px));
-    top: var(--portrait-top, 2px);
+.avatar-img {
+    position: absolute; left: 50%; top: -6px;
     width: 112px; height: 112px;
-    max-width: none;
-    object-fit: contain;
     transform: translateX(-50%);
     image-rendering: pixelated;
     pointer-events: none;
 }
-/* Follow the artwork, not the trainer: changing the Focumon image selects its crop. */
-.standings-table .avatar-img[src*="/trainer-001-"] { --portrait-x: 4px; --portrait-top: 0px; }
-.standings-table .avatar-img[src*="/trainer-055-"] { --portrait-x: 2px; }
-.standings-table .avatar-img[src*="/trainer-014-"] { --portrait-x: -4px; --portrait-top: 0px; }
-.standings-table .avatar-img[src*="/trainer-015-"] { --portrait-x: 6px; --portrait-top: -2px; }
-.standings-table .avatar-img[src*="/trainer-061-"] { --portrait-x: -2px; --portrait-top: 0px; }
-.standings-table .avatar-img[src*="/trainer-047-"] { --portrait-x: -4px; --portrait-top: 0px; }
-.standings-table .avatar-img[src*="/trainer-051-"] { --portrait-x: -4px; --portrait-top: 0px; }
-.standings-table .avatar-img[src*="/trainer-037-"] { --portrait-x: -8px; }
-.standings-table .avatar-img[src*="/trainer-010-"] { --portrait-x: 2px; }
-.standings-table .avatar-img[src*="/trainer-023-"] { --portrait-x: -10px; --portrait-top: 0px; }
-.standings-table .avatar-img[src*="/trainer-029-"] { --portrait-x: 6px; --portrait-top: 0px; }
-.standings-table .avatar-img[src*="/trainer-058-"] { --portrait-x: 2px; }
-.standings-table .avatar-img[src*="/trainer-012-"] { --portrait-top: -2px; }
-.standings-table .avatar-img[src*="/trainer-024-"] { --portrait-x: -4px; --portrait-top: 0px; }
-.standings-table .avatar-img[src*="/trainer-022-"] { --portrait-x: 6px; --portrait-top: -2px; }
 .avatar-placeholder { display: grid; place-items: center; color: var(--text-2); font-weight: 700; }
 .player-meta { display: flex; flex-direction: column; min-width: 0; }
 .player-name { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -1246,6 +1225,7 @@ tr.is-inactive .avatar { opacity: 0.5; }
     .lede { font-size: 0.95rem; }
     .podium { --avatar-h: 116px; }
     .avatar { width: 40px; height: 40px; }
+    .avatar-img { top: -8px; }
     .player-link { gap: 8px; }
     .standings-table th, .standings-table td { padding: 9px 8px; }
     .col-gain, th.col-gain, .col-trend, th.col-trend, .col-change, th.col-change { display: none; }

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <base href="../../">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar portraits — design study</title>
+    <meta name="description" content="Weekly flower-collection standings for the Warriors of Hell Focumon group. Updated every 6 hours.">
+    <meta name="theme-color" content="#0b0d1f">
+    <meta property="og:title" content="Consistency Leaderboard">
+    <meta property="og:description" content="31 trainers, 802 flowers this week. See who is above the 75-flower line.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 5' shape-rendering='crispEdges'%3E%3Crect x='2' y='0' width='1' height='1' fill='%23ff6b8a'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23ff6b8a'/%3E%3Crect x='4' y='2' width='1' height='1' fill='%23ff6b8a'/%3E%3Crect x='2' y='4' width='1' height='1' fill='%23ff6b8a'/%3E%3Crect x='1' y='1' width='3' height='3' fill='%23ff6b8a'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23fff3b0'/%3E%3C/svg%3E">
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('woh-theme');
+                if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="design/avatar-study/baseline.css">
+    <link rel="stylesheet" href="design/avatar-study/concept.css" id="avatar-concept">
+    <link rel="stylesheet" href="design/avatar-study/preview.css">
+    <script>
+        if (new URLSearchParams(location.search).has('capture')) {
+            document.documentElement.setAttribute('data-capture', 'true');
+        }
+    </script>
+</head>
+<body class="home">
+    <a class="skip-link" href="#standings">Skip to standings</a>
+    <div class="page">
+        <nav class="topbar">
+            <span class="brand">
+                <svg class="brand-mark" viewBox="0 0 5 5" width="18" height="18" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="0" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="4" y="2" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="1" y="1" width="3" height="3"/><rect class="brand-core" x="2" y="2" width="1" height="1"/></svg>
+                Warriors of Hell
+            </span>
+            <div class="topbar-actions">
+            <button type="button" class="chip sky-chip" id="sky-toggle" title="Change the sky" data-sky="day">
+                <svg class="sky-ico sky-ico-day" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                <svg class="sky-ico sky-ico-dawn sky-ico-dusk" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17h18M5 17a7 7 0 0 1 14 0"/><path d="M12 4v3M4.5 8.5l2 2M19.5 8.5l-2 2"/></svg>
+                <svg class="sky-ico sky-ico-night" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                <span class="sky-label">day</span>
+            </button>
+            <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle light or dark theme" title="Toggle theme">
+                <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+            </button>
+            </div>
+        </nav>
+
+        <header class="hero sky-day" id="hero">
+            <div class="sky sky-layer-dawn" aria-hidden="true"></div>
+            <div class="sky sky-layer-day" aria-hidden="true"></div>
+            <div class="sky sky-layer-dusk" aria-hidden="true"></div>
+            <div class="sky sky-layer-night" aria-hidden="true"></div>
+            <div class="stars" aria-hidden="true"></div>
+            <div class="hero-copy">
+                <h1>Consistency Leaderboard</h1>
+                <p class="lede">
+                    <span class="nowrap"><span class="count num" data-count="31">31</span> trainers &middot;</span>
+                    <span class="nowrap"><span class="count num" data-count="802">802</span> flowers &middot;</span>
+                    <span class="nowrap"><span class="count num" data-count="267.3">267.3</span> hours this week.</span>
+                    <span class="lede-line"><span class="count num" data-count="5">5</span> trainers above the <span class="nowrap">75&#8209;flower line</span>.</span>
+                </p>
+                <p class="hero-hint">Every flower is a trainer. Tap one.</p>
+            </div>
+            <div class="petals" id="petals" aria-hidden="true"></div>
+            <div class="sun" aria-hidden="true"></div>
+            <div class="moon" aria-hidden="true"></div>
+            <div class="clouds" aria-hidden="true"><span></span><span></span><span></span></div>
+            <svg class="garden" viewBox="0 0 1000 400" preserveAspectRatio="xMidYMax meet" aria-label="Garden of 31 trainers; taller flowers mean more flowers collected"><g class="hills"><ellipse cx="180" cy="332" rx="260" ry="46" fill="#2f7a3d"/><ellipse cx="620" cy="336" rx="320" ry="52" fill="#2c7239"/><ellipse cx="930" cy="334" rx="220" ry="40" fill="#2f7a3d"/></g><rect class="bed" x="0" y="330" width="1000" height="42" fill="#3a8a45"/><g class="tufts"><rect x="0" y="328" width="3" height="3" fill="#4db35c"/><rect x="148" y="326" width="4" height="5" fill="#5cc46a"/><rect x="296" y="324" width="5" height="7" fill="#4db35c"/><rect x="411" y="322" width="3" height="9" fill="#5cc46a"/><rect x="559" y="328" width="4" height="3" fill="#4db35c"/><rect x="707" y="326" width="5" height="5" fill="#5cc46a"/><rect x="822" y="324" width="3" height="7" fill="#4db35c"/><rect x="970" y="322" width="4" height="9" fill="#5cc46a"/><rect x="118" y="328" width="5" height="3" fill="#4db35c"/><rect x="233" y="326" width="3" height="5" fill="#5cc46a"/><rect x="381" y="324" width="4" height="7" fill="#4db35c"/><rect x="529" y="322" width="5" height="9" fill="#5cc46a"/><rect x="644" y="328" width="3" height="3" fill="#4db35c"/><rect x="792" y="326" width="4" height="5" fill="#5cc46a"/><rect x="940" y="324" width="5" height="7" fill="#4db35c"/><rect x="55" y="322" width="3" height="9" fill="#5cc46a"/><rect x="203" y="328" width="4" height="3" fill="#4db35c"/><rect x="351" y="326" width="5" height="5" fill="#5cc46a"/><rect x="466" y="324" width="3" height="7" fill="#4db35c"/><rect x="614" y="322" width="4" height="9" fill="#5cc46a"/><rect x="762" y="328" width="5" height="3" fill="#4db35c"/><rect x="877" y="326" width="3" height="5" fill="#5cc46a"/><rect x="25" y="324" width="4" height="7" fill="#4db35c"/><rect x="173" y="322" width="5" height="9" fill="#5cc46a"/><rect x="288" y="328" width="3" height="3" fill="#4db35c"/><rect x="436" y="326" width="4" height="5" fill="#5cc46a"/><rect x="584" y="324" width="5" height="7" fill="#4db35c"/><rect x="699" y="322" width="3" height="9" fill="#5cc46a"/><rect x="847" y="328" width="4" height="3" fill="#4db35c"/><rect x="995" y="326" width="5" height="5" fill="#5cc46a"/></g><g class="trees"><g class="tree"><rect x="65" y="282" width="10" height="46" fill="#5a3d2b"/><rect x="44" y="278" width="52" height="20" fill="#2b7a3b"/><rect x="50" y="262" width="40" height="18" fill="#2b7a3b"/><rect x="58" y="248" width="24" height="16" fill="#2b7a3b"/></g><g class="tree"><rect x="145" y="288" width="10" height="36" fill="#5a3d2b"/><rect x="124" y="284" width="52" height="20" fill="#33934a"/><rect x="130" y="268" width="40" height="18" fill="#33934a"/><rect x="138" y="254" width="24" height="16" fill="#33934a"/></g><g class="tree"><rect x="900" y="284" width="10" height="42" fill="#5a3d2b"/><rect x="879" y="280" width="52" height="20" fill="#2b7a3b"/><rect x="885" y="264" width="40" height="18" fill="#2b7a3b"/><rect x="893" y="250" width="24" height="16" fill="#2b7a3b"/></g><g class="tree"><rect x="960" y="292" width="10" height="30" fill="#5a3d2b"/><rect x="939" y="288" width="52" height="20" fill="#33934a"/><rect x="945" y="272" width="40" height="18" fill="#33934a"/><rect x="953" y="258" width="24" height="16" fill="#33934a"/></g></g><g class="pond"><ellipse cx="120" cy="350" rx="58" ry="9" fill="#2f7fb0"/><ellipse cx="120" cy="349" rx="50" ry="6" fill="#4cc9f0"/><rect class="pond-glint" x="100" y="345" width="10" height="2" fill="#dff7ff"/></g><g class="line75"><line x1="0" x2="1000" y1="214.0" y2="214.0"/><text x="988" y="208.0" text-anchor="end">75 flowers</text><text class="line75-m" x="706" y="208.0" text-anchor="end">75</text></g><g class="flowers"><g class="flower" data-id="Apoorv_S6ag" data-name="Apoorv" data-flowers="166" data-rank="1" transform="translate(452.0,326)" tabindex="0" role="link" aria-label="Apoorv, rank 1, 166 flowers"><g class="sway" style="--g:0.00s;--sd:-0.00s"><rect x="-2" y="-230.0" width="4" height="230.0" fill="#3f9d4c"/><rect x="2" y="-103.5" width="7" height="4" fill="#57b85f"/><rect x="16.2" y="-223.2" width="11.8" height="11.8" rx="3.3" fill="#ffc542" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 22.1 -217.3)"/><rect x="-5.9" y="-210.4" width="11.8" height="11.8" rx="3.3" fill="#ffc542" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -204.5)"/><rect x="-28.0" y="-223.2" width="11.8" height="11.8" rx="3.3" fill="#ffc542" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -22.1 -217.3)"/><rect x="-28.0" y="-248.6" width="11.8" height="11.8" rx="3.3" fill="#ffc542" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -22.1 -242.7)"/><rect x="-5.9" y="-261.4" width="11.8" height="11.8" rx="3.3" fill="#ffc542" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -255.5)"/><rect x="16.2" y="-248.6" width="11.8" height="11.8" rx="3.3" fill="#ffc542" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 22.1 -242.7)"/><rect x="-9" y="-165.6" width="7" height="4" fill="#57b85f"/><rect x="2" y="-153.6" width="7" height="4" fill="#57b85f"/><clipPath id="fc0"><circle cx="0" cy="-230.0" r="18.0"/></clipPath><circle cx="0" cy="-230.0" r="19.0" fill="#fff3b0"/><image href="assets/sprites/trainer-049-5ddc19da@4x.png" x="-28.5" y="-245.4" width="57.0" height="57.0" clip-path="url(#fc0)" preserveAspectRatio="xMidYMid slice" opacity="1"/><circle cx="0" cy="-230.0" r="19.0" fill="none" stroke="#ffc542" stroke-width="2.5"/><circle cx="0" cy="-229.4" r="20.6" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.4"/><circle cx="-16.1" cy="-246.2" r="7.5" fill="#fff" stroke="#ffc542" stroke-width="1.5"/><text class="flower-rank" x="-16.1" y="-242.8" text-anchor="middle">1</text><text class="flower-count" x="0" y="-265.8" text-anchor="middle">166</text></g></g><g class="flower" data-id="Srishti_QuOP" data-name="Srishti" data-flowers="150" data-rank="2" transform="translate(394.0,333)" tabindex="0" role="link" aria-label="Srishti, rank 2, 150 flowers"><g class="sway" style="--g:0.06s;--sd:-0.37s"><rect x="-2" y="-210.0" width="4" height="210.0" fill="#3f9d4c"/><rect x="-9" y="-115.5" width="7" height="4" fill="#57b85f"/><rect x="15.4" y="-203.4" width="11.2" height="11.2" rx="3.1" fill="#cdd5ea" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 20.9 -197.9)"/><rect x="-5.6" y="-191.4" width="11.2" height="11.2" rx="3.1" fill="#cdd5ea" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -185.8)"/><rect x="-26.5" y="-203.4" width="11.2" height="11.2" rx="3.1" fill="#cdd5ea" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -20.9 -197.9)"/><rect x="-26.5" y="-227.6" width="11.2" height="11.2" rx="3.1" fill="#cdd5ea" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -20.9 -222.0)"/><rect x="-5.6" y="-239.7" width="11.2" height="11.2" rx="3.1" fill="#cdd5ea" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -234.1)"/><rect x="15.4" y="-227.6" width="11.2" height="11.2" rx="3.1" fill="#cdd5ea" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 20.9 -222.0)"/><rect x="2" y="-151.2" width="7" height="4" fill="#57b85f"/><rect x="-9" y="-139.2" width="7" height="4" fill="#57b85f"/><clipPath id="fc1"><circle cx="0" cy="-210.0" r="17.0"/></clipPath><circle cx="0" cy="-210.0" r="18.0" fill="#fff3b0"/><image href="assets/sprites/trainer-001-1fa04730@4x.png" x="-27.1" y="-224.6" width="54.1" height="54.1" clip-path="url(#fc1)" preserveAspectRatio="xMidYMid slice" opacity="1"/><circle cx="0" cy="-210.0" r="18.0" fill="none" stroke="#cdd5ea" stroke-width="2.5"/><circle cx="0" cy="-209.4" r="19.6" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.4"/><circle cx="-15.3" cy="-225.3" r="7.5" fill="#fff" stroke="#cdd5ea" stroke-width="1.5"/><text class="flower-rank" x="-15.3" y="-221.9" text-anchor="middle">2</text><text class="flower-count" x="0" y="-244.2" text-anchor="middle">150</text></g></g><g class="flower" data-id="Momehrust_l0E4" data-name="Momehrust" data-flowers="133" data-rank="3" transform="translate(712.0,331)" tabindex="0" role="link" aria-label="Momehrust, rank 3, 133 flowers"><g class="sway" style="--g:0.12s;--sd:-0.74s"><rect x="-2" y="-188.7" width="4" height="188.7" fill="#3f9d4c"/><rect x="2" y="-122.6" width="7" height="4" fill="#57b85f"/><rect x="14.5" y="-182.5" width="10.5" height="10.5" rx="3.0" fill="#d9925a" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 19.8 -177.2)"/><rect x="-5.3" y="-171.1" width="10.5" height="10.5" rx="3.0" fill="#d9925a" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -165.8)"/><rect x="-25.0" y="-182.5" width="10.5" height="10.5" rx="3.0" fill="#d9925a" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -19.8 -177.2)"/><rect x="-25.0" y="-205.3" width="10.5" height="10.5" rx="3.0" fill="#d9925a" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -19.8 -200.1)"/><rect x="-5.3" y="-216.7" width="10.5" height="10.5" rx="3.0" fill="#d9925a" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -211.5)"/><rect x="14.5" y="-205.3" width="10.5" height="10.5" rx="3.0" fill="#d9925a" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 19.8 -200.1)"/><rect x="-9" y="-135.8" width="7" height="4" fill="#57b85f"/><rect x="2" y="-123.8" width="7" height="4" fill="#57b85f"/><clipPath id="fc2"><circle cx="0" cy="-188.7" r="16.0"/></clipPath><circle cx="0" cy="-188.7" r="17.0" fill="#fff3b0"/><image href="assets/sprites/trainer-055-eb8a483b@4x.png" x="-25.5" y="-202.4" width="51.0" height="51.0" clip-path="url(#fc2)" preserveAspectRatio="xMidYMid slice" opacity="1"/><circle cx="0" cy="-188.7" r="17.0" fill="none" stroke="#d9925a" stroke-width="2.5"/><circle cx="0" cy="-188.1" r="18.6" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.4"/><circle cx="-14.5" cy="-203.1" r="7.5" fill="#fff" stroke="#d9925a" stroke-width="1.5"/><text class="flower-rank" x="-14.5" y="-199.7" text-anchor="middle">3</text><text class="flower-count" x="0" y="-221.2" text-anchor="middle">133</text></g></g><g class="flower" data-id="SShbounty_cbhK" data-name="SShbounty" data-flowers="98" data-rank="4" transform="translate(766.0,329)" tabindex="0" role="link" aria-label="SShbounty, rank 4, 98 flowers"><g class="sway" style="--g:0.18s;--sd:-1.11s"><rect x="-2" y="-144.8" width="4" height="144.8" fill="#3f9d4c"/><rect x="-9" y="-65.2" width="7" height="4" fill="#57b85f"/><rect x="10.2" y="-140.5" width="7.4" height="7.4" rx="2.1" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 13.8 -136.8)"/><rect x="-3.7" y="-132.5" width="7.4" height="7.4" rx="2.1" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -128.8)"/><rect x="-17.5" y="-140.5" width="7.4" height="7.4" rx="2.1" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -13.8 -136.8)"/><rect x="-17.5" y="-156.5" width="7.4" height="7.4" rx="2.1" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -13.8 -152.8)"/><rect x="-3.7" y="-164.5" width="7.4" height="7.4" rx="2.1" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -160.8)"/><rect x="10.2" y="-156.5" width="7.4" height="7.4" rx="2.1" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 13.8 -152.8)"/><rect x="2" y="-104.3" width="7" height="4" fill="#57b85f"/><rect x="-9" y="-92.3" width="7" height="4" fill="#57b85f"/><clipPath id="fc3"><circle cx="0" cy="-144.8" r="10.9"/></clipPath><circle cx="0" cy="-144.8" r="11.9" fill="#fff3b0"/><image href="assets/sprites/trainer-014-74721fde@4x.png" x="-17.9" y="-154.5" width="35.8" height="35.8" clip-path="url(#fc3)" preserveAspectRatio="xMidYMid slice" opacity="1"/><circle cx="0" cy="-144.8" r="11.9" fill="none" stroke="#3ddc97" stroke-width="2.5"/><circle cx="0" cy="-144.2" r="13.5" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.4"/><text class="flower-count flower-count-sm" x="0" y="-169.1" text-anchor="middle">98</text></g></g><g class="flower" data-id="Yash_fren" data-name="Yash" data-flowers="84" data-rank="5" transform="translate(234.0,327)" tabindex="0" role="link" aria-label="Yash, rank 5, 84 flowers"><g class="sway" style="--g:0.24s;--sd:-1.48s"><rect x="-2" y="-127.3" width="4" height="127.3" fill="#3f9d4c"/><rect x="2" y="-70.0" width="7" height="4" fill="#57b85f"/><rect x="9.6" y="-123.2" width="7.0" height="7.0" rx="2.0" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 13.1 -119.7)"/><rect x="-3.5" y="-115.7" width="7.0" height="7.0" rx="2.0" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -112.2)"/><rect x="-16.5" y="-123.2" width="7.0" height="7.0" rx="2.0" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -13.1 -119.7)"/><rect x="-16.5" y="-138.3" width="7.0" height="7.0" rx="2.0" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -13.1 -134.8)"/><rect x="-3.5" y="-145.8" width="7.0" height="7.0" rx="2.0" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -142.3)"/><rect x="9.6" y="-138.3" width="7.0" height="7.0" rx="2.0" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 13.1 -134.8)"/><rect x="-9" y="-91.6" width="7" height="4" fill="#57b85f"/><rect x="2" y="-79.6" width="7" height="4" fill="#57b85f"/><clipPath id="fc4"><circle cx="0" cy="-127.3" r="10.2"/></clipPath><circle cx="0" cy="-127.3" r="11.2" fill="#fff3b0"/><image href="assets/sprites/trainer-015-a6276cc3@4x.png" x="-16.9" y="-136.4" width="33.7" height="33.7" clip-path="url(#fc4)" preserveAspectRatio="xMidYMid slice" opacity="1"/><circle cx="0" cy="-127.3" r="11.2" fill="none" stroke="#4f7cff" stroke-width="2.5"/><circle cx="0" cy="-126.7" r="12.8" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.4"/><text class="flower-count flower-count-sm" x="0" y="-150.5" text-anchor="middle">84</text></g></g><g class="flower" data-id="akkubhosle1" data-name="Akash Bhosle" data-flowers="72" data-rank="6" transform="translate(206.0,334)" tabindex="0" role="link" aria-label="Akash Bhosle, rank 6, 72 flowers"><g class="sway" style="--g:0.30s;--sd:-1.85s"><rect x="-2" y="-112.2" width="4" height="112.2" fill="#3f9d4c"/><rect x="-9" y="-72.9" width="7" height="4" fill="#57b85f"/><rect x="9.1" y="-108.4" width="6.6" height="6.6" rx="1.9" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 12.4 -105.1)"/><rect x="-3.3" y="-101.2" width="6.6" height="6.6" rx="1.9" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -97.9)"/><rect x="-15.7" y="-108.4" width="6.6" height="6.6" rx="1.9" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -12.4 -105.1)"/><rect x="-15.7" y="-122.7" width="6.6" height="6.6" rx="1.9" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -12.4 -119.4)"/><rect x="-3.3" y="-129.8" width="6.6" height="6.6" rx="1.9" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -126.5)"/><rect x="9.1" y="-122.7" width="6.6" height="6.6" rx="1.9" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 12.4 -119.4)"/><clipPath id="fc5"><circle cx="0" cy="-112.2" r="9.7"/></clipPath><circle cx="0" cy="-112.2" r="10.7" fill="#fff3b0"/><image href="assets/sprites/trainer-017-d00a3a5f@4x.png" x="-16.0" y="-120.9" width="32.0" height="32.0" clip-path="url(#fc5)" preserveAspectRatio="xMidYMid slice" opacity="1"/><circle cx="0" cy="-112.2" r="10.7" fill="none" stroke="#ff7a59" stroke-width="2.5"/><circle cx="0" cy="-111.6" r="12.3" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.4"/></g></g><g class="flower" data-id="kuro_M3Cr" data-name="kuro" data-flowers="31" data-rank="7" transform="translate(234.0,332)" tabindex="0" role="link" aria-label="kuro, rank 7, 31 flowers"><g class="sway" style="--g:0.36s;--sd:-2.22s"><rect x="-2" y="-60.8" width="4" height="60.8" fill="#3f9d4c"/><rect x="2" y="-27.4" width="7" height="4" fill="#57b85f"/><rect x="7.4" y="-57.7" width="5.4" height="5.4" rx="1.5" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 10.1 -55.0)"/><rect x="-2.7" y="-51.9" width="5.4" height="5.4" rx="1.5" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -49.2)"/><rect x="-12.8" y="-57.7" width="5.4" height="5.4" rx="1.5" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -10.1 -55.0)"/><rect x="-12.8" y="-69.4" width="5.4" height="5.4" rx="1.5" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -10.1 -66.7)"/><rect x="-2.7" y="-75.2" width="5.4" height="5.4" rx="1.5" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -72.5)"/><rect x="7.4" y="-69.4" width="5.4" height="5.4" rx="1.5" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 10.1 -66.7)"/><clipPath id="fc6"><circle cx="0" cy="-60.8" r="7.7"/></clipPath><circle cx="0" cy="-60.8" r="8.7" fill="#fff3b0"/><image href="assets/sprites/trainer-061-8642e126@4x.png" x="-13.0" y="-67.9" width="26.1" height="26.1" clip-path="url(#fc6)" preserveAspectRatio="xMidYMid slice" opacity="1"/><circle cx="0" cy="-60.8" r="8.7" fill="none" stroke="#b48cff" stroke-width="2.5"/><circle cx="0" cy="-60.2" r="10.3" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.4"/></g></g><g class="flower" data-id="Shubham_Kh_V9WH" data-name="Shubham Khanna" data-flowers="24" data-rank="8" transform="translate(766.0,330)" tabindex="0" role="link" aria-label="Shubham Khanna, rank 8, 24 flowers"><g class="sway" style="--g:0.42s;--sd:-2.59s"><rect x="-2" y="-52.1" width="4" height="52.1" fill="#3f9d4c"/><rect x="-9" y="-28.6" width="7" height="4" fill="#57b85f"/><rect x="7.1" y="-49.1" width="5.2" height="5.2" rx="1.5" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 9.7 -46.5)"/><rect x="-2.6" y="-43.5" width="5.2" height="5.2" rx="1.5" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -40.9)"/><rect x="-12.3" y="-49.1" width="5.2" height="5.2" rx="1.5" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -9.7 -46.5)"/><rect x="-12.3" y="-60.3" width="5.2" height="5.2" rx="1.5" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -9.7 -57.7)"/><rect x="-2.6" y="-65.9" width="5.2" height="5.2" rx="1.5" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -63.3)"/><rect x="7.1" y="-60.3" width="5.2" height="5.2" rx="1.5" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 9.7 -57.7)"/><clipPath id="fc7"><circle cx="0" cy="-52.1" r="7.4"/></clipPath><circle cx="0" cy="-52.1" r="8.4" fill="#fff3b0"/><image href="assets/sprites/trainer-047-9fec1701@4x.png" x="-12.5" y="-58.8" width="25.1" height="25.1" clip-path="url(#fc7)" preserveAspectRatio="xMidYMid slice" opacity="1"/><circle cx="0" cy="-52.1" r="8.4" fill="none" stroke="#3ddc97" stroke-width="2.5"/><circle cx="0" cy="-51.5" r="10.0" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.4"/></g></g><g class="flower" data-id="t3po" data-name="t3po" data-flowers="22" data-rank="9" transform="translate(206.0,328)" tabindex="0" role="link" aria-label="t3po, rank 9, 22 flowers"><g class="sway" style="--g:0.48s;--sd:-2.96s"><rect x="-2" y="-49.6" width="4" height="49.6" fill="#3f9d4c"/><rect x="2" y="-32.2" width="7" height="4" fill="#57b85f"/><rect x="7.0" y="-46.6" width="5.1" height="5.1" rx="1.4" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 9.6 -44.0)"/><rect x="-2.6" y="-41.0" width="5.1" height="5.1" rx="1.4" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -38.5)"/><rect x="-12.2" y="-46.6" width="5.1" height="5.1" rx="1.4" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -9.6 -44.0)"/><rect x="-12.2" y="-57.7" width="5.1" height="5.1" rx="1.4" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -9.6 -55.1)"/><rect x="-2.6" y="-63.2" width="5.1" height="5.1" rx="1.4" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -60.6)"/><rect x="7.0" y="-57.7" width="5.1" height="5.1" rx="1.4" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 9.6 -55.1)"/><clipPath id="fc8"><circle cx="0" cy="-49.6" r="7.3"/></clipPath><circle cx="0" cy="-49.6" r="8.3" fill="#fff3b0"/><image href="assets/sprites/trainer-001-1fa04730@4x.png" x="-12.4" y="-56.3" width="24.8" height="24.8" clip-path="url(#fc8)" preserveAspectRatio="xMidYMid slice" opacity="1"/><circle cx="0" cy="-49.6" r="8.3" fill="none" stroke="#4f7cff" stroke-width="2.5"/><circle cx="0" cy="-49.0" r="9.9" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.4"/></g></g><g class="flower" data-id="bugbountyhunter" data-name="p4" data-flowers="10" data-rank="10" transform="translate(234.0,326)" tabindex="0" role="link" aria-label="p4, rank 10, 10 flowers"><g class="sway" style="--g:0.54s;--sd:-0.33s"><rect x="-2" y="-34.5" width="4" height="34.5" fill="#3f9d4c"/><rect x="-9" y="-15.5" width="7" height="4" fill="#57b85f"/><rect x="6.5" y="-31.8" width="4.8" height="4.8" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.9 -29.4)"/><rect x="-2.4" y="-26.6" width="4.8" height="4.8" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -24.2)"/><rect x="-11.3" y="-31.8" width="4.8" height="4.8" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.9 -29.4)"/><rect x="-11.3" y="-42.1" width="4.8" height="4.8" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.9 -39.7)"/><rect x="-2.4" y="-47.2" width="4.8" height="4.8" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -44.8)"/><rect x="6.5" y="-42.1" width="4.8" height="4.8" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.9 -39.7)"/><clipPath id="fc9"><circle cx="0" cy="-34.5" r="6.7"/></clipPath><circle cx="0" cy="-34.5" r="7.7" fill="#fff3b0"/><image href="assets/sprites/trainer-051-df95139d@4x.png" x="-11.5" y="-40.8" width="23.0" height="23.0" clip-path="url(#fc9)" preserveAspectRatio="xMidYMid slice" opacity="1"/><circle cx="0" cy="-34.5" r="7.7" fill="none" stroke="#ff7a59" stroke-width="2.5"/><circle cx="0" cy="-33.9" r="9.3" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.4"/></g></g><g class="flower" data-id="zix_" data-name="Zix 🌌" data-flowers="9" data-rank="11" transform="translate(794.0,333)" tabindex="0" role="link" aria-label="Zix 🌌, rank 11, 9 flowers"><g class="sway" style="--g:0.60s;--sd:-0.70s"><rect x="-2" y="-33.3" width="4" height="33.3" fill="#3f9d4c"/><rect x="2" y="-18.3" width="7" height="4" fill="#57b85f"/><rect x="6.5" y="-30.5" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.9 -28.2)"/><rect x="-2.4" y="-25.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -23.0)"/><rect x="-11.2" y="-30.5" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.9 -28.2)"/><rect x="-11.2" y="-40.8" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.9 -38.4)"/><rect x="-2.4" y="-45.9" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -43.5)"/><rect x="6.5" y="-40.8" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.9 -38.4)"/><clipPath id="fc10"><circle cx="0" cy="-33.3" r="6.6"/></clipPath><circle cx="0" cy="-33.3" r="7.6" fill="#fff3b0"/><image href="assets/sprites/trainer-037-9610fc8a@4x.png" x="-11.5" y="-39.5" width="22.9" height="22.9" clip-path="url(#fc10)" preserveAspectRatio="xMidYMid slice" opacity="1"/><circle cx="0" cy="-33.3" r="7.6" fill="none" stroke="#b48cff" stroke-width="2.5"/><circle cx="0" cy="-32.7" r="9.2" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.4"/></g></g><g class="flower" data-id="saamm_qpme" data-name="saamm" data-flowers="3" data-rank="12" transform="translate(766.0,331)" tabindex="0" role="link" aria-label="saamm, rank 12, 3 flowers"><g class="sway" style="--g:0.66s;--sd:-1.07s"><rect x="-2" y="-25.8" width="4" height="25.8" fill="#3f9d4c"/><rect x="-9" y="-16.7" width="7" height="4" fill="#57b85f"/><rect x="6.3" y="-23.1" width="4.6" height="4.6" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.5 -20.8)"/><rect x="-2.3" y="-18.2" width="4.6" height="4.6" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -15.9)"/><rect x="-10.8" y="-23.1" width="4.6" height="4.6" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.5 -20.8)"/><rect x="-10.8" y="-33.0" width="4.6" height="4.6" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.5 -30.7)"/><rect x="-2.3" y="-37.9" width="4.6" height="4.6" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -35.6)"/><rect x="6.3" y="-33.0" width="4.6" height="4.6" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.5 -30.7)"/><clipPath id="fc11"><circle cx="0" cy="-25.8" r="6.3"/></clipPath><circle cx="0" cy="-25.8" r="7.3" fill="#fff3b0"/><image href="assets/sprites/trainer-010-03761b1e@4x.png" x="-11.0" y="-31.7" width="22.0" height="22.0" clip-path="url(#fc11)" preserveAspectRatio="xMidYMid slice" opacity="1"/><circle cx="0" cy="-25.8" r="7.3" fill="none" stroke="#3ddc97" stroke-width="2.5"/><circle cx="0" cy="-25.2" r="8.9" fill="none" stroke="rgba(0,0,0,0.35)" stroke-width="1.4"/></g></g><g class="flower" data-id="RitikBhardwaj" data-name="Ritik Bhardwaj" data-flowers="0" data-rank="13" transform="translate(48.0,332)" tabindex="0" role="link" aria-label="Ritik Bhardwaj, rank 13, 0 flowers"><g class="sway" style="--g:0.00s;--sd:-1.44s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#4f7cff" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#4f7cff"/></g></g></g><g class="flower" data-id="shreyas" data-name="shreyas" data-flowers="0" data-rank="14" transform="translate(72.0,342)" tabindex="0" role="link" aria-label="shreyas, rank 14, 0 flowers"><g class="sway" style="--g:0.06s;--sd:-1.81s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#ff7a59" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#ff7a59"/></g></g></g><g class="flower" data-id="NamikazeMi_JoWH" data-name="NamikazeMinato" data-flowers="0" data-rank="15" transform="translate(96.0,332)" tabindex="0" role="link" aria-label="NamikazeMinato, rank 15, 0 flowers"><g class="sway" style="--g:0.12s;--sd:-2.18s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#b48cff" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#b48cff"/></g></g></g><g class="flower" data-id="rabbitfoot" data-name="Rabbitfoot" data-flowers="0" data-rank="16" transform="translate(116.0,342)" tabindex="0" role="link" aria-label="Rabbitfoot, rank 16, 0 flowers"><g class="sway" style="--g:0.18s;--sd:-2.55s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#3ddc97" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#3ddc97"/></g></g></g><g class="flower" data-id="Epic186_LmHD" data-name="Epic186" data-flowers="0" data-rank="17" transform="translate(140.0,332)" tabindex="0" role="link" aria-label="Epic186, rank 17, 0 flowers"><g class="sway" style="--g:0.24s;--sd:-2.92s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#4f7cff" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#4f7cff"/></g></g></g><g class="flower" data-id="Dr4g0n_lQ3J" data-name="Dr4g0n" data-flowers="0" data-rank="18" transform="translate(164.0,342)" tabindex="0" role="link" aria-label="Dr4g0n, rank 18, 0 flowers"><g class="sway" style="--g:0.30s;--sd:-0.29s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#ff7a59" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#ff7a59"/></g></g></g><g class="flower" data-id="bokuwa_tobi" data-name="TOBi" data-flowers="0" data-rank="19" transform="translate(184.0,332)" tabindex="0" role="link" aria-label="TOBi, rank 19, 0 flowers"><g class="sway" style="--g:0.36s;--sd:-0.66s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#b48cff" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#b48cff"/></g></g></g><g class="flower" data-id="Harshit_777" data-name="HARSHIT" data-flowers="0" data-rank="20" transform="translate(208.0,342)" tabindex="0" role="link" aria-label="HARSHIT, rank 20, 0 flowers"><g class="sway" style="--g:0.42s;--sd:-1.03s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#3ddc97" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#3ddc97"/></g></g></g><g class="flower" data-id="ali_8Luq" data-name="ali" data-flowers="0" data-rank="21" transform="translate(232.0,332)" tabindex="0" role="link" aria-label="ali, rank 21, 0 flowers"><g class="sway" style="--g:0.48s;--sd:-1.40s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#4f7cff" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#4f7cff"/></g></g></g><g class="flower" data-id="Kheneh_V62t" data-name="Kheneh" data-flowers="0" data-rank="22" transform="translate(748.0,342)" tabindex="0" role="link" aria-label="Kheneh, rank 22, 0 flowers"><g class="sway" style="--g:0.54s;--sd:-1.77s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#ff7a59" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#ff7a59"/></g></g></g><g class="flower" data-id="anonymousp_jqMr" data-name="anonymous-player" data-flowers="0" data-rank="23" transform="translate(768.0,332)" tabindex="0" role="link" aria-label="anonymous-player, rank 23, 0 flowers"><g class="sway" style="--g:0.60s;--sd:-2.14s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#b48cff" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#b48cff"/></g></g></g><g class="flower" data-id="Elden_lord_xY0b" data-name="Elden lord" data-flowers="0" data-rank="24" transform="translate(792.0,342)" tabindex="0" role="link" aria-label="Elden lord, rank 24, 0 flowers"><g class="sway" style="--g:0.66s;--sd:-2.51s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#3ddc97" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#3ddc97"/></g></g></g><g class="flower" data-id="bhvrvt" data-name="Bharat" data-flowers="0" data-rank="25" transform="translate(816.0,332)" tabindex="0" role="link" aria-label="Bharat, rank 25, 0 flowers"><g class="sway" style="--g:0.00s;--sd:-2.88s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#4f7cff" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#4f7cff"/></g></g></g><g class="flower" data-id="chaithu_QmSm" data-name="chaithu" data-flowers="0" data-rank="26" transform="translate(836.0,342)" tabindex="0" role="link" aria-label="chaithu, rank 26, 0 flowers"><g class="sway" style="--g:0.06s;--sd:-0.25s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#ff7a59" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#ff7a59"/></g></g></g><g class="flower" data-id="uday" data-name="hacker" data-flowers="0" data-rank="27" transform="translate(860.0,332)" tabindex="0" role="link" aria-label="hacker, rank 27, 0 flowers"><g class="sway" style="--g:0.12s;--sd:-0.62s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#b48cff" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#b48cff"/></g></g></g><g class="flower" data-id="AH_6MbD" data-name="AH" data-flowers="0" data-rank="28" transform="translate(884.0,342)" tabindex="0" role="link" aria-label="AH, rank 28, 0 flowers"><g class="sway" style="--g:0.18s;--sd:-0.99s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#3ddc97" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#3ddc97" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#3ddc97"/></g></g></g><g class="flower" data-id="Atom_le_Bi_2yjR" data-name="Atom le Biohacker" data-flowers="0" data-rank="29" transform="translate(904.0,332)" tabindex="0" role="link" aria-label="Atom le Biohacker, rank 29, 0 flowers"><g class="sway" style="--g:0.24s;--sd:-1.36s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#4f7cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#4f7cff" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#4f7cff"/></g></g></g><g class="flower" data-id="0x04ft" data-name="0x04ft" data-flowers="0" data-rank="30" transform="translate(928.0,342)" tabindex="0" role="link" aria-label="0x04ft, rank 30, 0 flowers"><g class="sway" style="--g:0.30s;--sd:-1.73s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#ff7a59" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#ff7a59" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#ff7a59"/></g></g></g><g class="flower" data-id="Sidduuuuu" data-name="Sidduuuuuuu" data-flowers="0" data-rank="31" transform="translate(952.0,332)" tabindex="0" role="link" aria-label="Sidduuuuuuu, rank 31, 0 flowers"><g class="sway" style="--g:0.36s;--sd:-2.10s"><g class="sprout"><rect x="-2" y="-30.0" width="4" height="30.0" fill="#3f9d4c"/><rect x="-11" y="-16" width="9" height="4" fill="#57b85f"/><rect x="6.4" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(30 8.7 -25.0)"/><rect x="-2.3" y="-22.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(90 0.0 -19.9)"/><rect x="-11.0" y="-27.3" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(150 -8.7 -25.0)"/><rect x="-11.0" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(210 -8.7 -35.0)"/><rect x="-2.3" y="-42.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(270 -0.0 -40.1)"/><rect x="6.4" y="-37.4" width="4.7" height="4.7" rx="1.3" fill="#b48cff" stroke="rgba(0,0,0,0.35)" stroke-width="1.2" transform="rotate(330 8.7 -35.0)"/><circle cx="0" cy="-30.0" r="7.5" fill="#dfe6ff" stroke="#b48cff" stroke-width="1.8"/><circle cx="0" cy="-30.0" r="3.0" fill="#b48cff"/></g></g></g></g><rect class="path" x="0" y="372" width="1000" height="28" fill="#6b4a33"/><rect x="0" y="372" width="1000" height="3" fill="#8a6446"/><g class="fireflies"><circle class="firefly" cx="0" cy="170" r="2" style="animation-delay:-0.0s"/><circle class="firefly" cx="211" cy="223" r="2" style="animation-delay:-0.9s"/><circle class="firefly" cx="422" cy="276" r="2" style="animation-delay:-1.8s"/><circle class="firefly" cx="633" cy="179" r="2" style="animation-delay:-2.7s"/><circle class="firefly" cx="844" cy="232" r="2" style="animation-delay:-3.6s"/><circle class="firefly" cx="55" cy="285" r="2" style="animation-delay:-4.5s"/><circle class="firefly" cx="266" cy="188" r="2" style="animation-delay:-5.4s"/><circle class="firefly" cx="477" cy="241" r="2" style="animation-delay:-0.3s"/><circle class="firefly" cx="688" cy="294" r="2" style="animation-delay:-1.2s"/><circle class="firefly" cx="899" cy="197" r="2" style="animation-delay:-2.1s"/><circle class="firefly" cx="110" cy="250" r="2" style="animation-delay:-3.0s"/><circle class="firefly" cx="321" cy="303" r="2" style="animation-delay:-3.9s"/><circle class="firefly" cx="532" cy="206" r="2" style="animation-delay:-4.8s"/><circle class="firefly" cx="743" cy="259" r="2" style="animation-delay:-5.7s"/></g></svg>
+            <div class="garden-tip" id="garden-tip" role="tooltip" hidden></div>
+        </header>
+
+        <div class="stage">
+            <section class="podium" aria-label="Top three trainers">
+                
+            <a class="podium-card place-1" href="users/user_Apoorv_S6ag.html" data-id="Apoorv_S6ag">
+                <span class="place-badge" aria-label="Rank 1">1</span>
+                <span class="podium-avatars">
+                    <img src="assets/sprites/trainer-049-5ddc19da@4x.png" class="trainer-avatar" alt="Apoorv">
+                    <img src="assets/sprites/focumon-099-79fb5c28@4x.png" class="focumon-avatar" alt="Focumon partner">
+                </span>
+                <span class="podium-name">Apoorv</span>
+                <span class="podium-title">27 of 27 days above 75</span>
+                <span class="podium-stats">
+                    <span class="podium-stat"><span class="num count" data-count="166">166</span><span class="label">flowers</span></span>
+                    <span class="podium-stat"><span class="num count" data-count="55.3">55.3</span><span class="label">hours</span></span>
+                </span>
+                <span class="podium-change"><span class="delta delta-up"><span class="delta-arrow" aria-hidden="true">&#9650;</span>Up 1 to #1 &middot; <span class="delta-num">+22</span><span class="delta-word"> flowers</span></span></span>
+                <span class="podium-week" aria-hidden="true"><i class="wb wb-up" style="height:90%"></i><i class="wb wb-up" style="height:87%"></i><i class="wb wb-up" style="height:90%"></i><i class="wb wb-na"></i><i class="wb wb-na"></i><i class="wb wb-na"></i><i class="wb wb-up" style="height:100%"></i></span>
+            </a>
+        
+            <a class="podium-card place-2" href="users/user_Srishti_QuOP.html" data-id="Srishti_QuOP">
+                <span class="place-badge" aria-label="Rank 2">2</span>
+                <span class="podium-avatars">
+                    <img src="assets/sprites/trainer-001-1fa04730@4x.png" class="trainer-avatar" alt="Srishti">
+                    <img src="assets/sprites/focumon-115-8d37e8b8@4x.png" class="focumon-avatar" alt="Focumon partner">
+                </span>
+                <span class="podium-name">Srishti</span>
+                <span class="podium-title">27 of 27 days above 75</span>
+                <span class="podium-stats">
+                    <span class="podium-stat"><span class="num count" data-count="150">150</span><span class="label">flowers</span></span>
+                    <span class="podium-stat"><span class="num count" data-count="50">50</span><span class="label">hours</span></span>
+                </span>
+                <span class="podium-change"><span class="delta delta-up"><span class="delta-arrow" aria-hidden="true">&#9660;</span>Down 1 to #2 &middot; <span class="delta-num">+6</span><span class="delta-word"> flowers</span></span></span>
+                <span class="podium-week" aria-hidden="true"><i class="wb wb-up" style="height:100%"></i><i class="wb wb-up" style="height:86%"></i><i class="wb wb-up" style="height:86%"></i><i class="wb wb-na"></i><i class="wb wb-na"></i><i class="wb wb-na"></i><i class="wb wb-up" style="height:89%"></i></span>
+            </a>
+        
+            <a class="podium-card place-3" href="users/user_Momehrust_l0E4.html" data-id="Momehrust_l0E4">
+                <span class="place-badge" aria-label="Rank 3">3</span>
+                <span class="podium-avatars">
+                    <img src="assets/sprites/trainer-055-eb8a483b@4x.png" class="trainer-avatar" alt="Momehrust">
+                    <img src="assets/sprites/focumon-038-878547e5@4x.png" class="focumon-avatar" alt="Focumon partner">
+                </span>
+                <span class="podium-name">Momehrust</span>
+                <span class="podium-title">8 of 27 days above 75</span>
+                <span class="podium-stats">
+                    <span class="podium-stat"><span class="num count" data-count="133">133</span><span class="label">flowers</span></span>
+                    <span class="podium-stat"><span class="num count" data-count="44.3">44.3</span><span class="label">hours</span></span>
+                </span>
+                <span class="podium-change"><span class="delta delta-up"><span class="delta-arrow" aria-hidden="true">&#9650;</span>Up 1 to #3 &middot; <span class="delta-num">+35</span><span class="delta-word"> flowers</span></span></span>
+                <span class="podium-week" aria-hidden="true"><i class="wb wb-up" style="height:92%"></i><i class="wb wb-up" style="height:90%"></i><i class="wb wb-up" style="height:72%"></i><i class="wb wb-na"></i><i class="wb wb-na"></i><i class="wb wb-na"></i><i class="wb wb-up" style="height:100%"></i></span>
+            </a>
+        
+            </section>
+        </div>
+
+        <div class="content">
+
+        <section class="spotlights" aria-label="This week's spotlights">
+            <div class="spot-list">
+                <a class="spot" href="users/user_Momehrust_l0E4.html">
+                    <span class="spot-avatar"><img src="assets/sprites/trainer-055-eb8a483b@4x.png" alt="" class="spot-sprite"></span>
+                    <span class="spot-text"><span class="spot-label">Most improved</span><span class="spot-name">Momehrust</span><span class="spot-detail">+35 flowers this week</span></span>
+                    <span class="spot-viz spot-bars"><span class="spot-bar"><i style="height:74%"></i><b>98</b></span><span class="spot-arrow" aria-hidden="true">&rarr;</span><span class="spot-bar is-now"><i style="height:100%"></i><b>133</b></span></span>
+                </a>
+                <a class="spot" href="users/user_Apoorv_S6ag.html">
+                    <span class="spot-avatar"><img src="assets/sprites/trainer-049-5ddc19da@4x.png" alt="" class="spot-sprite"></span>
+                    <span class="spot-text"><span class="spot-label">Most consistent</span><span class="spot-name">Apoorv</span><span class="spot-detail">27 of 27 days above 75</span></span>
+                    <span class="spot-viz spot-dots" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="na"></i><i class="na"></i><i class="na"></i><i class="on"></i></span>
+                </a>
+                <a class="spot" href="users/user_bugbountyhunter.html">
+                    <span class="spot-avatar"><img src="assets/sprites/trainer-051-df95139d@4x.png" alt="" class="spot-sprite"></span>
+                    <span class="spot-text"><span class="spot-label">Biggest climb</span><span class="spot-name">p4</span><span class="spot-detail">up 11 places to #10</span></span>
+                    <span class="spot-viz spot-climb"><span class="spot-rank was">#21</span><span class="spot-chev" aria-hidden="true">&rsaquo;</span><span class="spot-rank now">#10</span></span>
+                </a></div>
+            <div class="community">
+                <div class="community-text">
+                    <span class="spot-label">Community</span>
+                    <span class="community-value"><span class="count num" data-count="802">802</span> flowers this week</span>
+                    <span class="delta delta-up"><span class="delta-arrow" aria-hidden="true">&#9650;</span>+14 (+2%) vs last week</span>
+                </div>
+                <div class="community-chart" aria-label="Community flowers over the last 30 days"><span class="community-ticks"><span>828</span><span>577</span></span><svg class="group-spark" viewBox="0 0 600 110" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="bandg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity="0.22"/><stop offset="1" stop-color="currentColor" stop-opacity="0.02"/></linearGradient></defs><rect class="group-band" x="474.1" y="0" width="125.9" height="110"/><path class="group-area" d="M3.0,110 L3.0,73.7 L23.5,68.0 L44.0,74.2 L64.4,47.8 L84.9,57.2 L105.4,42.2 L125.9,43.3 L146.4,53.0 L166.9,43.6 L187.3,44.7 L207.8,43.3 L228.3,56.9 L248.8,50.1 L269.3,42.2 L289.8,43.0 L310.2,45.0 L330.7,26.8 L351.2,33.9 L371.7,12.4 L392.2,4.1 L412.7,3.0 L433.1,8.4 L453.6,14.4 L474.1,3.6 L494.6,15.8 L515.1,20.9 L597.0,10.4 L597.0,110 Z"/><path class="group-line" d="M3.0,73.7 L23.5,68.0 L44.0,74.2 L64.4,47.8 L84.9,57.2 L105.4,42.2 L125.9,43.3 L146.4,53.0 L166.9,43.6 L187.3,44.7 L207.8,43.3 L228.3,56.9 L248.8,50.1 L269.3,42.2 L289.8,43.0 L310.2,45.0 L330.7,26.8 L351.2,33.9 L371.7,12.4 L392.2,4.1 L412.7,3.0 L433.1,8.4 L453.6,14.4 L474.1,3.6 L494.6,15.8 L515.1,20.9 M597.0,10.4" vector-effect="non-scaling-stroke"/></svg><span class="group-dot" style="left:99.5%;top:9.4%"></span><span class="community-axis"><span>30 days ago &middot; <b>579</b></span><span class="community-axis-end">last 7 days highlighted &middot; <b>802</b> today</span></span></div>
+            </div>
+        </section>
+
+        <section class="standings" id="standings">
+            <div class="standings-head">
+                <div>
+                    <h2>Full standings</h2>
+                    <p class="standings-note">Ranked by flowers in the last 7 days. Click a column to sort. Star yourself to keep your row in view.</p>
+                </div>
+                <div class="standings-tools">
+                    <button type="button" class="chip" id="jump-me" hidden title="Jump to my row">
+                        <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        <span class="chip-text">Jump to me</span>
+                    </button>
+                    <label class="search">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                        <span class="sr-only">Find a trainer</span>
+                        <input type="search" id="trainer-search" placeholder="Find a trainer" autocomplete="off" spellcheck="false">
+                    </label>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table class="standings-table" id="standings-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="col-rank" aria-sort="ascending"><button type="button" class="sort" data-sort="rank" data-dir="asc">#</button></th>
+                            <th scope="col" class="col-player"><button type="button" class="sort" data-sort="name" data-dir="asc">Trainer</button></th>
+                            <th scope="col" class="col-flowers"><button type="button" class="sort" data-sort="flowers" data-dir="desc">Flowers</button></th>
+                            <th scope="col" class="col-trend">14 days</th>
+                            <th scope="col" class="col-gain"><button type="button" class="sort" data-sort="gain" data-dir="desc"><span class="th-long">Gain 7d</span><span class="th-short" aria-hidden="true">Gain</span></button></th>
+                            <th scope="col" class="col-change"><button type="button" class="sort" data-sort="change" data-dir="desc"><span class="th-long">Rank 7d</span><span class="th-short" aria-hidden="true">Rank</span></button></th>
+                            <th scope="col" class="col-me" title="Mark yourself"><svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="currentColor"/></svg><span class="sr-only">This is me</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    
+                    <tr class="is-top place-1" style="--i:1" data-id="Apoorv_S6ag" data-name="apoorv" data-href="users/user_Apoorv_S6ag.html" data-rank="1" data-flowers="166" data-gain="22" data-change="1">
+                        <td class="col-rank"><span class="rank-num">1</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_Apoorv_S6ag.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-049-5ddc19da@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Apoorv<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Consistent Performer</span><span class="hours-inline"> &middot; 55.3 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">166</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 100.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-up">+22</span> <span class="pill pill-up"><span aria-hidden="true">&#9650;</span>1<span class="sr-only"> places up</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,7.8 L14.8,7.8 L26.7,7.3 L38.5,7.3 L50.4,7.3 L62.2,7.3 L74.1,7.3 L85.9,6.2 L97.8,7.3 L109.6,6.2 M157.0,3.4"/><circle class="spark-dot" cx="157.0" cy="3.4" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-up">+22</span></td>
+                        <td class="col-change"><span class="pill pill-up"><span aria-hidden="true">&#9650;</span>1<span class="sr-only"> places up</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="Apoorv_S6ag" aria-pressed="false" aria-label="Mark Apoorv as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-top place-2" style="--i:2" data-id="Srishti_QuOP" data-name="srishti" data-href="users/user_Srishti_QuOP.html" data-rank="2" data-flowers="150" data-gain="6" data-change="-1">
+                        <td class="col-rank"><span class="rank-num">2</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_Srishti_QuOP.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-001-1fa04730@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Srishti<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Consistent Performer</span><span class="hours-inline"> &middot; 50 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">150</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 90.4%"></span></span>
+                            <span class="m-chip"><span class="gain gain-up">+6</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,3.0 L14.8,7.3 L26.7,7.3 L38.5,7.3 L50.4,3.0 L62.2,7.3 L74.1,7.3 L85.9,3.0 L97.8,7.3 L109.6,7.3 M157.0,6.2"/><circle class="spark-dot" cx="157.0" cy="6.2" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-up">+6</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="Srishti_QuOP" aria-pressed="false" aria-label="Mark Srishti as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-top place-3" style="--i:3" data-id="Momehrust_l0E4" data-name="momehrust" data-href="users/user_Momehrust_l0E4.html" data-rank="3" data-flowers="133" data-gain="35" data-change="1">
+                        <td class="col-rank"><span class="rank-num">3</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_Momehrust_l0E4.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-055-eb8a483b@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Momehrust<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 44.3 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">133</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 80.1%"></span></span>
+                            <span class="m-chip"><span class="gain gain-up">+35</span> <span class="pill pill-up"><span aria-hidden="true">&#9650;</span>1<span class="sr-only"> places up</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,26.4 L14.8,28.4 L26.7,24.1 L38.5,21.8 L50.4,20.5 L62.2,18.7 L74.1,15.5 L85.9,11.2 L97.8,11.6 L109.6,15.9 M157.0,9.2"/><circle class="spark-dot" cx="157.0" cy="9.2" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-up">+35</span></td>
+                        <td class="col-change"><span class="pill pill-up"><span aria-hidden="true">&#9650;</span>1<span class="sr-only"> places up</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="Momehrust_l0E4" aria-pressed="false" aria-label="Mark Momehrust as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr style="--i:4" data-id="SShbounty_cbhK" data-name="sshbounty" data-href="users/user_SShbounty_cbhK.html" data-rank="4" data-flowers="98" data-gain="11" data-change="1">
+                        <td class="col-rank"><span class="rank-num">4</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_SShbounty_cbhK.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-014-74721fde@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">SShbounty<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Consistent Performer</span><span class="hours-inline"> &middot; 32.7 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">98</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 59.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-up">+11</span> <span class="pill pill-up"><span aria-hidden="true">&#9650;</span>1<span class="sr-only"> places up</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,10.9 L14.8,14.1 L26.7,15.1 L38.5,16.6 L50.4,16.2 L62.2,15.9 L74.1,17.5 L85.9,13.9 L97.8,13.9 L109.6,13.9 M157.0,15.5"/><circle class="spark-dot" cx="157.0" cy="15.5" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-up">+11</span></td>
+                        <td class="col-change"><span class="pill pill-up"><span aria-hidden="true">&#9650;</span>1<span class="sr-only"> places up</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="SShbounty_cbhK" aria-pressed="false" aria-label="Mark SShbounty as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr style="--i:5" data-id="Yash_fren" data-name="yash" data-href="users/user_Yash_fren.html" data-rank="5" data-flowers="84" data-gain="6" data-change="1">
+                        <td class="col-rank"><span class="rank-num">5</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_Yash_fren.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-015-a6276cc3@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Yash<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Consistent Performer</span><span class="hours-inline"> &middot; 28 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">84</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 50.6%"></span></span>
+                            <span class="m-chip"><span class="gain gain-up">+6</span> <span class="pill pill-up"><span aria-hidden="true">&#9650;</span>1<span class="sr-only"> places up</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,26.0 L14.8,22.8 L26.7,18.5 L38.5,16.4 L50.4,19.1 L62.2,16.9 L74.1,19.1 L85.9,19.1 L97.8,20.1 L109.6,20.1 M157.0,18.0"/><circle class="spark-dot" cx="157.0" cy="18.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-up">+6</span></td>
+                        <td class="col-change"><span class="pill pill-up"><span aria-hidden="true">&#9650;</span>1<span class="sr-only"> places up</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="Yash_fren" aria-pressed="false" aria-label="Mark Yash as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="line-row" aria-hidden="true"><td colspan="7"><span>75-flower line</span></td></tr>
+                    <tr class="is-low" style="--i:6" data-id="akkubhosle1" data-name="akash bhosle" data-href="users/user_akkubhosle1.html" data-rank="6" data-flowers="72" data-gain="-48" data-change="-3">
+                        <td class="col-rank"><span class="rank-num">6</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_akkubhosle1.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-017-d00a3a5f@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Akash Bhosle<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 24 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">72</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 43.4%"></span></span>
+                            <span class="m-chip"><span class="gain gain-down">&minus;48</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>3<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,18.0 L14.8,11.6 L26.7,9.4 L38.5,9.4 L50.4,9.4 L62.2,11.6 L74.1,11.6 L85.9,13.7 L97.8,18.0 L109.6,18.0 M157.0,20.1"/><circle class="spark-dot" cx="157.0" cy="20.1" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-down">&minus;48</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>3<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="akkubhosle1" aria-pressed="false" aria-label="Mark Akash Bhosle as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-low" style="--i:7" data-id="kuro_M3Cr" data-name="kuro" data-href="users/user_kuro_M3Cr.html" data-rank="7" data-flowers="31" data-gain="11" data-change="1">
+                        <td class="col-rank"><span class="rank-num">7</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_kuro_M3Cr.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-061-8642e126@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">kuro<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 10.3 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">31</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 18.7%"></span></span>
+                            <span class="m-chip"><span class="gain gain-up">+11</span> <span class="pill pill-up"><span aria-hidden="true">&#9650;</span>1<span class="sr-only"> places up</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,30.3 L14.8,31.9 L26.7,31.9 L38.5,31.0 L50.4,31.0 L62.2,29.4 L74.1,29.4 L85.9,29.8 L97.8,27.8 L109.6,27.8 M157.0,27.5"/><circle class="spark-dot" cx="157.0" cy="27.5" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-up">+11</span></td>
+                        <td class="col-change"><span class="pill pill-up"><span aria-hidden="true">&#9650;</span>1<span class="sr-only"> places up</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="kuro_M3Cr" aria-pressed="false" aria-label="Mark kuro as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-low" style="--i:8" data-id="Shubham_Kh_V9WH" data-name="shubham khanna" data-href="users/user_Shubham_Kh_V9WH.html" data-rank="8" data-flowers="24" data-gain="-36" data-change="-1">
+                        <td class="col-rank"><span class="rank-num">8</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_Shubham_Kh_V9WH.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-047-9fec1701@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Shubham Khanna<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Slumping</span><span class="hours-inline"> &middot; 8 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">24</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 14.5%"></span></span>
+                            <span class="m-chip"><span class="gain gain-down">&minus;36</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,20.9 L14.8,25.1 L26.7,20.9 L38.5,18.7 L50.4,20.9 L62.2,20.9 L74.1,22.3 L85.9,24.4 L97.8,24.4 L109.6,24.4 M157.0,28.7"/><circle class="spark-dot" cx="157.0" cy="28.7" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-down">&minus;36</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="Shubham_Kh_V9WH" aria-pressed="false" aria-label="Mark Shubham Khanna as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-low" style="--i:9" data-id="t3po" data-name="t3po" data-href="users/user_t3po.html" data-rank="9" data-flowers="22" data-gain="19" data-change="2">
+                        <td class="col-rank"><span class="rank-num">9</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_t3po.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-001-1fa04730@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">t3po<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Rising Star</span><span class="hours-inline"> &middot; 7.3 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">22</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 13.3%"></span></span>
+                            <span class="m-chip"><span class="gain gain-up">+19</span> <span class="pill pill-up"><span aria-hidden="true">&#9650;</span>2<span class="sr-only"> places up</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,27.1 L14.8,27.3 L26.7,27.6 L38.5,28.5 L50.4,28.5 L62.2,30.5 L74.1,32.5 L85.9,32.5 L97.8,30.3 L109.6,30.3 M157.0,29.1"/><circle class="spark-dot" cx="157.0" cy="29.1" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-up">+19</span></td>
+                        <td class="col-change"><span class="pill pill-up"><span aria-hidden="true">&#9650;</span>2<span class="sr-only"> places up</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="t3po" aria-pressed="false" aria-label="Mark t3po as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-low" style="--i:10" data-id="bugbountyhunter" data-name="p4" data-href="users/user_bugbountyhunter.html" data-rank="10" data-flowers="10" data-gain="10" data-change="11">
+                        <td class="col-rank"><span class="rank-num">10</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_bugbountyhunter.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-051-df95139d@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">p4<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Rising Star</span><span class="hours-inline"> &middot; 3.3 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">10</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 6.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-up">+10</span> <span class="pill pill-up"><span aria-hidden="true">&#9650;</span>11<span class="sr-only"> places up</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,31.2"/><circle class="spark-dot" cx="157.0" cy="31.2" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-up">+10</span></td>
+                        <td class="col-change"><span class="pill pill-up"><span aria-hidden="true">&#9650;</span>11<span class="sr-only"> places up</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="bugbountyhunter" aria-pressed="false" aria-label="Mark p4 as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-low" style="--i:11" data-id="zix_" data-name="zix 🌌" data-href="users/user_zix_.html" data-rank="11" data-flowers="9" data-gain="-8" data-change="-2">
+                        <td class="col-rank"><span class="rank-num">11</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_zix_.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-037-9610fc8a@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Zix 🌌<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 3 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">9</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 5.4%"></span></span>
+                            <span class="m-chip"><span class="gain gain-down">&minus;8</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>2<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,30.1 L14.8,30.1 L26.7,31.0 L38.5,31.0 L50.4,31.6 L62.2,31.6 L74.1,30.0 L85.9,31.4 L97.8,31.4 L109.6,31.4 M157.0,31.4"/><circle class="spark-dot" cx="157.0" cy="31.4" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-down">&minus;8</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>2<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="zix_" aria-pressed="false" aria-label="Mark Zix 🌌 as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-low" style="--i:12" data-id="saamm_qpme" data-name="saamm" data-href="users/user_saamm_qpme.html" data-rank="12" data-flowers="3" data-gain="-14" data-change="-2">
+                        <td class="col-rank"><span class="rank-num">12</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_saamm_qpme.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-010-03761b1e@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">saamm<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Slumping</span><span class="hours-inline"> &middot; 1 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">3</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 1.8%"></span></span>
+                            <span class="m-chip"><span class="gain gain-down">&minus;14</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>2<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,29.6 L14.8,28.2 L26.7,27.8 L38.5,27.8 L50.4,27.6 L62.2,28.5 L74.1,30.0 L85.9,30.3 L97.8,31.0 L109.6,31.0 M157.0,32.5"/><circle class="spark-dot" cx="157.0" cy="32.5" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-down">&minus;14</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>2<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="saamm_qpme" aria-pressed="false" aria-label="Mark saamm as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="group-row"><td colspan="7"><button type="button" class="group-toggle" aria-expanded="false"><span class="group-count">19</span> trainers with no flowers this week <span class="group-arrow" aria-hidden="true">&#9662;</span></button></td></tr>
+                    <tr class="is-inactive" style="--i:13" data-id="RitikBhardwaj" data-name="ritik bhardwaj" data-href="users/user_RitikBhardwaj.html" data-rank="13" data-flowers="0" data-gain="0" data-change="-1">
+                        <td class="col-rank"><span class="rank-num">13</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_RitikBhardwaj.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-010-03761b1e@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Ritik Bhardwaj<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="RitikBhardwaj" aria-pressed="false" aria-label="Mark Ritik Bhardwaj as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:14" data-id="shreyas" data-name="shreyas" data-href="users/user_shreyas.html" data-rank="14" data-flowers="0" data-gain="0" data-change="-1">
+                        <td class="col-rank"><span class="rank-num">14</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_shreyas.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-023-ed4a0f7d@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">shreyas<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="shreyas" aria-pressed="false" aria-label="Mark shreyas as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:15" data-id="NamikazeMi_JoWH" data-name="namikazeminato" data-href="users/user_NamikazeMi_JoWH.html" data-rank="15" data-flowers="0" data-gain="0" data-change="-1">
+                        <td class="col-rank"><span class="rank-num">15</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_NamikazeMi_JoWH.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-047-9fec1701@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">NamikazeMinato<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="NamikazeMi_JoWH" aria-pressed="false" aria-label="Mark NamikazeMinato as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:16" data-id="rabbitfoot" data-name="rabbitfoot" data-href="users/user_rabbitfoot.html" data-rank="16" data-flowers="0" data-gain="0" data-change="-1">
+                        <td class="col-rank"><span class="rank-num">16</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_rabbitfoot.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-061-8642e126@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Rabbitfoot<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="rabbitfoot" aria-pressed="false" aria-label="Mark Rabbitfoot as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:17" data-id="Epic186_LmHD" data-name="epic186" data-href="users/user_Epic186_LmHD.html" data-rank="17" data-flowers="0" data-gain="0" data-change="-1">
+                        <td class="col-rank"><span class="rank-num">17</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_Epic186_LmHD.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-001-1fa04730@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Epic186<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="Epic186_LmHD" aria-pressed="false" aria-label="Mark Epic186 as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:18" data-id="Dr4g0n_lQ3J" data-name="dr4g0n" data-href="users/user_Dr4g0n_lQ3J.html" data-rank="18" data-flowers="0" data-gain="0" data-change="-1">
+                        <td class="col-rank"><span class="rank-num">18</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_Dr4g0n_lQ3J.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-029-14b0c4a3@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Dr4g0n<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="Dr4g0n_lQ3J" aria-pressed="false" aria-label="Mark Dr4g0n as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:19" data-id="bokuwa_tobi" data-name="tobi" data-href="users/user_bokuwa_tobi.html" data-rank="19" data-flowers="0" data-gain="0" data-change="-1">
+                        <td class="col-rank"><span class="rank-num">19</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_bokuwa_tobi.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-058-0807ba2b@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">TOBi<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="bokuwa_tobi" aria-pressed="false" aria-label="Mark TOBi as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:20" data-id="Harshit_777" data-name="harshit" data-href="users/user_Harshit_777.html" data-rank="20" data-flowers="0" data-gain="0" data-change="-1">
+                        <td class="col-rank"><span class="rank-num">20</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_Harshit_777.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-029-14b0c4a3@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">HARSHIT<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="Harshit_777" aria-pressed="false" aria-label="Mark HARSHIT as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:21" data-id="ali_8Luq" data-name="ali" data-href="users/user_ali_8Luq.html" data-rank="21" data-flowers="0" data-gain="0" data-change="-1">
+                        <td class="col-rank"><span class="rank-num">21</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_ali_8Luq.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-001-1fa04730@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">ali<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-down"><span aria-hidden="true">&#9660;</span>1<span class="sr-only"> places down</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="ali_8Luq" aria-pressed="false" aria-label="Mark ali as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:22" data-id="Kheneh_V62t" data-name="kheneh" data-href="users/user_Kheneh_V62t.html" data-rank="22" data-flowers="0" data-gain="0" data-change="0">
+                        <td class="col-rank"><span class="rank-num">22</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_Kheneh_V62t.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-012-041c92bb@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Kheneh<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="Kheneh_V62t" aria-pressed="false" aria-label="Mark Kheneh as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:23" data-id="anonymousp_jqMr" data-name="anonymous-player" data-href="users/user_anonymousp_jqMr.html" data-rank="23" data-flowers="0" data-gain="0" data-change="0">
+                        <td class="col-rank"><span class="rank-num">23</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_anonymousp_jqMr.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-001-1fa04730@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">anonymous-player<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="anonymousp_jqMr" aria-pressed="false" aria-label="Mark anonymous-player as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:24" data-id="Elden_lord_xY0b" data-name="elden lord" data-href="users/user_Elden_lord_xY0b.html" data-rank="24" data-flowers="0" data-gain="0" data-change="0">
+                        <td class="col-rank"><span class="rank-num">24</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_Elden_lord_xY0b.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-014-74721fde@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Elden lord<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="Elden_lord_xY0b" aria-pressed="false" aria-label="Mark Elden lord as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:25" data-id="bhvrvt" data-name="bharat" data-href="users/user_bhvrvt.html" data-rank="25" data-flowers="0" data-gain="0" data-change="0">
+                        <td class="col-rank"><span class="rank-num">25</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_bhvrvt.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-049-5ddc19da@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Bharat<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="bhvrvt" aria-pressed="false" aria-label="Mark Bharat as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:26" data-id="chaithu_QmSm" data-name="chaithu" data-href="users/user_chaithu_QmSm.html" data-rank="26" data-flowers="0" data-gain="0" data-change="0">
+                        <td class="col-rank"><span class="rank-num">26</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_chaithu_QmSm.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-010-03761b1e@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">chaithu<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="chaithu_QmSm" aria-pressed="false" aria-label="Mark chaithu as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:27" data-id="uday" data-name="hacker" data-href="users/user_uday.html" data-rank="27" data-flowers="0" data-gain="0" data-change="0">
+                        <td class="col-rank"><span class="rank-num">27</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_uday.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-001-1fa04730@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">hacker<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="uday" aria-pressed="false" aria-label="Mark hacker as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:28" data-id="AH_6MbD" data-name="ah" data-href="users/user_AH_6MbD.html" data-rank="28" data-flowers="0" data-gain="0" data-change="0">
+                        <td class="col-rank"><span class="rank-num">28</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_AH_6MbD.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-001-1fa04730@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">AH<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="AH_6MbD" aria-pressed="false" aria-label="Mark AH as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:29" data-id="Atom_le_Bi_2yjR" data-name="atom le biohacker" data-href="users/user_Atom_le_Bi_2yjR.html" data-rank="29" data-flowers="0" data-gain="0" data-change="0">
+                        <td class="col-rank"><span class="rank-num">29</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_Atom_le_Bi_2yjR.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-014-74721fde@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Atom le Biohacker<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="Atom_le_Bi_2yjR" aria-pressed="false" aria-label="Mark Atom le Biohacker as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:30" data-id="0x04ft" data-name="0x04ft" data-href="users/user_0x04ft.html" data-rank="30" data-flowers="0" data-gain="0" data-change="0">
+                        <td class="col-rank"><span class="rank-num">30</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_0x04ft.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-024-645a53dc@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">0x04ft<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="0x04ft" aria-pressed="false" aria-label="Mark 0x04ft as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    <tr class="is-inactive" style="--i:31" data-id="Sidduuuuu" data-name="sidduuuuuuu" data-href="users/user_Sidduuuuu.html" data-rank="31" data-flowers="0" data-gain="0" data-change="0">
+                        <td class="col-rank"><span class="rank-num">31</span></td>
+                        <td class="col-player">
+                            <a class="player-link" href="users/user_Sidduuuuu.html">
+                                <span class="avatar"><img src="assets/sprites/trainer-022-034274af@4x.png" class="avatar-img" alt="" loading="lazy"></span>
+                                <span class="player-meta">
+                                    <span class="player-name">Sidduuuuuuu<span class="me-tag">you</span></span>
+                                    <span class="player-title"><span class="role">Average</span><span class="hours-inline"> &middot; 0 h</span></span>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="col-flowers">
+                            <span class="num">0</span>
+                            <span class="bar" aria-hidden="true"><span class="bar-fill" style="width: 0.0%"></span></span>
+                            <span class="m-chip"><span class="gain gain-flat">0</span> <span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></span>
+                        </td>
+                        <td class="col-trend"><svg class="spark" viewBox="0 0 160 36" width="160" height="36" aria-hidden="true"><line class="spark-line" x1="0" x2="160" y1="19.6" y2="19.6"/><path class="spark-path" d="M3.0,33.0 L14.8,33.0 L26.7,33.0 L38.5,33.0 L50.4,33.0 L62.2,33.0 L74.1,33.0 L85.9,33.0 L97.8,33.0 L109.6,33.0 M157.0,33.0"/><circle class="spark-dot" cx="157.0" cy="33.0" r="2.2"/></svg></td>
+                        <td class="col-gain"><span class="gain gain-flat">0</span></td>
+                        <td class="col-change"><span class="pill pill-flat"><span aria-hidden="true">&#8212;</span><span class="sr-only">no change</span></span></td>
+                        <td class="col-me"><button type="button" class="me-btn" data-id="Sidduuuuu" aria-pressed="false" aria-label="Mark Sidduuuuuuu as me" title="This is me">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg>
+                        </button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="empty-state" id="search-empty" hidden>No trainer matches that name.</p>
+
+            <ul class="legend" aria-label="Legend">
+                <li><span class="legend-line"></span> The 75-flower line, also drawn through each 14-day trend</li>
+                <li><span class="gain gain-up">+12</span> Flowers gained versus 7 days ago</li>
+                <li><span class="pill pill-up"><span aria-hidden="true">&#9650;</span>2</span> Rank change versus 7 days ago</li>
+            </ul>
+        </section>
+
+        <footer class="site-footer">
+            <p>Updated <time datetime="2026-09-23 11:50:01 UTC">2026-09-23 11:50:01 UTC</time>, refreshes every 6 hours.</p>
+            <p>Made for the Warriors of Hell community. Data from <a href="https://www.focumon.com" rel="noopener">focumon.com</a>.</p>
+        </footer>
+        </div>
+    </div>
+
+    <div class="drawer" id="drawer" hidden>
+        <div class="drawer-backdrop"></div>
+        <aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-name">
+            <button type="button" class="drawer-close" aria-label="Close">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+            <div class="drawer-body"></div>
+        </aside>
+    </div>
+
+    <script type="application/json" id="trainer-data">[{"id":"Apoorv_S6ag","name":"Apoorv","rank":1,"total":31,"flowers":166,"gain7":22,"rank_change":1,"title":"Consistent Performer","above30":27,"days30":27,"avatar":"assets/sprites/trainer-049-5ddc19da@4x.png","focumon":"assets/sprites/focumon-099-79fb5c28@4x.png","series30":[144,142,147,142,142,142,152,144,144,144,144,144,141,141,141,141,141,141,144,144,144,144,144,150,144,150,null,null,null,166],"line":75,"end":"2026-09-23"},{"id":"Srishti_QuOP","name":"Srishti","rank":2,"total":31,"flowers":150,"gain7":6,"rank_change":-1,"title":"Consistent Performer","above30":27,"days30":27,"avatar":"assets/sprites/trainer-001-1fa04730@4x.png","focumon":"assets/sprites/focumon-115-8d37e8b8@4x.png","series30":[156,168,144,168,144,168,140,144,144,168,168,144,168,168,150,144,168,144,144,144,168,144,144,168,144,144,null,null,null,150],"line":75,"end":"2026-09-23"},{"id":"Momehrust_l0E4","name":"Momehrust","rank":3,"total":31,"flowers":133,"gain7":35,"rank_change":1,"title":"Average","above30":8,"days30":27,"avatar":"assets/sprites/trainer-055-eb8a483b@4x.png","focumon":"assets/sprites/focumon-038-878547e5@4x.png","series30":[84,72,72,72,72,72,72,72,84,72,71,71,59,71,61,49,37,26,50,63,70,80,98,122,120,96,null,null,null,133],"line":75,"end":"2026-09-23"},{"id":"SShbounty_cbhK","name":"SShbounty","rank":4,"total":31,"flowers":98,"gain7":11,"rank_change":1,"title":"Consistent Performer","above30":19,"days30":27,"avatar":"assets/sprites/trainer-014-74721fde@4x.png","focumon":"assets/sprites/focumon-064-df6aeb45@4x.png","series30":[68,51,23,39,39,55,70,70,93,103,122,130,131,123,123,122,124,106,100,92,94,96,87,107,107,107,null,null,null,98],"line":75,"end":"2026-09-23"},{"id":"Yash_fren","name":"Yash","rank":5,"total":31,"flowers":84,"gain7":6,"rank_change":1,"title":"Consistent Performer","above30":17,"days30":27,"avatar":"assets/sprites/trainer-015-a6276cc3@4x.png","focumon":"assets/sprites/focumon-007-5de07488@4x.png","series30":[72,93,93,127,138,138,132,131,146,122,100,65,65,74,51,39,39,57,81,93,78,90,78,78,72,72,null,null,null,84],"line":75,"end":"2026-09-23"},{"id":"akkubhosle1","name":"Akash Bhosle","rank":6,"total":31,"flowers":72,"gain7":-48,"rank_change":-3,"title":"Average","above30":10,"days30":27,"avatar":"assets/sprites/trainer-017-d00a3a5f@4x.png","focumon":"assets/sprites/focumon-014-8174f59f@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,24,24,60,60,84,120,132,132,132,120,120,108,84,84,null,null,null,72],"line":75,"end":"2026-09-23"},{"id":"kuro_M3Cr","name":"kuro","rank":7,"total":31,"flowers":31,"gain7":11,"rank_change":1,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-061-8642e126@4x.png","focumon":"assets/sprites/focumon-090-760384b1@4x.png","series30":[0,0,0,1,1,1,1,1,4,4,12,12,12,12,12,9,15,6,6,11,11,20,20,18,29,29,null,null,null,31],"line":75,"end":"2026-09-23"},{"id":"Shubham_Kh_V9WH","name":"Shubham Khanna","rank":8,"total":31,"flowers":24,"gain7":-36,"rank_change":-1,"title":"Slumping","above30":2,"days30":27,"avatar":"assets/sprites/trainer-047-9fec1701@4x.png","focumon":"assets/sprites/focumon-055-92fdd8f0@4x.png","series30":[36,48,60,84,60,72,72,48,36,36,36,36,36,48,48,68,68,44,68,80,68,68,60,48,48,48,null,null,null,24],"line":75,"end":"2026-09-23"},{"id":"t3po","name":"t3po","rank":9,"total":31,"flowers":22,"gain7":19,"rank_change":2,"title":"Rising Star","above30":0,"days30":27,"avatar":"assets/sprites/trainer-001-1fa04730@4x.png","focumon":"assets/sprites/focumon-055-92fdd8f0@4x.png","series30":[16,20,20,13,17,14,19,19,18,28,29,27,21,21,32,29,33,32,30,25,25,14,3,3,15,15,null,null,null,22],"line":75,"end":"2026-09-23"},{"id":"bugbountyhunter","name":"p4","rank":10,"total":31,"flowers":10,"gain7":10,"rank_change":11,"title":"Rising Star","above30":0,"days30":27,"avatar":"assets/sprites/trainer-051-df95139d@4x.png","focumon":"assets/sprites/focumon-003-35e7a56c@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,10],"line":75,"end":"2026-09-23"},{"id":"zix_","name":"Zix \ud83c\udf0c","rank":11,"total":31,"flowers":9,"gain7":-8,"rank_change":-2,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-037-9610fc8a@4x.png","focumon":"assets/sprites/focumon-009-34765f3c@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,5,5,8,8,8,16,16,11,11,8,8,17,9,9,9,null,null,null,9],"line":75,"end":"2026-09-23"},{"id":"saamm_qpme","name":"saamm","rank":12,"total":31,"flowers":3,"gain7":-14,"rank_change":-2,"title":"Slumping","above30":0,"days30":27,"avatar":"assets/sprites/trainer-010-03761b1e@4x.png","focumon":"assets/sprites/focumon-013-4aaaf9ce@4x.png","series30":[3,5,18,24,24,28,28,23,16,4,4,4,0,0,1,11,19,27,29,29,30,25,17,15,11,11,null,null,null,3],"line":75,"end":"2026-09-23"},{"id":"RitikBhardwaj","name":"Ritik Bhardwaj","rank":13,"total":31,"flowers":0,"gain7":0,"rank_change":-1,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-010-03761b1e@4x.png","focumon":"assets/sprites/focumon-123-4d39f7e7@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"shreyas","name":"shreyas","rank":14,"total":31,"flowers":0,"gain7":0,"rank_change":-1,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-023-ed4a0f7d@4x.png","focumon":"assets/sprites/focumon-181-aac27ec0@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"NamikazeMi_JoWH","name":"NamikazeMinato","rank":15,"total":31,"flowers":0,"gain7":0,"rank_change":-1,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-047-9fec1701@4x.png","focumon":"assets/sprites/focumon-001-0a9b0e2a@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"rabbitfoot","name":"Rabbitfoot","rank":16,"total":31,"flowers":0,"gain7":0,"rank_change":-1,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-061-8642e126@4x.png","focumon":"assets/sprites/focumon-064-df6aeb45@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"Epic186_LmHD","name":"Epic186","rank":17,"total":31,"flowers":0,"gain7":0,"rank_change":-1,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-001-1fa04730@4x.png","focumon":"assets/sprites/focumon-126-8fecebd7@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"Dr4g0n_lQ3J","name":"Dr4g0n","rank":18,"total":31,"flowers":0,"gain7":0,"rank_change":-1,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-029-14b0c4a3@4x.png","focumon":"assets/sprites/focumon-046-43fe0dd3@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"bokuwa_tobi","name":"TOBi","rank":19,"total":31,"flowers":0,"gain7":0,"rank_change":-1,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-058-0807ba2b@4x.png","focumon":"assets/sprites/focumon-010-dffc6887@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"Harshit_777","name":"HARSHIT","rank":20,"total":31,"flowers":0,"gain7":0,"rank_change":-1,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-029-14b0c4a3@4x.png","focumon":"assets/sprites/focumon-192-f9af4b3c@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"ali_8Luq","name":"ali","rank":21,"total":31,"flowers":0,"gain7":0,"rank_change":-1,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-001-1fa04730@4x.png","focumon":"assets/sprites/focumon-120-3c0b9ffd@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"Kheneh_V62t","name":"Kheneh","rank":22,"total":31,"flowers":0,"gain7":0,"rank_change":0,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-012-041c92bb@4x.png","focumon":"assets/sprites/focumon-063-ea0cb227@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"anonymousp_jqMr","name":"anonymous-player","rank":23,"total":31,"flowers":0,"gain7":0,"rank_change":0,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-001-1fa04730@4x.png","focumon":"assets/sprites/focumon-034-bc3e8f20@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"Elden_lord_xY0b","name":"Elden lord","rank":24,"total":31,"flowers":0,"gain7":0,"rank_change":0,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-014-74721fde@4x.png","focumon":"assets/sprites/focumon-120-3c0b9ffd@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"bhvrvt","name":"Bharat","rank":25,"total":31,"flowers":0,"gain7":0,"rank_change":0,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-049-5ddc19da@4x.png","focumon":"assets/sprites/focumon-102-a996248e@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"chaithu_QmSm","name":"chaithu","rank":26,"total":31,"flowers":0,"gain7":0,"rank_change":0,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-010-03761b1e@4x.png","focumon":"assets/sprites/focumon-123-4d39f7e7@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"uday","name":"hacker","rank":27,"total":31,"flowers":0,"gain7":0,"rank_change":0,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-001-1fa04730@4x.png","focumon":"assets/sprites/focumon-120-3c0b9ffd@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"AH_6MbD","name":"AH","rank":28,"total":31,"flowers":0,"gain7":0,"rank_change":0,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-001-1fa04730@4x.png","focumon":"assets/sprites/focumon-055-92fdd8f0@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"Atom_le_Bi_2yjR","name":"Atom le Biohacker","rank":29,"total":31,"flowers":0,"gain7":0,"rank_change":0,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-014-74721fde@4x.png","focumon":"assets/sprites/focumon-002-43cf9f16@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"0x04ft","name":"0x04ft","rank":30,"total":31,"flowers":0,"gain7":0,"rank_change":0,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-024-645a53dc@4x.png","focumon":"assets/sprites/focumon-123-4d39f7e7@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"},{"id":"Sidduuuuu","name":"Sidduuuuuuu","rank":31,"total":31,"flowers":0,"gain7":0,"rank_change":0,"title":"Average","above30":0,"days30":27,"avatar":"assets/sprites/trainer-022-034274af@4x.png","focumon":"assets/sprites/focumon-044-2e02d421@4x.png","series30":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,null,null,null,0],"line":75,"end":"2026-09-23"}]</script>
+    <script src="design/avatar-study/baseline.js"></script>
+    <aside class="study-toolbar" aria-label="Compare avatar designs">
+        <span class="study-label">AVATAR STUDY</span>
+        <div class="study-views" role="group" aria-label="Avatar treatment">
+            <button type="button" data-study-view="current" aria-pressed="false">Current</button>
+            <button type="button" data-study-view="concept" aria-pressed="true">Concept</button>
+        </div>
+    </aside>
+    <script src="design/avatar-study/preview.js"></script>
+</body>
+</html>
