@@ -1,0 +1,37 @@
+{
+  "baseCommit": "9ef4a7540a0758772a0371ba63b65e8cd20f9152",
+  "lastSuccessfulRun": "https://github.com/shreyaschavhan/woh-leaderboard/actions/runs/35954512561",
+  "unchangedFiles": {
+    "index.html": "8e80d00b0f369a27615f3d28b57f38539cbea560190531565e932661b3938710",
+    "template.html": "b4c3dd7c1407e817a4980beb114b1d56e7fbf5818c6afc598557b8f5d5c02b3c",
+    "user_template.html": "385469a0d8fb0dc676b8c236e177fd3c905c29f2807c1633931ebdf404ce48d7",
+    "generate_leaderboard.py": "2281a6b47f1c0ed93c01c8cadf6206efb765eb2b51d31cf4bf182c2227aa5102"
+  },
+  "commit": "0e3efa2bbcf8713f9c12064544c5aa2d1cc243ab",
+  "branch": "main",
+  "publishStatus": "manual_push_reserved_for_user",
+  "validatedWidths": [
+    390,
+    760,
+    761,
+    1100,
+    1101,
+    1440,
+    1920
+  ],
+  "computedDifferences": 0,
+  "pageErrors": 0,
+  "normalAnimationChecked": true,
+  "themesChecked": [
+    "light/day",
+    "dark/night"
+  ],
+  "checks": [
+    "trainer details",
+    "trainer history charts",
+    "theme and sky controls",
+    "search",
+    "sorting",
+    "flower keyboard activation"
+  ]
+}

@@ -1,0 +1,58 @@
+/* Proposal: one bounded desktop composition, with the winners in the foreground.
+   Everything at 760px and below uses the frozen production styles. */
+@media (min-width: 761px) {
+    html[data-desktop="concept"] {
+        --composition-width: min(1180px, calc(100% - 2 * var(--gutter)));
+        --composition-inset: max(var(--gutter), calc((100% - 1180px) / 2));
+    }
+    [data-desktop="concept"] .home .topbar {
+        width: var(--composition-width);
+        margin-inline: auto;
+        padding: 20px 0;
+    }
+    [data-desktop="concept"] .hero {
+        min-height: clamp(620px, 70vh, 650px);
+    }
+    [data-desktop="concept"] .hero-copy {
+        width: 400px;
+        max-width: calc(var(--composition-width) * 0.36);
+        margin-left: var(--composition-inset);
+        padding: 108px 0 0;
+    }
+    [data-desktop="concept"] .hero h1 {
+        font-size: clamp(2.75rem, 4.2vw, 3.5rem);
+        line-height: 1.04;
+        letter-spacing: -0.035em;
+    }
+    [data-desktop="concept"] .lede {
+        max-width: none;
+        margin-top: 16px;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    [data-desktop="concept"] .hero-hint { margin-top: 10px; }
+    [data-desktop="concept"] .sun,
+    [data-desktop="concept"] .moon {
+        right: calc(var(--composition-inset) + 12px);
+        top: 94px;
+        width: 52px;
+        height: 52px;
+    }
+}
+
+/* When two columns cannot breathe, group the heading above the garden. */
+@media (min-width: 761px) and (max-width: 1100px) {
+    [data-desktop="concept"] .hero { min-height: 680px; }
+    [data-desktop="concept"] .hero-copy {
+        width: var(--composition-width);
+        max-width: none;
+        margin-inline: auto;
+        padding: 84px 52px 0;
+        text-align: center;
+    }
+    [data-desktop="concept"] .hero h1 { font-size: clamp(2rem, 4.2vw, 2.75rem); }
+    [data-desktop="concept"] .lede { margin-top: 12px; font-size: 0.9375rem; }
+    [data-desktop="concept"] .hero-hint { margin-top: 6px; }
+    [data-desktop="concept"] .sun,
+    [data-desktop="concept"] .moon { top: 88px; width: 36px; height: 36px; }
+}
