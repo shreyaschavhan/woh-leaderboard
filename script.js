@@ -331,8 +331,13 @@
         var startX = 26;
         var endX = heroBox.width - 26;
 
-        // Match the title and garden to the same bounded desktop frame.
-        if (!narrow) {
+        // Align the desktop garden with the winners, leaving room for its label.
+        if (window.matchMedia('(min-width: 1200px)').matches) {
+            var stageFrame = gardenPodium.getBoundingClientRect();
+            startX = stageFrame.left - heroBox.left + 76;
+            endX = stageFrame.right - heroBox.left - 76;
+            maxStem = 160;
+        } else if (!narrow) {
             var frame = document.querySelector('.home .topbar').getBoundingClientRect();
             var stacked = window.matchMedia('(max-width: 1100px)').matches;
             startX = stacked ? frame.left - heroBox.left + 24 : gardenCopy.offsetLeft + gardenCopy.offsetWidth + 48;

@@ -1476,3 +1476,55 @@ body.drawer-open { overflow: hidden; }
     .home .sun,
     .home .moon { top: 88px; width: 36px; height: 36px; }
 }
+
+/* Place the introduction beside one complete garden-and-podium stage. */
+@media (min-width: 1200px) {
+    .home {
+        --stage-inset: calc(var(--composition-inset) + 360px);
+        --stage-width: min(820px, calc(100% - 2 * var(--composition-inset) - 360px));
+    }
+    .home .hero {
+        min-height: clamp(590px, 67vh, 620px);
+    }
+    .home .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        background: linear-gradient(90deg, rgb(14 14 32 / 75%), rgb(14 14 32 / 35%) 30%, transparent 50%);
+    }
+    .home .hero-copy {
+        width: 320px;
+        max-width: none;
+        margin-left: var(--composition-inset);
+        padding: clamp(224px, 27vh, 240px) 0 0;
+        text-align: left;
+    }
+    .home .hero h1 {
+        font-size: 3rem;
+        line-height: 1.06;
+        letter-spacing: -0.04em;
+    }
+    .home .lede {
+        margin-top: 20px;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+    .home .lede-line { margin-top: 12px; }
+    .home .hero-hint { margin-top: 14px; }
+    .home .podium {
+        left: var(--stage-inset);
+        width: var(--stage-width);
+        padding-inline: 0;
+        gap: 18px;
+        transform: none;
+    }
+    .home .sun,
+    .home .moon {
+        top: 88px;
+        right: calc(var(--composition-inset) + 8px);
+        width: 40px;
+        height: 40px;
+    }
+}
