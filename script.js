@@ -327,11 +327,20 @@
             }));
         var plantingY = silhouetteTop - 24;
         var copyBottom = gardenCopy.offsetTop + gardenCopy.offsetHeight;
-        var maxStem = narrow ? Math.min(106, (plantingY - copyBottom - 24) / 1.18) : 176;
+        var maxStem = Math.min(106, (plantingY - copyBottom - 24) / 1.18);
+        var startX = 26;
+        var endX = heroBox.width - 26;
+
+        // Match the title and garden to the same bounded desktop frame.
+        if (!narrow) {
+            var frame = document.querySelector('.home .topbar').getBoundingClientRect();
+            var stacked = window.matchMedia('(max-width: 1100px)').matches;
+            startX = stacked ? frame.left - heroBox.left + 24 : gardenCopy.offsetLeft + gardenCopy.offsetWidth + 48;
+            endX = frame.right - heroBox.left - 76;
+            maxStem = stacked ? Math.min(144, (plantingY - copyBottom - 28) / 1.18) : 160;
+        }
         var pixelUnit = Math.max(1, maxStem) / 230;
         var scale = pixelUnit / matrix.a;
-        var startX = narrow ? 26 : Math.max(gardenCopy.offsetLeft + gardenCopy.offsetWidth + 56, heroBox.width * 0.42);
-        var endX = heroBox.width - (narrow ? 26 : 56);
         var span = endX - startX;
         var active = gardenFlowers.filter(function (el) { return Number(el.dataset.flowers) > 0; });
         var seedlings = gardenFlowers.filter(function (el) { return Number(el.dataset.flowers) <= 0; });
@@ -371,9 +380,9 @@
             rule.setAttribute('y2', threshold);
             Array.prototype.forEach.call(gardenLine.querySelectorAll('text'), function (label) {
                 var mobile = label.classList.contains('line75-m');
-                label.setAttribute('x', mobile ? left.x : right.x);
+                label.setAttribute('x', mobile ? left.x : right.x + (narrow ? 0 : 12 / matrix.a));
                 label.setAttribute('y', threshold - 6 / matrix.a);
-                label.setAttribute('text-anchor', mobile ? 'start' : 'end');
+                label.setAttribute('text-anchor', mobile || !narrow ? 'start' : 'end');
             });
         }
     }
@@ -381,7 +390,7 @@
     function fitGarden() {
         if (!garden) return;
         garden.setAttribute('viewBox', window.innerWidth < 760 ? '250 0 500 400' : '0 0 1000 400');
-        garden.setAttribute('preserveAspectRatio', 'xMidYMax meet');
+        garden.setAttribute('preserveAspectRatio', window.innerWidth > 760 ? 'xMidYMax slice' : 'xMidYMax meet');
         cancelAnimationFrame(gardenFrame);
         gardenFrame = requestAnimationFrame(composeGarden);
     }

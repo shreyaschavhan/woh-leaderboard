@@ -1418,3 +1418,61 @@ body.drawer-open { overflow: hidden; }
 @media (max-width: 360px) {
     .drawer-tile { padding-inline: 9px; }
 }
+
+/* A bounded desktop composition keeps the title, garden and winners together. */
+@media (min-width: 761px) {
+    .home {
+        --composition-width: min(1180px, calc(100% - 2 * var(--gutter)));
+        --composition-inset: max(var(--gutter), calc((100% - 1180px) / 2));
+    }
+    .home .topbar {
+        width: var(--composition-width);
+        margin-inline: auto;
+        padding: 20px 0;
+    }
+    .home .hero {
+        min-height: clamp(620px, 70vh, 650px);
+    }
+    .home .hero-copy {
+        width: 400px;
+        max-width: calc(var(--composition-width) * 0.36);
+        margin-left: var(--composition-inset);
+        padding: 108px 0 0;
+    }
+    .home .hero h1 {
+        font-size: clamp(2.75rem, 4.2vw, 3.5rem);
+        line-height: 1.04;
+        letter-spacing: -0.035em;
+    }
+    .home .lede {
+        max-width: none;
+        margin-top: 16px;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    .home .hero-hint { margin-top: 10px; }
+    .home .sun,
+    .home .moon {
+        right: calc(var(--composition-inset) + 12px);
+        top: 94px;
+        width: 52px;
+        height: 52px;
+    }
+}
+
+/* Stack the heading above the garden when two columns cannot breathe. */
+@media (min-width: 761px) and (max-width: 1100px) {
+    .home .hero { min-height: 680px; }
+    .home .hero-copy {
+        width: var(--composition-width);
+        max-width: none;
+        margin-inline: auto;
+        padding: 84px 52px 0;
+        text-align: center;
+    }
+    .home .hero h1 { font-size: clamp(2rem, 4.2vw, 2.75rem); }
+    .home .lede { margin-top: 12px; font-size: 0.9375rem; }
+    .home .hero-hint { margin-top: 6px; }
+    .home .sun,
+    .home .moon { top: 88px; width: 36px; height: 36px; }
+}
