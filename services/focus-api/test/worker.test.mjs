@@ -112,3 +112,31 @@ test('the API is bounded to known trainers and read-only requests', async () => 
     assert.equal((await get('focus', { headers: { Origin: 'https://unrelated.example' } })).status, 403);
     assert.equal((await get('focus', { method: 'OPTIONS' })).status, 204);
 });
+
+test('community pages cover the allowlisted roster once, retaining unknown statuses', async () => {
+    const request = page => runtime.dispatchFetch(`https://focus.test/api/community/${page}`, { headers: { Origin: origin } });
+    const firstResponse = await request(0);
+    assert.equal(firstResponse.status, 200);
+    assert.equal(firstResponse.headers.get('Access-Control-Allow-Origin'), origin);
+    const first = await firstResponse.json();
+    const second = await (await request(1)).json();
+    assert.equal(first.pageSize, 8);
+    assert.equal(first.pages, 2);
+    assert.equal(first.total, scenarios.length);
+    assert.equal(first.trainers.length, 8);
+    const all = [...first.trainers, ...second.trainers];
+    assert.deepEqual(all.map(item => item.trainer), [...scenarios].sort());
+    assert.equal(all.find(item => item.trainer === 'idle').state, 'idle');
+    assert.equal(all.find(item => item.trainer === 'break').session.focusMinutes, 24);
+    assert.equal(all.find(item => item.trainer === 'unknown').state, 'unavailable');
+    const focus = all.find(item => item.trainer === 'focus');
+    assert.equal(focus.state, 'focus');
+    assert.equal(focus.session.name, undefined, 'community responses omit personal task names');
+    assert.equal(focus.session.centerName, undefined);
+    const before = [...counts.values()].reduce((sum, count) => sum + count, 0);
+    await request(0);
+    assert.equal([...counts.values()].reduce((sum, count) => sum + count, 0), before);
+    assert.equal((await request(2)).status, 404);
+    assert.equal((await request('0?url=https://example.com')).status, 404);
+    assert.equal((await request('-1')).status, 404);
+});

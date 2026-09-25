@@ -1,0 +1,43 @@
+<section class="guild-section" id="focusing-now" aria-labelledby="guild-heading" aria-busy="true">
+      <header class="guild-heading-row">
+        <div class="guild-heading-lockup"><span class="guild-emblem" aria-hidden="true">✧</span><div><p class="guild-eyebrow">ALONGSIDE YOU</p><h2 id="guild-heading">Focusing now</h2></div></div>
+        <div class="guild-totals" aria-label="Current session counts"><span class="guild-focus-total"><i aria-hidden="true"></i><strong id="guild-focus-count">—</strong> focusing</span><span class="guild-break-total"><strong id="guild-break-count">—</strong> on a break</span></div>
+      </header>
+      <div class="guild-board" data-state="loading">
+        <div class="guild-atmosphere" aria-hidden="true">
+          <div class="guild-stars"></div><div class="guild-moon"></div>
+          <svg viewBox="0 0 1280 480" preserveAspectRatio="xMidYMid slice" class="guild-horizon">
+            <defs><g id="guild-pine"><path d="M-3 0H3V-100H-3Z M0-145 23-104H13L37-65H24L51-22H-51L-24-65H-37L-13-104H-23Z"/></g></defs>
+            <path fill="#444251" d="M0 245 98 197 142 221 242 130 285 171 307 148 411 238 465 215 538 258 690 126 720 149 762 108 881 231 910 214 986 266 1119 162 1208 232 1280 198V480H0Z"/>
+            <path fill="#817078" opacity=".35" d="m242 130 43 41 22-23 48 41-54-19-13 28-46-44-32 19Zm448-4 30 23 42-41 56 58-49-28-34 51-14-16-31-28-48 39Z"/>
+            <path fill="#303c47" d="M0 302 83 260 167 279 232 236 356 325 475 266 567 303 676 237 760 293 884 250 968 317 1080 263 1170 292 1280 249V480H0Z"/>
+            <path fill="#58645d" opacity=".25" d="M0 333Q180 281 351 310T669 301T983 320T1280 295V480H0Z"/>
+            <g fill="#314647"><use href="#guild-pine" transform="translate(67 365) scale(.35)"/><use href="#guild-pine" transform="translate(94 363) scale(.48)"/><use href="#guild-pine" transform="translate(131 376) scale(.4)"/><use href="#guild-pine" transform="translate(315 355) scale(.42)"/><use href="#guild-pine" transform="translate(348 360) scale(.62)"/><use href="#guild-pine" transform="translate(394 374) scale(.4)"/><use href="#guild-pine" transform="translate(536 344) scale(.36)"/><use href="#guild-pine" transform="translate(564 350) scale(.5)"/><use href="#guild-pine" transform="translate(604 357) scale(.38)"/><use href="#guild-pine" transform="translate(850 375) scale(.43)"/><use href="#guild-pine" transform="translate(884 371) scale(.58)"/><use href="#guild-pine" transform="translate(926 361) scale(.44)"/><use href="#guild-pine" transform="translate(1043 351) scale(.5)"/><use href="#guild-pine" transform="translate(1080 350) scale(.7)"/></g>
+            <path fill="#293d40" d="M0 371Q130 309 308 350T591 329T914 359T1280 325V480H0Z"/>
+            <path fill="#8b9380" opacity=".15" d="m815 334-43 24 41 13-77 33 40 20-103 32 69-1 69-26-35-25 55-36-33-12 24-18Z"/>
+            <g fill="#203536"><use href="#guild-pine" transform="translate(32 470) scale(1.6)"/><use href="#guild-pine" transform="translate(97 462) scale(.8)"/><use href="#guild-pine" transform="translate(162 494) scale(1.2)"/><use href="#guild-pine" transform="translate(1120 480) scale(1.1)"/><use href="#guild-pine" transform="translate(1217 490) scale(1.8)"/></g>
+            <path fill="#1b2c30" d="M0 456 107 443 172 458 309 438 418 457 578 445 723 459 875 433 968 451 1126 435 1280 457V480H0Z"/>
+          </svg>
+          <div class="guild-motes"><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <p class="sr-only" id="guild-live-label">CHECKING THE GUILD</p>
+        <div class="guild-controls">
+          <div class="guild-filters" role="group" aria-label="Filter current sessions"><button type="button" data-filter="all" aria-pressed="true">All sessions <span id="guild-all-count">—</span></button><button type="button" data-filter="focus" aria-pressed="false">Focusing</button><button type="button" data-filter="break" aria-pressed="false">On a break</button></div>
+          <button class="guild-refresh" type="button" id="guild-refresh" aria-label="Refresh session status"><span id="guild-updated">Checking…</span><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 8a6 6 0 1 0 .2 4M16 3v5h-5"/></svg></button>
+        </div>
+        <div class="guild-notice" id="guild-notice" hidden><span aria-hidden="true">◌</span><p id="guild-notice-copy"></p></div>
+        <p class="guild-loading" id="guild-loading" role="status"><span aria-hidden="true">✧</span> Gathering the party…</p>
+        <div class="guild-roster" id="guild-roster" aria-label="Focusing trainers"></div>
+        <div class="guild-rest" id="guild-rest" hidden><div class="guild-rest-heading"><span aria-hidden="true">☾</span><p>TAKING A BREATHER</p><span class="guild-rest-rule"></span></div><div class="guild-rest-list" id="guild-rest-list"></div></div>
+        <div class="guild-empty" id="guild-empty" hidden>
+          <div class="guild-campfire" aria-hidden="true"><span class="guild-fire-glow"></span><svg viewBox="0 0 240 190"><ellipse cx="120" cy="163" rx="91" ry="14" fill="#17272d"/><path fill="#3f4b4b" d="m44 153 25-13 93-8 38 19-25 18H74Z"/><path fill="#708078" d="m56 151 20-8 86-4 23 12-21 8H77Z"/><path stroke="#6c4c3a" stroke-width="12" stroke-linecap="round" d="m91 151 56-20m-56-4 57 28"/><path fill="#d78952" d="M123 155c-42 0-41-34-28-51 0 17 12 22 15 22-13-34 24-53 14-83 33 25 8 50 19 65 5-8 4-16 3-20 31 33 13 67-23 67Z"/><path fill="#f5c67e" d="M121 155c-22-3-20-22-9-34-2 13 6 14 6 14-4-17 14-23 14-41 18 30 16 60-11 61Z"/><path fill="#fff0be" d="M121 155c-9-10-5-16 4-28 1 7 12 20-4 28Z"/><g fill="#e5bd80"><path d="M95 76h3v3h-3zM154 60h2v3h-2zM138 31h3v3h-3zM83 106h2v2h-2z"/></g></svg></div>
+          <div><p class="guild-kicker">THE FIRE IS STILL WARM</p><h3 id="guild-empty-title">A quiet moment<br>before the next quest.</h3><p id="guild-empty-description">No one is focusing right now. Make a little room for your next chapter.</p><a class="guild-join" href="#focus-session">Head to your training <span aria-hidden="true">↗</span></a></div>
+        </div>
+        <footer class="guild-footer"><span><span class="guild-footer-star" aria-hidden="true">✦</span> <span id="guild-roster-size">—</span> in the guild. A little stronger, together.</span><span>Focus time pauses during breaks.</span></footer>
+      </div>
+      <p class="guild-section-note"><span aria-hidden="true">↻</span> Minutes focused in the current session.<span id="guild-coverage">Checking public session status.</span></p>
+      <noscript><p class="guild-section-note">Enable JavaScript to see public focus sessions. <a href="https://www.focumon.com/" target="_blank" rel="noopener noreferrer">Open Focumon ↗</a></p><style>#focusing-now .guild-loading { display: none; }</style></noscript>
+      <p class="sr-only" id="guild-announcement" aria-live="polite"></p>
+    </section>
+
+<dialog id="guild-member-dialog" class="guild-member-dialog" aria-labelledby="guild-dialog-name"><button class="guild-dialog-close" type="button" aria-label="Close trainer details">×</button><p class="guild-kicker">A LITTLE COMPANY GOES A LONG WAY</p><div class="guild-dialog-art" aria-hidden="true"><img id="guild-dialog-avatar" alt=""><img id="guild-dialog-companion" alt=""></div><p id="guild-dialog-status" class="guild-dialog-status">Focusing</p><h2 id="guild-dialog-name"></h2><div class="guild-dialog-time"><strong id="guild-dialog-minutes"></strong><span>min<br><small id="guild-dialog-caption">focused this session</small></span></div><a class="guild-join" id="guild-dialog-link" target="_blank" rel="noopener noreferrer">View on Focumon <span aria-hidden="true">↗</span></a><p class="guild-dialog-note">Public focus time · Updates every minute</p></dialog>

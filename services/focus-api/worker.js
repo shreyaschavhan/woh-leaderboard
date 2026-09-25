@@ -2,6 +2,8 @@ const FOCUMON = 'https://www.focumon.com';
 const pending = new Map();
 const recent = new Map();
 const TTL = 25000;
+const PAGE_SIZE = 8;
+const MAX_ROSTER = 256;
 
 function clean(text) {
     return text.replace(/&(#x[\da-f]+|#\d+|amp|lt|gt|quot|apos|nbsp);/gi, (match, entity) => {
@@ -19,10 +21,11 @@ function pathOf(href) {
     } catch { return ''; }
 }
 
-async function publicPage(path, trainer) {
+async function publicPage(path, trainer, deadline, maxHops = 5) {
     let url = new URL(path, FOCUMON);
-    const signal = AbortSignal.timeout(10000);
-    for (let hop = 0; hop < 5; hop++) {
+    const timeout = AbortSignal.timeout(10000);
+    const signal = deadline ? AbortSignal.any([timeout, deadline]) : timeout;
+    for (let hop = 0; hop < maxHops; hop++) {
         const response = await fetch(url, {
             method: 'GET', redirect: 'manual', signal,
             headers: { Accept: 'text/html, text/vnd.turbo-stream.html', 'Accept-Language': 'en' }
@@ -121,8 +124,8 @@ async function parseMinutes(response) {
     return { focusMinutes: minutes, approximate: /about|over|almost|less than/i.test(duration) && minutes !== 0 };
 }
 
-async function observe(trainer) {
-    const page = await publicPage(`/focus_with/${trainer}`, trainer);
+async function observe(trainer, deadline) {
+    const page = await publicPage(`/focus_with/${trainer}`, trainer, deadline);
     const parsed = await parsePublicPage(page.response, trainer);
     if (page.path === `/trainers/${trainer}` && parsed.ownProfile && parsed.cards.length === 0) {
         return { trainer, state: 'idle', session: null, checkedAt: new Date().toISOString() };
@@ -136,7 +139,8 @@ async function observe(trainer) {
     const focusing = /Focusing\.{0,3}/i.test(status);
     const onBreak = /Taking a break\.{0,3}/i.test(status);
     if (focusing === onBreak) throw new Error('Unknown session state');
-    const stats = await publicPage(`/focus_sessions/${card.id}/mini_stats`, trainer);
+    // A stats redirect is a changed/unknown session, never another page to follow.
+    const stats = await publicPage(`/focus_sessions/${card.id}/mini_stats`, trainer, deadline, 1);
     if (stats.path !== `/focus_sessions/${card.id}/mini_stats`) throw new Error('Session changed during observation');
     const duration = await parseMinutes(stats.response);
     return {
@@ -157,6 +161,66 @@ function json(data, status = 200) {
     return Response.json(data, { status, headers: { 'Cache-Control': status === 200 ? 'public, max-age=25' : 'no-store' } });
 }
 
+async function observation(trainer, deadline) {
+    let result = recent.get(trainer);
+    if (result && result.expires > Date.now()) return result;
+    if (!pending.has(trainer)) {
+        pending.set(trainer, observe(trainer, deadline).then(
+            data => ({ data, status: 200, expires: Date.now() + TTL }),
+            () => ({ data: { error: 'Focumon status is temporarily unavailable' }, status: 503, expires: Date.now() + 5000 })
+        ).finally(() => pending.delete(trainer)));
+    }
+    result = await pending.get(trainer);
+    if (recent.size >= MAX_ROSTER) recent.delete(recent.keys().next().value);
+    recent.set(trainer, result);
+    return result;
+}
+
+async function communityPage(page, allowed) {
+    const members = allowed.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+    const trainers = new Array(members.length);
+    const deadline = AbortSignal.timeout(18000);
+    let next = 0;
+    // At most three open upstream connections. Eight observations need at most
+    // 48 fetches (five focus-link hops + one stats request each), plus two cache
+    // calls: within the Workers Free limit of 50 subrequests per invocation.
+    await Promise.all(Array.from({ length: Math.min(3, members.length) }, async () => {
+        while (next < members.length) {
+            const index = next++;
+            const trainer = members[index];
+            const result = await observation(trainer, deadline);
+            const data = result.data;
+            trainers[index] = result.status === 200 ? {
+                trainer, state: data.state, checkedAt: data.checkedAt,
+                session: data.session ? {
+                    id: data.session.id, focusMinutes: data.session.focusMinutes,
+                    approximate: data.session.approximate
+                } : null
+            } : { trainer, state: 'unavailable', checkedAt: null, session: null };
+        }
+    }));
+    return {
+        page, pageSize: PAGE_SIZE, pages: Math.max(1, Math.ceil(allowed.length / PAGE_SIZE)),
+        total: allowed.length, checkedAt: new Date().toISOString(), trainers
+    };
+}
+
+async function getCommunity(url, page, allowed, ctx) {
+    if (page >= Math.max(1, Math.ceil(allowed.length / PAGE_SIZE))) return json({ error: 'Unknown page' }, 404);
+    // Roster changes cannot reuse a batch cached for a different membership.
+    const key = new Request(`${url.origin}/api/community/${page}?roster=${encodeURIComponent(allowed.join(','))}`);
+    const cached = await caches.default.match(key);
+    if (cached) return cached;
+    const pendingKey = `community:${allowed.join(',')}:${page}`;
+    if (!pending.has(pendingKey)) pending.set(pendingKey, communityPage(page, allowed).finally(() => pending.delete(pendingKey)));
+    const data = await pending.get(pendingKey);
+    const response = json(data);
+    // Briefly share incomplete batches, while allowing a prompt retry.
+    if (data.trainers.some(trainer => trainer.state === 'unavailable')) response.headers.set('Cache-Control', 'public, max-age=5');
+    ctx.waitUntil(caches.default.put(key, response.clone()));
+    return response;
+}
+
 export default {
     async fetch(request, env, ctx) {
         const url = new URL(request.url);
@@ -167,24 +231,15 @@ export default {
             return cors(new Response(null, { status: 204, headers: { 'Access-Control-Allow-Methods': 'GET, OPTIONS', 'Access-Control-Max-Age': '86400' } }), origin);
         }
         if (request.method !== 'GET') return cors(json({ error: 'Read-only endpoint' }, 405), origin);
+        const allowed = [...new Set((env.ALLOWED_TRAINERS || '').split(',').map(value => value.trim()).filter(value => /^[A-Za-z0-9_-]{1,80}$/.test(value)))].sort().slice(0, MAX_ROSTER);
+        const page = url.pathname.match(/^\/api\/community\/(0|[1-9]\d{0,2})$/)?.[1];
+        if (page !== undefined && !url.search) return cors(await getCommunity(url, Number(page), allowed, ctx), origin);
         const trainer = url.pathname.match(/^\/api\/focus\/([A-Za-z0-9_-]{1,80})$/)?.[1];
-        const allowed = (env.ALLOWED_TRAINERS || '').split(',');
         if (!trainer || url.search || !allowed.includes(trainer)) return cors(json({ error: 'Unknown trainer' }, 404), origin);
         const key = new Request(`${url.origin}/api/focus/${trainer}`);
         const cached = await caches.default.match(key);
         if (cached) return cors(cached, origin);
-        let result = recent.get(trainer);
-        if (!result || result.expires <= Date.now()) {
-            if (!pending.has(trainer)) {
-                pending.set(trainer, observe(trainer).then(
-                    data => ({ data, status: 200, expires: Date.now() + TTL }),
-                    () => ({ data: { error: 'Focumon status is temporarily unavailable' }, status: 503, expires: Date.now() + 5000 })
-                ).finally(() => pending.delete(trainer)));
-            }
-            result = await pending.get(trainer);
-            if (recent.size >= 100) recent.delete(recent.keys().next().value);
-            recent.set(trainer, result);
-        }
+        const result = await observation(trainer);
         const response = json(result.data, result.status);
         if (result.status === 200) ctx.waitUntil(caches.default.put(key, response.clone()));
         return cors(response, origin);

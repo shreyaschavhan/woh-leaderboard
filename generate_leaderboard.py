@@ -957,10 +957,13 @@ def main():
 
     with open('focus-panel.html', encoding='utf-8') as f:
         focus_panel = f.read()
+    with open('community-panel.html', encoding='utf-8') as f:
+        community_panel = f.read()
 
     page = template
     for key, value in {
         'focus_panel': focus_panel,
+        'community_panel': community_panel,
         'garden': garden_svg(data, max_flowers),
         'trainer_json': trainer_json(data),
         'group_chart': group_chart_svg(series),
