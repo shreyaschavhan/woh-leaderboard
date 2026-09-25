@@ -1,0 +1,14 @@
+{
+  "name": "woh-focus-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --env local --ip 127.0.0.1 --port 8787",
+    "test": "node --test test/*.test.mjs",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "miniflare": "5.20260923.0-alpha",
+    "wrangler": "4.140.0"
+  }
+}

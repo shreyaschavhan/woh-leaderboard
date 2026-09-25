@@ -649,6 +649,19 @@
         meId = meId === id ? null : id;
         store('woh-me', meId);
         applyMe();
+        document.dispatchEvent(new CustomEvent('woh:me-change', { detail: { id: meId } }));
+    });
+
+    document.addEventListener('woh:me-change', function (event) {
+        var id = event.detail && event.detail.id;
+        meId = id && trainers[id] ? id : null;
+        applyMe();
+    });
+    window.addEventListener('storage', function (event) {
+        if (event.key === 'woh-me' || event.key === null) {
+            meId = read('woh-me');
+            applyMe();
+        }
     });
 
     if (jumpBtn) jumpBtn.addEventListener('click', function () { if (meId) jumpTo(meId, true); });

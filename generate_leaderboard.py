@@ -955,8 +955,12 @@ def main():
     else:
         community_delta_html = '<span class="delta delta-flat">Same as last week</span>'
 
+    with open('focus-panel.html', encoding='utf-8') as f:
+        focus_panel = f.read()
+
     page = template
     for key, value in {
+        'focus_panel': focus_panel,
         'garden': garden_svg(data, max_flowers),
         'trainer_json': trainer_json(data),
         'group_chart': group_chart_svg(series),

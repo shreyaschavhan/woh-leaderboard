@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "woh-focus-api",
+  "main": "worker.js",
+  "compatibility_date": "2026-09-23",
+  "workers_dev": true,
+  "vars": {
+    "ALLOWED_ORIGINS": "https://shreyaschavhan.github.io",
+    "ALLOWED_TRAINERS": "0x04ft,AH_6MbD,Apoorv_S6ag,Atom_le_Bi_2yjR,Dr4g0n_lQ3J,Elden_lord_xY0b,Epic186_LmHD,Harshit_777,Kheneh_V62t,Momehrust_l0E4,NamikazeMi_JoWH,RitikBhardwaj,SShbounty_cbhK,Shubham_Kh_V9WH,Sidduuuuu,Srishti_QuOP,Yash_fren,akkubhosle1,ali_8Luq,anonymousp_jqMr,bhvrvt,bokuwa_tobi,bugbountyhunter,chaithu_QmSm,kuro_M3Cr,rabbitfoot,saamm_qpme,shreyas,t3po,uday,zix_"
+  },
+  "env": {
+    "local": {
+      "vars": {
+        "ALLOWED_ORIGINS": "http://127.0.0.1:8765,http://localhost:8765",
+        "ALLOWED_TRAINERS": "0x04ft,AH_6MbD,Apoorv_S6ag,Atom_le_Bi_2yjR,Dr4g0n_lQ3J,Elden_lord_xY0b,Epic186_LmHD,Harshit_777,Kheneh_V62t,Momehrust_l0E4,NamikazeMi_JoWH,RitikBhardwaj,SShbounty_cbhK,Shubham_Kh_V9WH,Sidduuuuu,Srishti_QuOP,Yash_fren,akkubhosle1,ali_8Luq,anonymousp_jqMr,bhvrvt,bokuwa_tobi,bugbountyhunter,chaithu_QmSm,kuro_M3Cr,rabbitfoot,saamm_qpme,shreyas,t3po,uday,zix_"
+      }
+    }
+  }
+}
