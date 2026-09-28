@@ -63,6 +63,8 @@ function initializeFocus() {
         const phase = model.phase;
         const view = views[phase];
         const session = model.session;
+        section.querySelector('.focus-time').hidden = !session;
+        section.querySelector('.focus-task').hidden = !session;
         const links = sessionLinks(model, config.trainingCenterId);
         card.dataset.state = phase;
         card.setAttribute('aria-busy', String(phase === 'loading'));
