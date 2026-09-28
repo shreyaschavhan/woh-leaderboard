@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head><title>Example trainer | Focumon</title></head>
+<body>
+<main class="px-4 flex-1" data-controller="remote-modal">
+  <dialog id="social_share_modal" data-controller="qr-code"
+    data-qr-code-data-to-encode-value="https://www.focumon.com/trainers/{{trainer}}">
+    <p>Choose an option to share</p>
+    <p>Join me on Focumon.com</p>
+  </dialog>
+  <a data-turbo-frame="_top" href="/trainers/{{trainer}}">Profile</a>
+  <!-- activity -->
+  <h1 class="text-3xl mb-4 max-w-full overflow-hidden leading-none">Example trainer</h1>
+  <p>A mysterious Focumon Trainer</p>
+  <p>0 gathered in the last 7 days</p>
+  <p>Trainer since Aug 2025</p>
+  <p>Focudex 17/205</p>
+</main>
+</body>
+</html>

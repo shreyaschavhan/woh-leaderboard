@@ -22,7 +22,7 @@ The community section shows the configured guild roster's public focus sessions,
 
 The same Worker provides `/api/community/{page}` in cached batches of eight, with bounded concurrency. This keeps each batch within Cloudflare's free-plan request limits. No browser login, account cookies, or credentials are sent to the Worker. The section tracks the guild roster, independently of the personal panel's selected trainer.
 
-Only confirmed states contribute to live counts. Unknown, expired, or failed observations are marked unconfirmed, and last-known sessions are retained until a successful check replaces them. Some public focus links lead to a training center without an identifiable trainer session; these remain unconfirmed instead of being guessed idle. Coverage is displayed below the scene.
+Only confirmed states contribute to live counts. Unknown, expired, or failed observations are marked unconfirmed, and last-known sessions are retained until a successful check replaces them. When a recognized training center has no matching trainer session, the Worker checks that trainer's public profile once. A complete, matching profile without an active-session message or Join link confirms idle; failed, incomplete, or conflicting observations stay unconfirmed. Coverage is displayed below the scene.
 
 `community-panel.html` is inserted by the generator, with behavior in `community.js` and `community-state.mjs`, styling in `community.css`, and scenery in `assets/guild-ground.svg`. The approved sample-data comparison remains in `design/live-focus-study/`. Deploy the updated Worker before publishing these frontend files.
 

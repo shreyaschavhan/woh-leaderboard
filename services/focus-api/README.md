@@ -24,11 +24,13 @@ The public page format is an integration dependency, not a versioned Focumon API
 
 The example is abbreviated; each page contains eight members except the final page. Read subsequent numbered pages up to `pages - 1`. States are `focus`, `break`, `idle`, or `unavailable`. Unavailable entries have a null session and checked time. Community responses omit task names and training-center details. The allowlist is deduplicated, sorted, and capped at 256 trainers.
 
-Batches share the personal endpoint's in-memory observations. They use at most three concurrent upstream connections and eight observations per request. Each observation permits at most five focus-link requests and one stats request: at most 48 upstream fetches plus the batch's two Cache API calls, within the [Workers Free subrequest limit](https://developers.cloudflare.com/workers/platform/limits/). Batches have an 18-second upstream deadline. Successful pages cache for 25 seconds; pages containing unknown states cache for five seconds. A changed roster receives a different cache key.
+Batches share the personal endpoint's in-memory observations. They use at most three concurrent upstream connections and eight observations per request. Each observation permits at most five focus-link requests followed by either one stats request or one profile fallback, never both: at most 48 upstream fetches plus the batch's two Cache API calls, within the [Workers Free subrequest limit](https://developers.cloudflare.com/workers/platform/limits/). Batches have an 18-second upstream deadline, including any fallback. Successful pages cache for 25 seconds; pages containing unknown states cache for five seconds. A changed roster receives a different cache key.
 
 The client loads the first page, then at most two more pages concurrently, polling once a minute while visible. Missing pages and malformed entries become unconfirmed. It stops polling when hidden, aborts outstanding work, and expires observations after two minutes. Idle observations remove completed community sessions; failures preserve last-known sessions without counting them as live.
 
-Some public focus links redirect to a center with no identifiable own-session card. The API deliberately returns unavailable for those trainers, even when other center activity is visible. Neither another trainer's session nor absence from an ambiguous page proves that trainer's current state.
+Some inactive trainers' public focus links still redirect to a training center. When a recognized center has zero matching own-session cards, the API makes one direct profile request without following redirects. It confirms idle only for a complete, recognized profile with the exact trainer identity and neither an active-session message nor a training-center/Join link. An active or break profile, malformed response, failed request, or conflicting evidence remains unavailable. Duplicate or malformed existing own cards do not trigger this fallback. The normal focus, break, and direct-profile idle paths keep their existing behavior.
+
+The fallback relies on Focumon's current public profile structure, not a versioned status API. A missing card alone never establishes inactivity. Backend changes must be deployed separately from GitHub Pages to take effect in production.
 
 ## Run locally
 
@@ -48,7 +50,7 @@ python -m http.server 8765 --bind 127.0.0.1
 
 Open `http://127.0.0.1:8765/#focus-session`. On loopback hosts, the client uses `http://127.0.0.1:8787/api/focus/`; elsewhere it uses the production `apiBase`. The local Worker environment allows only the two documented localhost origins on port 8765.
 
-Tests run the Worker in Miniflare with fixture responses, and cover trainer matching, focus/break/idle parsing, duplicate responsive headings, durations, failures, caching, CORS, allowed trainers, community pagination, the cold-batch request budget, and UI state transitions. They do not create real Focumon sessions.
+Tests run the Worker in Miniflare with fixture responses, and cover trainer matching, focus/break/idle parsing, duplicate responsive headings, durations, failures, caching, CORS, allowed trainers, community pagination, profile-fallback validation and timeouts, cold focus/fallback/mixed batch budgets, and UI state transitions. They do not create real Focumon sessions. The inactive-profile fixture retains the relevant structure of the public profile captured during diagnosis, with example identity and text.
 
 ## Deploy alongside GitHub Pages
 

@@ -61,6 +61,7 @@ async function publicPage(path, trainer, deadline, maxHops = 5) {
 
 async function parsePublicPage(response, trainer) {
     const cards = [];
+    const centers = [];
     let current = null;
     let sessionLink = null;
     let heading = '';
@@ -68,10 +69,16 @@ async function parsePublicPage(response, trainer) {
     let headingSeen = false;
     let ownProfile = false;
     const rewriter = new HTMLRewriter()
+        .on('[id^="focus_sessions_training_center_"]', {
+            element(element) {
+                const id = element.getAttribute('id').match(/^focus_sessions_training_center_(\d+)$/)?.[1];
+                element.onEndTag(() => { if (id) centers.push(id); });
+            }
+        })
         .on('[id^="mini_display_focus_session_"]', {
             element(element) {
                 const id = element.getAttribute('id').match(/^mini_display_focus_session_(\d+)$/)?.[1];
-                current = id ? { id, text: '', own: false, name: '', linkedId: null } : null;
+                current = { id, text: '', own: false, name: '', linkedId: null };
                 const card = current;
                 element.onEndTag(() => { if (card) cards.push(card); current = null; });
             },
@@ -104,7 +111,40 @@ async function parsePublicPage(response, trainer) {
             text(chunk) { if (readingHeading) heading += chunk.text; }
         });
     await rewriter.transform(response).text();
-    return { cards: cards.filter(card => card.own), ownProfile, heading: clean(heading).slice(0, 120) };
+    return { cards: cards.filter(card => card.own), centers, ownProfile, heading: clean(heading).slice(0, 120) };
+}
+
+async function inactiveProfile(response, trainer) {
+    const html = await response.text();
+    if (!/<\/body>\s*<\/html>\s*$/i.test(html)) return false;
+    const identities = [];
+    let mains = 0, closedMains = 0, headings = 0;
+    let text = '', linkText = '', activeLink = false;
+    await new HTMLRewriter()
+        .on('main', {
+            element(element) { mains++; element.onEndTag(() => { closedMains++; }); },
+            text(chunk) { text += chunk.text; }
+        })
+        .on('main h1', { element() { headings++; } })
+        .on('main #social_share_modal[data-qr-code-data-to-encode-value]', {
+            element(element) { identities.push(element.getAttribute('data-qr-code-data-to-encode-value')); }
+        })
+        .on('main a', {
+            element(element) {
+                linkText = '';
+                try {
+                    if (new URL(element.getAttribute('href') || '', FOCUMON).pathname.startsWith('/training_centers/')) activeLink = true;
+                } catch { activeLink = true; }
+                element.onEndTag(() => { if (/^Join$/i.test(clean(linkText))) activeLink = true; });
+            },
+            text(chunk) { linkText += chunk.text; }
+        })
+        .transform(new Response(html)).text();
+    text = clean(text);
+    return mains === 1 && closedMains === 1 && headings === 1 &&
+        identities.length === 1 && identities[0] === `${FOCUMON}/trainers/${trainer}` &&
+        /\bTrainer since\b/.test(text) && /\bFocudex\b/.test(text) &&
+        !/\b(?:Focusing right now|Taking a break)\b/i.test(text) && !activeLink;
 }
 
 async function parseMinutes(response) {
@@ -131,6 +171,15 @@ async function observe(trainer, deadline) {
         return { trainer, state: 'idle', session: null, checkedAt: new Date().toISOString() };
     }
     const centerId = page.path.match(/^\/training_centers\/(\d+)(?:-[\w-]+)?$/)?.[1];
+    if (centerId && parsed.centers.length === 1 && parsed.centers[0] === centerId && parsed.cards.length === 0) {
+        // Some inactive trainers still redirect to an empty center. Use the
+        // otherwise unused stats-request slot; never follow another redirect.
+        const profile = await publicPage(`/trainers/${trainer}`, trainer, deadline, 1);
+        if (profile.path === `/trainers/${trainer}` && await inactiveProfile(profile.response, trainer)) {
+            return { trainer, state: 'idle', session: null, checkedAt: new Date().toISOString() };
+        }
+        throw new Error('Own profile did not confirm inactivity');
+    }
     if (!centerId || parsed.cards.length !== 1) throw new Error('Own session could not be identified');
     const card = parsed.cards[0];
     const name = clean(card.name);
@@ -182,8 +231,8 @@ async function communityPage(page, allowed) {
     const deadline = AbortSignal.timeout(18000);
     let next = 0;
     // At most three open upstream connections. Eight observations need at most
-    // 48 fetches (five focus-link hops + one stats request each), plus two cache
-    // calls: within the Workers Free limit of 50 subrequests per invocation.
+    // 48 fetches (five focus-link hops + one stats OR profile request), plus
+    // two cache calls: within the Workers Free limit of 50 per invocation.
     await Promise.all(Array.from({ length: Math.min(3, members.length) }, async () => {
         while (next < members.length) {
             const index = next++;
