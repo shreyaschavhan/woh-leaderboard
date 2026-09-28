@@ -1,0 +1,38 @@
+/* Review controls float over the full page. */
+html { overflow-anchor: none; }
+.study-toolbar { position: fixed; z-index: 100; bottom: 16px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; max-width: calc(100% - 24px); padding: 8px 10px 8px 16px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--surface); color: var(--text); box-shadow: 0 6px 24px #0003; font: 12px/1.4 var(--font); }
+.study-title { display: grid; gap: 4px; min-width: 195px; }
+.study-title > span { color: var(--accent); font: 500 9px var(--mono); letter-spacing: .12em; }
+.study-title small { color: var(--text-3); font-size: 10px; }
+.study-switch { display: flex; gap: 3px; padding: 3px; border-radius: 5px; background: var(--surface-2); }
+.study-toolbar button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; flex-shrink: 0; min-height: 40px; padding: 8px 12px; border: 0; border-radius: 4px; background: transparent; color: var(--text-2); font: 500 12px var(--font); white-space: nowrap; }
+.study-toolbar button[aria-pressed="true"] { background: var(--accent); color: var(--surface); }
+.study-toolbar button:hover { background: var(--accent-soft); color: var(--text); }
+.study-toolbar button[aria-pressed="true"]:hover { background: var(--accent); color: var(--surface); }
+.study-toolbar :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.study-sample { display: grid; gap: 3px; padding-left: 12px; border-left: 1px solid var(--border); }
+.study-sample > span { color: var(--text-3); font: 500 9px var(--mono); }
+.study-sample select { width: 124px; min-height: 30px; padding: 3px 6px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface-2); color: var(--text); font: 11px var(--font); }
+#study-theme > span:first-child { font-size: 19px; }
+#study-change { color: var(--accent); }
+.study-handoff { position: fixed; inset: 0; margin: auto; width: min(440px,calc(100% - 32px)); padding: 28px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--surface); color: var(--text); box-shadow: 0 20px 80px #0004; }
+.study-handoff::backdrop { background: #171320a6; backdrop-filter: blur(4px); }
+.study-close { position: absolute; top: 6px; right: 8px; width: 40px; height: 40px; border: 0; background: transparent; font-size: 24px; }
+.study-kicker { color: var(--accent); font: 500 9px var(--mono); letter-spacing: .12em; }
+.study-handoff h2 { margin-top: 14px; font: 500 25px/1.2 var(--display); letter-spacing: -.03em; }
+.study-handoff > p:not(.study-kicker) { margin-top: 12px; color: var(--text-2); font-size: 13px; line-height: 1.7; }
+.study-handoff-actions { display: grid; gap: 8px; margin-top: 24px; }
+.study-handoff-actions button { min-height: 44px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 4px; color: var(--text-2); background: var(--surface-2); font-size: 12px; }
+.study-handoff-actions #study-confirm { color: var(--surface); background: var(--accent); border-color: var(--accent); }
+@media(max-width:1000px) { .study-title { display: none; } }
+@media(max-width:600px) {
+  .study-toolbar { bottom: 8px; max-width: calc(100% - 16px); gap: 4px; padding: 5px; }
+  .study-switch { gap: 0; padding: 2px; }
+  .study-toolbar button { min-width: 44px; min-height: 44px; padding-inline: 7px; font-size: 10px; }
+  .study-sample { padding-left: 5px; }
+  .study-sample > span { font-size: 8px; }
+  .study-sample select { width: 86px; font-size: 10px; }
+  .study-button-label { display: none; }
+  #study-change { font-size: 20px; }
+}
+@media(prefers-reduced-motion:reduce) { .study-toolbar *, .study-handoff * { transition: none !important; } }
