@@ -44,6 +44,7 @@ html = re.sub(r'    <script(?: type="module")? src="(?:script|focus|community)\.
 scripts = '\n'.join(f'    <script src="{prefix}{name}"></script>' for name in
                     ["page.js", "guild-demo.js", "preview.js"])
 html = html.replace('</body>', review + scripts + '\n</body>')
+html = '\n'.join(line.rstrip() for line in html.splitlines()) + '\n'
 (study / "index.html").write_text(html, encoding="utf-8")
 
 preview = (previous / "preview.js").read_text(encoding="utf-8")
