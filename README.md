@@ -25,3 +25,9 @@ The same Worker provides `/api/community/{page}` in cached batches of eight, wit
 Only confirmed states contribute to live counts. Unknown, expired, or failed observations are marked unconfirmed, and last-known sessions are retained until a successful check replaces them. Some public focus links lead to a training center without an identifiable trainer session; these remain unconfirmed instead of being guessed idle. Coverage is displayed below the scene.
 
 `community-panel.html` is inserted by the generator, with behavior in `community.js` and `community-state.mjs`, styling in `community.css`, and scenery in `assets/guild-ground.svg`. The approved sample-data comparison remains in `design/live-focus-study/`. Deploy the updated Worker before publishing these frontend files.
+
+## Compact focus layout
+
+`focus-layout.css` applies the selected B design to both panels: a small illustrated training card beside three equal community cards on desktop, with stacked sections below 1000px. Original sprites, themes, observed minutes, filters, and Focumon actions remain in use. Handoff confirmations and stale-session warnings remain visible when relevant.
+
+The current page and `template.html` both include this layout, so scheduled generation preserves it. The frozen [Current / Concept B comparison](design/focus-b-study/index.html) remains the design reference. See [implementation checks](design/focus-b-study/IMPLEMENTATION.md) for validation and remaining browser-review limits.

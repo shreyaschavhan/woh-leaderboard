@@ -67,6 +67,7 @@ function initializeFocus() {
         section.querySelector('.focus-task').hidden = !session;
         const links = sessionLinks(model, config.trainingCenterId);
         card.dataset.state = phase;
+        card.classList.toggle('is-handoff-pending', handoffPending);
         card.setAttribute('aria-busy', String(phase === 'loading'));
         $('focus-status').lastElementChild.textContent = view[0];
         $('focus-sync').textContent = phase === 'idle' ? 'No active session' : ageLabel();

@@ -21,10 +21,12 @@ Methods Now: precedent comparison, visual hierarchy — match earlier repo studi
 
 ## Scope and verification
 
-[OBSERVED] Changes are confined to this design directory. `concept.css` contains the proposal. `current-focus.css`, `current-community.css`, `page.css`, and `page.js` freeze the current page. `source-hashes.json` records the original production sources. `build-preview.py` recreates the snapshot from the checkout; sample interaction code is reused from the earlier balance study.
+[OBSERVED] The prototype lives in this design directory. `concept.css` contains the proposal. `current-focus.css`, `current-community.css`, `page.css`, and `page.js` freeze the page before implementation. `source-hashes.json` records those original sources. `build-preview.py` requires that original source checkout; sample interaction code is reused from the earlier balance study.
 
 [OBSERVED] JavaScript syntax, local asset references, unique element IDs, sample-data references, and unchanged production hashes passed static checks. These checks do not establish rendered layout or interaction behavior.
 
 [OBSERVED] Browser Use rejected opening this local preview because its URL policy blocks the address. Browser visual and interaction review remains pending. No browser screenshot or pixel-fidelity claim is made for this revision.
 
 The earlier generated images in `../focus-b-refinement/` are not the review artifact for this study. Review this native page comparison instead.
+
+[OBSERVED] B has now been promoted to the main page and generation template. This comparison stays frozen. See [implementation and verification](IMPLEMENTATION.md).

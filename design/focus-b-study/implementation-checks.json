@@ -1,0 +1,36 @@
+{
+  "passed": 18,
+  "checks": [
+    "initial choice has no invented focus time",
+    "community loads three focus cards and one break from paginated fixtures",
+    "loading state survives the new markup",
+    "selected trainer uses live state and original sprites",
+    "finish keeps the observed session until Focumon confirms a change",
+    "observed break retains focused minutes and clears the pending handoff",
+    "failure preserves last-known minutes with retry and stale feedback",
+    "completion links to the final Focumon summary",
+    "changing to an idle trainer does not inherit previous focus time",
+    "start waits for Focumon confirmation",
+    "long observed totals retain their compact-layout class",
+    "break filter preserves its observed focus total",
+    "member details use original art and the public trainer link",
+    "closing details restores focus to the member card",
+    "additional live trainers flow into the roster without replacing cards",
+    "offline community keeps last-known cards without counting them as live",
+    "promoted CSS parses and scripts report no runtime errors",
+    "disconnected state offers Focumon without claiming a live session"
+  ],
+  "externalRequests": 0,
+  "browserLayoutVerified": false,
+  "checkpoint": "9b905893",
+  "stateTestsPassed": 13,
+  "staticChecks": {
+    "uniqueAndPreservedElementIds": 81,
+    "existingLocalReferences": 99,
+    "templateMatchesCurrentPanels": true,
+    "unrelatedHomepageSectionsUnchanged": true,
+    "liveStateModulesAndConfigurationUnchanged": true,
+    "baseStylesMatchSelectedB": true
+  },
+  "limits": "In-memory DOM checks use local fixtures. No rendered layout, responsive geometry, live service, or browser interaction verification."
+}

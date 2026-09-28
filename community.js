@@ -95,7 +95,7 @@ function initializeCommunity() {
         art.setAttribute('aria-hidden', 'true');
         art.append(sprite(trainer.avatar, ''));
         const copy = element('span');
-        copy.append(element('span', 'guild-rest-name', trainer.name), element('span', 'guild-rest-detail', stale(item) ? 'Last known: on a break' : 'Focus time paused'));
+        copy.append(element('span', 'guild-rest-name', trainer.name), element('span', 'guild-rest-detail', stale(item) ? 'Last known: on a break' : 'On a break · Focus time paused'));
         const time = element('span', 'guild-rest-duration', `${duration(item)} `);
         time.append(element('small', '', 'min focused'));
         const arrow = element('span', 'guild-rest-arrow', '↗');

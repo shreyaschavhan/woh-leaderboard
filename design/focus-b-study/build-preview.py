@@ -10,6 +10,14 @@ previous = root / "design" / "focus-balance-study"
 prefix = "design/focus-b-study/"
 sources = ["index.html", "style.css", "script.js", "focus.css", "community.css"]
 
+# Preserve the review baseline after the selected design is implemented.
+manifest = study / "source-hashes.json"
+if manifest.exists():
+    expected = json.loads(manifest.read_text(encoding="utf-8"))
+    changed = [name for name in sources if hashlib.sha256((root / name).read_bytes()).hexdigest() != expected.get(name)]
+    if changed:
+        raise SystemExit("Frozen study: original sources have changed. Rebuild only from the pre-implementation source checkout (9b905893).")
+
 for source, target in [("style.css", "page.css"), ("script.js", "page.js"),
                        ("focus.css", "current-focus.css"), ("community.css", "current-community.css")]:
     content = (root / source).read_text(encoding="utf-8")
