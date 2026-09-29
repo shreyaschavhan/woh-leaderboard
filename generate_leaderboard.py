@@ -13,6 +13,8 @@ except ImportError:  # Pillow is optional; without it sprites stay remote
 
 SPRITE_DIR = os.path.join('assets', 'sprites')
 SPRITE_SCALE = 4
+COMPARISON_DAYS = 7
+COMPARISON_TOLERANCE_DAYS = 3
 FETCH_HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36',
     'Referer': 'https://www.focumon.com/',
@@ -190,15 +192,33 @@ def update_history(history, current_dict):
     
     return history
 
-def get_rank_change(history, trainer_id):
-    """Get the rank from 7 days ago for a trainer. Returns None if not available."""
-    seven_days_ago = (datetime.now().date() - timedelta(days=7)).isoformat()
-    if trainer_id not in history:
+def get_comparison_entry(history, trainer_id, today=None):
+    """Return the snapshot closest to 7 days ago within a small outage window."""
+    today = today or datetime.now().date()
+    target = today - timedelta(days=COMPARISON_DAYS)
+    candidates = []
+
+    for entry in history.get(trainer_id, []):
+        try:
+            entry_date = datetime.strptime(entry.get('date', ''), '%Y-%m-%d').date()
+        except (TypeError, ValueError):
+            continue
+
+        distance = abs((entry_date - target).days)
+        if distance <= COMPARISON_TOLERANCE_DAYS:
+            # On an equal-distance tie, prefer the older snapshot so the
+            # comparison never silently covers less than seven days.
+            candidates.append((distance, entry_date > target, entry))
+
+    if not candidates:
         return None
-    for entry in history[trainer_id]:
-        if entry['date'] == seven_days_ago:
-            return entry['rank']
-    return None
+    return min(candidates, key=lambda candidate: candidate[:2])[2]
+
+
+def get_rank_change(history, trainer_id, today=None):
+    """Get the comparison rank for a trainer. Returns None if unavailable."""
+    entry = get_comparison_entry(history, trainer_id, today)
+    return entry.get('rank') if entry and 'rank' in entry else None
 
 def get_title(history_entries):
     """Assign a title based on the last 7 days of flower data."""
@@ -364,9 +384,9 @@ def gain_html(gain):
 def _history_map(entries):
     return {e['date']: e for e in entries if 'date' in e}
 
-def compute_extras(history, trainer_id, flowers):
+def compute_extras(history, trainer_id, flowers, today=None):
     """Return (series14, gain7, days_above_line_30, days_tracked_30) for a trainer."""
-    today = datetime.now().date()
+    today = today or datetime.now().date()
     hm = _history_map(history.get(trainer_id, []))
 
     series14 = []
@@ -378,7 +398,7 @@ def compute_extras(history, trainer_id, flowers):
         entry = hm.get((today - timedelta(days=i)).isoformat())
         series30.append(entry['flowers'] if entry and 'flowers' in entry else None)
 
-    week_ago = hm.get((today - timedelta(days=7)).isoformat())
+    week_ago = get_comparison_entry(history, trainer_id, today)
     gain7 = flowers - week_ago['flowers'] if week_ago and 'flowers' in week_ago else None
 
     tracked = above = 0
