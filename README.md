@@ -18,7 +18,7 @@ The Worker is deployed at `https://woh-focus-api.h1-3989880-research.workers.dev
 
 ## Focusing now
 
-The community section shows the configured guild roster's public focus sessions, original trainer/Focumon artwork, and observed focus minutes. It updates about once a minute while the page is visible. Filters separate focusing trainers and breaks; selecting a trainer opens details and a public Focumon link. Minutes are never advanced by a local timer. Breaks retain their publicly reported focus total.
+The community section shows the configured guild roster's public focus sessions, task titles, original trainer/Focumon artwork, and observed focus minutes. It updates about once a minute while the page is visible. Task titles appear on focusing cards and break rows; selecting a trainer shows the full title, details, and a public Focumon link. Missing titles display **Task unavailable**. Minutes are never advanced by a local timer. Breaks retain their publicly reported task and focus total; failed checks retain both as last known until a successful observation replaces the session.
 
 The same Worker provides `/api/community/{page}` in cached batches of eight, with bounded concurrency. This keeps each batch within Cloudflare's free-plan request limits. No browser login, account cookies, or credentials are sent to the Worker. The section tracks the guild roster, independently of the personal panel's selected trainer.
 

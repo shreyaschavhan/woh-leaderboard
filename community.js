@@ -1,5 +1,5 @@
 import config from './focus-config.js';
-import { initialCommunity, acceptCommunityPage, validateCommunityPage, unavailableCommunity, expireCommunity, communitySummary } from './community-state.mjs';
+import { initialCommunity, acceptCommunityPage, validateCommunityPage, unavailableCommunity, expireCommunity, communitySummary } from './community-state.mjs?v=tasks-1';
 
 const section = document.getElementById('focusing-now');
 if (section) initializeCommunity();
@@ -41,6 +41,13 @@ function initializeCommunity() {
     }
     const duration = item => `${item.session.approximate ? '≈' : ''}${item.session.focusMinutes}`;
     const stale = item => item.state === 'unavailable';
+    const taskName = item => item.session?.name || 'Task unavailable';
+    const taskDescription = item => `${stale(item) ? 'Last known task' : 'Session task'}: ${taskName(item)}.`;
+    function taskPreview(item, className) {
+        const node = element('span', `guild-task-preview ${className}`, taskName(item));
+        node.title = stale(item) ? `Last known task: ${taskName(item)}` : taskName(item);
+        return node;
+    }
     function details(id) {
         selected = id;
         renderDialog();
@@ -54,6 +61,9 @@ function initializeCommunity() {
         $('guild-dialog-avatar').src = trainer.avatar;
         $('guild-dialog-companion').src = trainer.focumon;
         $('guild-dialog-status').textContent = stale(item) ? 'Status unconfirmed' : item.state === 'break' ? 'Taking a break' : item.state === 'focus' ? 'Focusing' : 'Session ended';
+        $('guild-dialog-task').hidden = !item.session;
+        $('guild-dialog-task-label').textContent = stale(item) ? 'LAST KNOWN TASK' : item.state === 'break' ? 'SESSION TASK' : 'FOCUSING ON';
+        $('guild-dialog-task-name').textContent = item.session ? taskName(item) : '';
         dialog.querySelector('.guild-dialog-time').hidden = !item.session;
         $('guild-dialog-minutes').textContent = item.session ? duration(item) : '—';
         $('guild-dialog-caption').textContent = stale(item) ? 'last known focus time' : item.state === 'break' ? 'focused before this break' : 'focused this session';
@@ -64,7 +74,7 @@ function initializeCommunity() {
         const button = element('button', `guild-member${stale(item) ? ' is-stale' : ''}`);
         button.type = 'button';
         button.dataset.trainer = item.trainer;
-        button.setAttribute('aria-label', `${trainer.name}${item.trainer === me ? ', you' : ''}. ${stale(item) ? 'Status unconfirmed, last known' : 'Focusing,'} ${item.session.approximate ? 'about ' : ''}${item.session.focusMinutes} minutes focused. View details.`);
+        button.setAttribute('aria-label', `${trainer.name}${item.trainer === me ? ', you' : ''}. ${stale(item) ? 'Status unconfirmed, last known' : 'Focusing,'} ${item.session.approximate ? 'about ' : ''}${item.session.focusMinutes} minutes focused. ${taskDescription(item)} View details.`);
         button.append(element('span', 'guild-member-status', stale(item) ? 'Unconfirmed' : 'Focusing'));
         const arrow = element('span', 'guild-member-link', '↗');
         arrow.setAttribute('aria-hidden', 'true');
@@ -73,10 +83,10 @@ function initializeCommunity() {
         art.setAttribute('aria-hidden', 'true');
         art.append(element('span', 'guild-member-ground'), sprite(trainer.avatar, 'guild-member-avatar'), sprite(trainer.focumon, 'guild-member-companion'));
         const info = element('span', 'guild-member-info');
-        const nameBlock = element('span');
+        const nameBlock = element('span', 'guild-member-identity');
         const name = element('span', 'guild-member-name', trainer.name);
         if (item.trainer === me) name.append(element('span', 'guild-you', 'YOU'));
-        nameBlock.append(name, element('span', 'guild-member-caption', stale(item) ? 'Last known focus time' : 'Focused this session'));
+        nameBlock.append(name, taskPreview(item, 'guild-member-task'), element('span', 'guild-member-caption', stale(item) ? 'Last known session' : 'Focused this session'));
         const length = String(item.session.focusMinutes).length;
         const time = element('span', `guild-member-time${length > 2 ? ' is-long' : ''}${length > 3 ? ' is-very-long' : ''}`);
         time.append(element('strong', '', duration(item)), element('span', '', 'min'));
@@ -90,12 +100,12 @@ function initializeCommunity() {
         const button = element('button', `guild-rest-member${stale(item) ? ' is-stale' : ''}`);
         button.type = 'button';
         button.dataset.trainer = item.trainer;
-        button.setAttribute('aria-label', `${trainer.name}. ${stale(item) ? 'Status unconfirmed, last known break.' : 'Taking a break.'} ${item.session.approximate ? 'About ' : ''}${item.session.focusMinutes} minutes focused before this break. View details.`);
+        button.setAttribute('aria-label', `${trainer.name}. ${stale(item) ? 'Status unconfirmed, last known break.' : 'Taking a break.'} ${item.session.approximate ? 'About ' : ''}${item.session.focusMinutes} minutes focused before this break. ${taskDescription(item)} View details.`);
         const art = element('span', 'guild-rest-portrait');
         art.setAttribute('aria-hidden', 'true');
         art.append(sprite(trainer.avatar, ''));
-        const copy = element('span');
-        copy.append(element('span', 'guild-rest-name', trainer.name), element('span', 'guild-rest-detail', stale(item) ? 'Last known: on a break' : 'On a break · Focus time paused'));
+        const copy = element('span', 'guild-rest-info');
+        copy.append(element('span', 'guild-rest-name', trainer.name), taskPreview(item, 'guild-rest-task'), element('span', 'guild-rest-detail', stale(item) ? 'Last known: on a break' : 'On a break · Focus time paused'));
         const time = element('span', 'guild-rest-duration', `${duration(item)} `);
         time.append(element('small', '', 'min focused'));
         const arrow = element('span', 'guild-rest-arrow', '↗');

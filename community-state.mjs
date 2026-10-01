@@ -63,6 +63,7 @@ export function acceptCommunityPage(previous, data, now = Date.now()) {
             trainer: item.trainer, state: item.state, lastState: item.state, checkedAt,
             session: active ? {
                 id: String(item.session.id), focusMinutes: item.session.focusMinutes,
+                name: typeof item.session.name === 'string' ? item.session.name.replace(/\s+/g, ' ').trim().slice(0, 240) : '',
                 approximate: item.session.approximate === true
             } : null
         });

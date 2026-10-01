@@ -45,7 +45,7 @@ before(async () => {
                         const name = scenarios[index];
                         const status = name === 'break' ? 'Taking a break...' : name === 'unknown' ? 'Something changed' : 'Focusing...';
                         const own = name === 'missing' ? '' : card(name, 10000 + index, status);
-                        return html(`<h1>The <span>Test Center</span></h1><h1>The Test Center</h1>${card('someone_else', 9999, 'Taking a break...')}${own}`);
+                        return html(`<h1>The <span>Test Center</span></h1><h1>The Test Center</h1>${card('someone_else', 9999, 'Taking a break...', 'Another task')}${own}`);
                     }
                     const index = Number(url.pathname.match(/focus_sessions\/(\d+)/)?.[1]) - 10000;
                     const name = scenarios[index];
@@ -128,10 +128,11 @@ test('community pages cover the allowlisted roster once, retaining unknown statu
     assert.deepEqual(all.map(item => item.trainer), [...scenarios].sort());
     assert.equal(all.find(item => item.trainer === 'idle').state, 'idle');
     assert.equal(all.find(item => item.trainer === 'break').session.focusMinutes, 24);
+    assert.equal(all.find(item => item.trainer === 'break').session.name, 'Build & test');
     assert.equal(all.find(item => item.trainer === 'unknown').state, 'unavailable');
     const focus = all.find(item => item.trainer === 'focus');
     assert.equal(focus.state, 'focus');
-    assert.equal(focus.session.name, undefined, 'community responses omit personal task names');
+    assert.equal(focus.session.name, 'Build & test', 'community task matches the selected trainer’s public session');
     assert.equal(focus.session.centerName, undefined);
     const before = [...counts.values()].reduce((sum, count) => sum + count, 0);
     await request(0);

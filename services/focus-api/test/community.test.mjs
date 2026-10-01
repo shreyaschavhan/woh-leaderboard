@@ -5,7 +5,7 @@ import { initialCommunity, acceptCommunityPage, unavailableCommunity, expireComm
 const now = Date.now();
 const item = (trainer, state = 'focus', minutes = 24) => ({
     trainer, state, checkedAt: new Date(now).toISOString(),
-    session: state === 'idle' ? null : { id: '3076718', focusMinutes: minutes, approximate: false }
+    session: state === 'idle' ? null : { id: '3076718', name: 'Build something', focusMinutes: minutes, approximate: false }
 });
 const page = trainers => ({ page: 0, pageSize: 8, pages: 1, total: trainers.length, checkedAt: new Date(now).toISOString(), trainers });
 
@@ -27,7 +27,9 @@ test('breaks retain observed focus minutes; failures retain but do not count sta
     assert.equal(communitySummary(model).focusing, 0);
     assert.equal(communitySummary(model).sessions.length, 2);
     assert.equal(model.get('one').session.focusMinutes, 24);
+    assert.equal(model.get('one').session.name, 'Build something');
     assert.equal(model.get('two').session.focusMinutes, 32);
+    assert.equal(model.get('two').session.name, 'Build something');
     assert.equal(expireCommunity(model, now + 60000).get('two').session.focusMinutes, 32);
 });
 
@@ -38,9 +40,36 @@ test('confirmed idle removes an ended session and a new session resets its time'
     assert.equal(model.get('one').session, null);
     const next = item('one', 'focus', 0);
     next.session.id = '3076719';
+    delete next.session.name;
     model = acceptCommunityPage(model, page([next]), now);
     assert.equal(model.get('one').session.focusMinutes, 0);
     assert.equal(model.get('one').session.id, '3076719');
+    assert.equal(model.get('one').session.name, '', 'new sessions cannot inherit the previous task');
+});
+
+test('task titles update with their session while older observations cannot restore an old task', () => {
+    let model = acceptCommunityPage(initialCommunity(['one']), page([item('one')]), now);
+    const updated = item('one');
+    updated.session.name = 'Write the report';
+    updated.checkedAt = new Date(now + 1000).toISOString();
+    model = acceptCommunityPage(model, page([updated]), now + 1000);
+    model = acceptCommunityPage(model, page([item('one')]), now + 1000);
+    assert.equal(model.get('one').session.name, 'Write the report');
+    assert.equal(expireCommunity(model, now + FRESH_MS + 1001).get('one').session.name, 'Write the report');
+});
+
+test('missing or malformed optional task titles preserve valid focus time', () => {
+    for (const name of [undefined, null, 42, {}, '   ']) {
+        const observed = item('one');
+        observed.session.name = name;
+        const model = acceptCommunityPage(initialCommunity(['one']), page([observed]), now);
+        assert.equal(model.get('one').session.name, '');
+        assert.equal(model.get('one').session.focusMinutes, 24);
+        assert.equal(communitySummary(model).focusing, 1);
+    }
+    const observed = item('one');
+    observed.session.name = '  Study\n maths & physics  ';
+    assert.equal(acceptCommunityPage(initialCommunity(['one']), page([observed]), now).get('one').session.name, 'Study maths & physics');
 });
 
 test('expired observations stop contributing to live counts, including idle coverage', () => {

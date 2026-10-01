@@ -17,12 +17,12 @@ The public page format is an integration dependency, not a versioned Focumon API
   "page": 0, "pageSize": 8, "pages": 4, "total": 31,
   "checkedAt": "2026-09-25T12:00:00.000Z",
   "trainers": [
-    {"trainer": "example", "state": "focus", "checkedAt": "2026-09-25T12:00:00.000Z", "session": {"id": "123", "focusMinutes": 24, "approximate": false}}
+    {"trainer": "example", "state": "focus", "checkedAt": "2026-09-25T12:00:00.000Z", "session": {"id": "123", "name": "Build something", "focusMinutes": 24, "approximate": false}}
   ]
 }
 ```
 
-The example is abbreviated; each page contains eight members except the final page. Read subsequent numbered pages up to `pages - 1`. States are `focus`, `break`, `idle`, or `unavailable`. Unavailable entries have a null session and checked time. Community responses omit task names and training-center details. The allowlist is deduplicated, sorted, and capped at 256 trainers.
+The example is abbreviated; each page contains eight members except the final page. Read subsequent numbered pages up to `pages - 1`. States are `focus`, `break`, `idle`, or `unavailable`. Unavailable entries have a null session and checked time. Community sessions include the matching trainer's public task title in `name`, bounded to 240 characters, and omit training-center details. Titles reuse the existing observation without extra upstream requests. Older responses without a title remain valid and display **Task unavailable**. The allowlist is deduplicated, sorted, and capped at 256 trainers.
 
 Batches share the personal endpoint's in-memory observations. They use at most three concurrent upstream connections and eight observations per request. Each observation permits at most five focus-link requests followed by either one stats request or one profile fallback, never both: at most 48 upstream fetches plus the batch's two Cache API calls, within the [Workers Free subrequest limit](https://developers.cloudflare.com/workers/platform/limits/). Batches have an 18-second upstream deadline, including any fallback. Successful pages cache for 25 seconds; pages containing unknown states cache for five seconds. A changed roster receives a different cache key.
 

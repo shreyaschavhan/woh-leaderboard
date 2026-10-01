@@ -100,7 +100,7 @@
   flex-direction: column;
   justify-content: flex-end;
   gap: 5px;
-  min-height: 164px;
+  min-height: 194px;
   padding: 10px 8px 12px;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -117,6 +117,7 @@
 .guild-member-companion { width: 62px; height: 62px; right: -2px; }
 .guild-member-info { display: flex; align-items: center; gap: 5px; width: 100%; padding: 0; }
 .guild-member-name { justify-content: center; gap: 4px; font-size: 14px; line-height: 1.4; }
+.guild-member-task { min-height: 2.8em; }
 .guild-you { padding: 1px 3px; font-size: 7px; }
 .guild-member-caption { display: none; }
 .guild-member-time { justify-content: center; gap: 4px; }
@@ -129,6 +130,7 @@
 .guild-rest-member { width: 100%; max-width: none; min-height: 52px; gap: 10px; padding: 8px 3px; border: 0; background: none; }
 .guild-rest-portrait { width: 30px; height: 34px; background: var(--surface-2); }
 .guild-rest-name { font-size: 12px; }
+.guild-rest-task { font-size: 10px; }
 .guild-rest-detail { margin-top: 3px; font-size: 9px; }
 .guild-rest-duration { margin-left: auto; color: var(--text-2); font-size: 20px; }
 .guild-rest-duration small { display: inline; font-size: 9px; }
@@ -174,11 +176,12 @@
   .guild-refresh { min-width: 44px; min-height: 44px; padding: 6px; }
   .guild-refresh span { display: none; }
   .guild-roster, .guild-roster.is-busy { gap: 7px; }
-  .guild-member { min-height: 149px; padding: 8px 4px 10px; }
+  .guild-member { min-height: 179px; padding: 8px 4px 10px; }
   .guild-member-art { width: 91px; height: 69px; }
   .guild-member-avatar { width: 70px; height: 70px; left: -6px; }
   .guild-member-companion { width: 53px; height: 53px; right: -3px; }
   .guild-member-name { font-size: 12px; }
+  .guild-member-task { font-size: 10px; }
   .guild-you { display: none; }
   .guild-member-time strong, .guild-member-time.is-long strong { font-size: 25px; }
   .guild-rest-duration small { display: block; font-size: 8px; }
@@ -189,7 +192,7 @@
 @media(max-width:359px) {
   .guild-heading-row { flex-wrap: wrap; gap: 4px; }
   .guild-totals { margin-left: 0; }
-  .guild-member { min-height: 141px; padding-inline: 2px; }
+  .guild-member { min-height: 171px; padding-inline: 2px; }
   .guild-member-art { width: 80px; height: 64px; }
   .guild-member-avatar { width: 63px; height: 63px; left: -5px; }
   .guild-member-companion { width: 48px; height: 48px; right: -3px; }

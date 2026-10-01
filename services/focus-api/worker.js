@@ -242,7 +242,7 @@ async function communityPage(page, allowed) {
             trainers[index] = result.status === 200 ? {
                 trainer, state: data.state, checkedAt: data.checkedAt,
                 session: data.session ? {
-                    id: data.session.id, focusMinutes: data.session.focusMinutes,
+                    id: data.session.id, name: data.session.name, focusMinutes: data.session.focusMinutes,
                     approximate: data.session.approximate
                 } : null
             } : { trainer, state: 'unavailable', checkedAt: null, session: null };
