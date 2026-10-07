@@ -1,0 +1,38 @@
+[
+  {
+    "pair": "desktop-light",
+    "size": [
+      1440,
+      1000
+    ],
+    "changedPixels": 2401,
+    "changedPixelsOutsideCards": 0
+  },
+  {
+    "pair": "desktop-dark",
+    "size": [
+      1440,
+      1000
+    ],
+    "changedPixels": 2394,
+    "changedPixelsOutsideCards": 0
+  },
+  {
+    "pair": "mobile-light",
+    "size": [
+      390,
+      844
+    ],
+    "changedPixels": 2412,
+    "changedPixelsOutsideCards": 0
+  },
+  {
+    "pair": "mobile-dark",
+    "size": [
+      390,
+      844
+    ],
+    "changedPixels": 2077,
+    "changedPixelsOutsideCards": 0
+  }
+]

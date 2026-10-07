@@ -44,6 +44,14 @@
     location.href = url.href;
   });
   $('frame-view-cards').addEventListener('click', () => document.querySelector('.focus-hub').scrollIntoView({ behavior: 'smooth' }));
+  // The asset base points to the repo root. Keep fragment jumps in this preview.
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    const target = document.getElementById(anchor.getAttribute('href').slice(1));
+    if (target) anchor.addEventListener('click', event => {
+      event.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
 
   // Use the real component events rather than a second hand-written renderer.
   document.dispatchEvent(new CustomEvent('woh:me-change', {
@@ -53,7 +61,6 @@
   saveUrl();
   async function settle() {
     await document.fonts.ready;
-    await Promise.all([...document.images].map(image => image.decode().catch(() => {})));
     const expected = {
       focus: 'focus', choose: 'choose', break: 'break', ready: 'idle', quiet: 'idle', offline: 'stale',
     }[review.scenario];
@@ -66,6 +73,14 @@
       }
       await new Promise(resolve => setTimeout(resolve, 25));
     }
+    // Off-screen leaderboard portraits are lazy-loaded. Only the reviewed
+    // panels need to finish decoding before the comparison is ready.
+    await Promise.all([...document.querySelectorAll('.focus-hub img')]
+      .filter(image => image.getAttribute('src') && !image.hidden)
+      .map(image => {
+        image.loading = 'eager';
+        return image.decode().catch(() => review.errors.push(`Artwork did not load: ${image.getAttribute('src')}`));
+      }));
     review.ready = true;
     if (!document.documentElement.hasAttribute('data-frame-capture')) {
       document.querySelector('.focus-hub').scrollIntoView({ behavior: 'instant' });
