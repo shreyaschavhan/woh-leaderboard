@@ -1,0 +1,63 @@
+/* Design-only: reuse the existing 8px / 4px stepped card outline.
+   Transparent 1px borders retain the original box and content dimensions. */
+:root[data-frame-view="after"] :is(.focus-card, .guild-member, .guild-empty, .guild-loading) {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+}
+:root[data-frame-view="after"] :is(.focus-card, .guild-member, .guild-empty, .guild-loading)::before,
+:root[data-frame-view="after"] :is(.focus-card, .guild-member, .guild-empty, .guild-loading)::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border-radius: 0;
+}
+:root[data-frame-view="after"] :is(.focus-card, .guild-member, .guild-empty, .guild-loading)::before {
+  inset: -1px;
+  z-index: -2;
+  background: var(--frame-border, var(--border));
+  clip-path: polygon(
+    8px 0, calc(100% - 8px) 0, calc(100% - 8px) 4px,
+    calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
+    100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px),
+    calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px),
+    calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 4px),
+    4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px),
+    0 8px, 4px 8px, 4px 4px, 8px 4px
+  );
+}
+:root[data-frame-view="after"] :is(.focus-card, .guild-member, .guild-empty, .guild-loading)::after {
+  inset: 0;
+  z-index: -1;
+  background: var(--frame-fill, var(--surface));
+  clip-path: polygon(
+    7px 0, calc(100% - 7px) 0, calc(100% - 7px) 3px,
+    calc(100% - 3px) 3px, calc(100% - 3px) 7px, 100% 7px,
+    100% calc(100% - 7px), calc(100% - 3px) calc(100% - 7px),
+    calc(100% - 3px) calc(100% - 3px), calc(100% - 7px) calc(100% - 3px),
+    calc(100% - 7px) 100%, 7px 100%, 7px calc(100% - 3px),
+    3px calc(100% - 3px), 3px calc(100% - 7px), 0 calc(100% - 7px),
+    0 7px, 3px 7px, 3px 3px, 7px 3px
+  );
+}
+:root[data-frame-view="after"] .focus-card {
+  --frame-border: #514457;
+  --frame-fill: #342d40;
+  overflow: visible;
+}
+/* Clip only the scene/action backgrounds. Card focus outlines stay outside. */
+:root[data-frame-view="after"] .focus-scene {
+  clip-path: polygon(0 0, calc(100% - 7px) 0, calc(100% - 7px) 3px,
+    calc(100% - 3px) 3px, calc(100% - 3px) 7px, 100% 7px, 100% 100%, 0 100%);
+}
+:root[data-frame-view="after"] .focus-actions {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px),
+    calc(100% - 3px) calc(100% - 7px), calc(100% - 3px) calc(100% - 3px),
+    calc(100% - 7px) calc(100% - 3px), calc(100% - 7px) 100%, 7px 100%,
+    7px calc(100% - 3px), 3px calc(100% - 3px), 3px calc(100% - 7px), 0 calc(100% - 7px));
+}
+:root[data-frame-view="after"] .guild-member:is(:hover, :focus-visible)::before {
+  background: var(--accent);
+}
