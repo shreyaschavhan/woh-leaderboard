@@ -1,0 +1,488 @@
+{
+  "revision": "Ground sprite bottoms and move rank numbers below the character stage",
+  "root": "review ready = ground contact AND rank clearance AND faithful comparison",
+  "cases": [
+    {
+      "cards": [
+        {
+          "badgeNameClearance": 4,
+          "rank": "Rank 1",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 502.359375,
+              "source": "assets/sprites/trainer-001-1fa04730@4x.png",
+              "visibleFootY": 502.359375
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 502.359375,
+              "source": "assets/sprites/focumon-023-70d6e214@4x.png",
+              "visibleFootY": 502.359383719308
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 4,
+          "rank": "Rank 2",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 546.96875,
+              "source": "assets/sprites/trainer-049-5ddc19da@4x.png",
+              "visibleFootY": 546.96875
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 546.96875,
+              "source": "assets/sprites/focumon-070-feeb0586@4x.png",
+              "visibleFootY": 546.9687843322754
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 4,
+          "rank": "Rank 3",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 572.96875,
+              "source": "assets/sprites/trainer-023-ed4a0f7d@4x.png",
+              "visibleFootY": 572.96875
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 572.96875,
+              "source": "assets/sprites/focumon-181-aac27ec0@4x.png",
+              "visibleFootY": 572.9687587193081
+            }
+          ]
+        }
+      ],
+      "errors": [],
+      "overflow": false,
+      "theme": "light",
+      "width": 1440
+    },
+    {
+      "cards": [
+        {
+          "badgeNameClearance": 4,
+          "rank": "Rank 1",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 502.359375,
+              "source": "assets/sprites/trainer-001-1fa04730@4x.png",
+              "visibleFootY": 502.359375
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 502.359375,
+              "source": "assets/sprites/focumon-023-70d6e214@4x.png",
+              "visibleFootY": 502.359383719308
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 4,
+          "rank": "Rank 2",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 546.96875,
+              "source": "assets/sprites/trainer-049-5ddc19da@4x.png",
+              "visibleFootY": 546.96875
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 546.96875,
+              "source": "assets/sprites/focumon-070-feeb0586@4x.png",
+              "visibleFootY": 546.9687843322754
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 4,
+          "rank": "Rank 3",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 572.96875,
+              "source": "assets/sprites/trainer-023-ed4a0f7d@4x.png",
+              "visibleFootY": 572.96875
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 572.96875,
+              "source": "assets/sprites/focumon-181-aac27ec0@4x.png",
+              "visibleFootY": 572.9687587193081
+            }
+          ]
+        }
+      ],
+      "errors": [],
+      "overflow": false,
+      "theme": "dark",
+      "width": 1440
+    },
+    {
+      "cards": [
+        {
+          "badgeNameClearance": 2,
+          "rank": "Rank 1",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 542.25,
+              "source": "assets/sprites/trainer-001-1fa04730@4x.png",
+              "visibleFootY": 542.25
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 542.25,
+              "source": "assets/sprites/focumon-023-70d6e214@4x.png",
+              "visibleFootY": 542.25
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 2,
+          "rank": "Rank 2",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 540.125,
+              "source": "assets/sprites/trainer-049-5ddc19da@4x.png",
+              "visibleFootY": 540.125
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 540.125,
+              "source": "assets/sprites/focumon-070-feeb0586@4x.png",
+              "visibleFootY": 540.125
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 2,
+          "rank": "Rank 3",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 566.609375,
+              "source": "assets/sprites/trainer-023-ed4a0f7d@4x.png",
+              "visibleFootY": 566.609375
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 566.609375,
+              "source": "assets/sprites/focumon-181-aac27ec0@4x.png",
+              "visibleFootY": 566.609375
+            }
+          ]
+        }
+      ],
+      "errors": [],
+      "overflow": false,
+      "theme": "light",
+      "width": 390
+    },
+    {
+      "cards": [
+        {
+          "badgeNameClearance": 2,
+          "rank": "Rank 1",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 542.25,
+              "source": "assets/sprites/trainer-001-1fa04730@4x.png",
+              "visibleFootY": 542.25
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 542.25,
+              "source": "assets/sprites/focumon-023-70d6e214@4x.png",
+              "visibleFootY": 542.25
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 2,
+          "rank": "Rank 2",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 540.125,
+              "source": "assets/sprites/trainer-049-5ddc19da@4x.png",
+              "visibleFootY": 540.125
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 540.125,
+              "source": "assets/sprites/focumon-070-feeb0586@4x.png",
+              "visibleFootY": 540.125
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 2,
+          "rank": "Rank 3",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 566.609375,
+              "source": "assets/sprites/trainer-023-ed4a0f7d@4x.png",
+              "visibleFootY": 566.609375
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 566.609375,
+              "source": "assets/sprites/focumon-181-aac27ec0@4x.png",
+              "visibleFootY": 566.609375
+            }
+          ]
+        }
+      ],
+      "errors": [],
+      "overflow": false,
+      "theme": "dark",
+      "width": 390
+    },
+    {
+      "cards": [
+        {
+          "badgeNameClearance": 2,
+          "rank": "Rank 1",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 562.8125,
+              "source": "assets/sprites/trainer-001-1fa04730@4x.png",
+              "visibleFootY": 562.8125
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 562.8125,
+              "source": "assets/sprites/focumon-023-70d6e214@4x.png",
+              "visibleFootY": 562.8125087193081
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 2,
+          "rank": "Rank 2",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 550.28125,
+              "source": "assets/sprites/trainer-049-5ddc19da@4x.png",
+              "visibleFootY": 550.28125
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 550.28125,
+              "source": "assets/sprites/focumon-070-feeb0586@4x.png",
+              "visibleFootY": 550.2812843322754
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 2,
+          "rank": "Rank 3",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 560.28125,
+              "source": "assets/sprites/trainer-023-ed4a0f7d@4x.png",
+              "visibleFootY": 560.28125
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 560.28125,
+              "source": "assets/sprites/focumon-181-aac27ec0@4x.png",
+              "visibleFootY": 560.2812587193081
+            }
+          ]
+        }
+      ],
+      "errors": [],
+      "overflow": false,
+      "theme": "light",
+      "width": 320
+    },
+    {
+      "cards": [
+        {
+          "badgeNameClearance": 2,
+          "rank": "Rank 1",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 557.4375,
+              "source": "assets/sprites/trainer-001-1fa04730@4x.png",
+              "visibleFootY": 557.4375
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 557.4375,
+              "source": "assets/sprites/focumon-023-70d6e214@4x.png",
+              "visibleFootY": 557.4375
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 2,
+          "rank": "Rank 2",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 577.453125,
+              "source": "assets/sprites/trainer-049-5ddc19da@4x.png",
+              "visibleFootY": 577.453125
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 577.453125,
+              "source": "assets/sprites/focumon-070-feeb0586@4x.png",
+              "visibleFootY": 577.453125
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 2,
+          "rank": "Rank 3",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 587.453125,
+              "source": "assets/sprites/trainer-023-ed4a0f7d@4x.png",
+              "visibleFootY": 587.453125
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 587.453125,
+              "source": "assets/sprites/focumon-181-aac27ec0@4x.png",
+              "visibleFootY": 587.453125
+            }
+          ]
+        }
+      ],
+      "errors": [],
+      "overflow": false,
+      "theme": "light",
+      "width": 760
+    },
+    {
+      "cards": [
+        {
+          "badgeNameClearance": 4,
+          "rank": "Rank 1",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 562.359375,
+              "source": "assets/sprites/trainer-001-1fa04730@4x.png",
+              "visibleFootY": 562.359375
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 562.359375,
+              "source": "assets/sprites/focumon-023-70d6e214@4x.png",
+              "visibleFootY": 562.3593412126813
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 4,
+          "rank": "Rank 2",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 606.96875,
+              "source": "assets/sprites/trainer-049-5ddc19da@4x.png",
+              "visibleFootY": 606.96875
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 606.96875,
+              "source": "assets/sprites/focumon-070-feeb0586@4x.png",
+              "visibleFootY": 606.968732561384
+            }
+          ]
+        },
+        {
+          "badgeNameClearance": 4,
+          "rank": "Rank 3",
+          "sprites": [
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 632.96875,
+              "source": "assets/sprites/trainer-023-ed4a0f7d@4x.png",
+              "visibleFootY": 632.96875
+            },
+            {
+              "badgeClearance": 8,
+              "gap": 0,
+              "groundY": 632.96875,
+              "source": "assets/sprites/focumon-181-aac27ec0@4x.png",
+              "visibleFootY": 632.9687151227679
+            }
+          ]
+        }
+      ],
+      "errors": [],
+      "overflow": false,
+      "theme": "light",
+      "width": 1024
+    }
+  ],
+  "limits": {
+    "maximumGroundGapPx": 0.25,
+    "minimumSpriteToRankPx": 6,
+    "minimumRankToNamePx": 1
+  },
+  "source": "Visible alpha bounds measured from the unchanged artwork files."
+}

@@ -6,7 +6,7 @@
 
 The proposal combines three visual changes:
 
-- [OBSERVED] Podium artwork uses smooth rendering of the importer's already-smoothed sprites, fixed square dimensions, less overlap, and a softer shadow. Companions remain visible on mobile. The podium blocks retain their original positions and dimensions.
+- [OBSERVED] Podium artwork uses smooth rendering of the importer's already-smoothed sprites, fixed square dimensions, less overlap, and a softer shadow. Companions remain visible on mobile. The podium blocks retain their original positions and dimensions. Visible sprite bottoms now align to the podium surface, compensating for transparent pixels in each image. Rank numbers sit on the front cap, below the characters.
 - [OBSERVED] Focus cards gain 16px desktop and 8px mobile side padding, more space above the artwork, and a larger gap before the timer. At 320px, side padding is 6px. Break rows also have more inset.
 - [OBSERVED] The stepped-card outline from the first proposal is retained.
 
@@ -25,6 +25,6 @@ The proposal combines three visual changes:
 
 [OBSERVED] Twelve width/theme/state checks passed across 320, 390, 760, 1024, and 1440px, both themes, and all six sample scenarios. Text and image references match Before; podium block geometry is unchanged. No page or toolbar overflow, broken podium images, or recorded script errors occurred. Before/After and theme controls, keyboard member details, Escape focus restoration, and the old URL redirect passed. Toggling at the spotlights preserved the section's viewport position.
 
-[Verification](review-results.json) · [Source hashes](source-hashes.json) · [Full-page preview](comparison.png)
+[Ground-contact and rank-clearance checks](grounding-results.json) · [Verification](review-results.json) · [Source hashes](source-hashes.json) · [Full-page preview](comparison.png)
 
 Root dependency: `review-ready design = faithful artwork AND balanced focus padding AND familiar full-page comparison`.

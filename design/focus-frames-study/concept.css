@@ -65,16 +65,29 @@
 }
 
 /* Keep the smoothed source artwork proportionate and separate each pair. */
-:root[data-frame-view="after"] .podium-avatars { width: calc(100% + 36px); gap: 0; }
+:root[data-frame-view="after"] .podium-avatars { width: calc(100% + 36px); gap: 0; transform: translateY(-2px); }
 :root[data-frame-view="after"] .podium :is(.trainer-avatar, .focumon-avatar) {
   flex: 0 0 auto;
   image-rendering: auto;
-  filter: drop-shadow(0 4px 2px rgb(38 28 51 / 20%));
+  filter: drop-shadow(0 2px 1px rgb(38 28 51 / 20%));
+  transform: translateY(var(--sprite-ground-shift, 0%));
 }
 :root[data-frame-view="after"] .podium .trainer-avatar { width: 152px; height: 152px; }
 :root[data-frame-view="after"] .podium .focumon-avatar {
-  width: 104px; height: 104px; margin-left: -32px; margin-bottom: 3px; opacity: 1;
+  width: 104px; height: 104px; margin-left: -32px; margin-bottom: 0; opacity: 1;
 }
+/* Put rank on the front cap, with no badge intruding into the characters. */
+:root[data-frame-view="after"] .podium .place-badge {
+  top: calc(var(--avatar-h) + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 14px;
+  background: transparent;
+  box-shadow: none;
+  z-index: 3;
+}
+:root[data-frame-view="after"] .podium .place-badge::after { width: 8px; height: 14px; }
 /* Give the illustration, identity, and timer consistent breathing room. */
 :root[data-frame-view="after"] .guild-roster { gap: 12px; }
 :root[data-frame-view="after"] .guild-member { min-height: 218px; padding: 20px 16px 18px; gap: 10px; }
@@ -89,7 +102,7 @@
 @media (max-width: 760px) {
   :root[data-frame-view="after"] .podium-avatars { width: calc(100% + 24px); }
   :root[data-frame-view="after"] .podium .trainer-avatar { width: 80px; height: 80px; }
-  :root[data-frame-view="after"] .podium .focumon-avatar { display: block; width: 56px; height: 56px; margin-left: -28px; margin-bottom: 2px; }
+  :root[data-frame-view="after"] .podium .focumon-avatar { display: block; width: 56px; height: 56px; margin-left: -28px; margin-bottom: 0; }
 }
 @media (max-width: 600px) {
   :root[data-frame-view="after"] .guild-roster { gap: 8px; }

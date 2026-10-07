@@ -4,6 +4,7 @@ import hashlib
 import json
 import re
 import subprocess
+from PIL import Image
 
 study = Path(__file__).resolve().parent
 root = study.parent.parent
@@ -44,6 +45,19 @@ for component in ["focus", "community"]:
     (study / f"{component}-preview.js").write_text(bundle, encoding="utf-8")
 
 html = (root / "index.html").read_text(encoding="utf-8")
+def ground_sprite(match):
+    tag = match.group(0)
+    source = re.search(r'src="([^"]+)"', tag)
+    if not source or not (root / source[1]).is_file():
+        return tag
+    image = Image.open(root / source[1]).convert("RGBA")
+    bounds = image.getchannel("A").getbbox()
+    if not bounds:
+        return tag
+    shift = 100 * (image.height - bounds[3]) / image.height
+    attrs = f' style="--sprite-ground-shift:{shift:.8f}%" data-alpha-bounds="{",".join(map(str, bounds))}"'
+    return tag[:-1] + attrs + ">"
+html = re.sub(r'<img\b[^>]*class="(?:trainer-avatar|focumon-avatar)"[^>]*>', ground_sprite, html)
 html = html.replace('<html lang="en">', '<html lang="en" data-frame-view="after">', 1)
 html = html.replace('<meta charset="UTF-8">', '<meta charset="UTF-8">\n    <base href="../../">', 1)
 html = html.replace('<title>Consistency Leaderboard</title>', '<title>Podium and focus polish | Before / After</title>')
