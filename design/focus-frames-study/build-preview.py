@@ -1,4 +1,4 @@
-"""Freeze the current page for a design-only card-frame comparison."""
+"""Freeze the current page for a design-only podium and focus comparison."""
 from pathlib import Path
 import hashlib
 import json
@@ -19,6 +19,7 @@ if manifest.exists():
     previous = json.loads(manifest.read_text(encoding="utf-8"))
     if previous["files"] != hashes:
         raise SystemExit("Frozen baseline differs from this checkout. Keep the original comparison.")
+baseline_commit = previous["commit"] if manifest.exists() else subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
 
 for source, target in [
     ("style.css", "baseline.css"), ("focus.css", "baseline-focus.css"),
@@ -45,7 +46,7 @@ for component in ["focus", "community"]:
 html = (root / "index.html").read_text(encoding="utf-8")
 html = html.replace('<html lang="en">', '<html lang="en" data-frame-view="after">', 1)
 html = html.replace('<meta charset="UTF-8">', '<meta charset="UTF-8">\n    <base href="../../">', 1)
-html = html.replace('<title>Consistency Leaderboard</title>', '<title>Focus card frames | Before / After</title>')
+html = html.replace('<title>Consistency Leaderboard</title>', '<title>Podium and focus polish | Before / After</title>')
 html = re.sub(r'\s*<!-- Google tag.*?</script>\s*<script>.*?</script>', '', html, flags=re.S)
 for source, target in [
     ("style.css", "baseline.css"), ("focus.css", "baseline-focus.css"),
@@ -58,7 +59,7 @@ html = html.replace('</head>', f'''    <link rel="stylesheet" href="{prefix}prev
 </head>''', 1)
 toolbar = '''
     <aside class="frame-toolbar" aria-label="Design comparison">
-      <div class="frame-toolbar-title"><strong>Focus card frames</strong><small id="frame-caption">Stepped corners. Same content.</small></div>
+      <div class="frame-toolbar-title"><strong>Podium &amp; focus polish</strong><small id="frame-caption">Artwork, spacing, and stepped frames.</small></div>
       <div class="frame-switch" role="group" aria-label="Compare card frames">
         <button type="button" id="frame-before" aria-pressed="false">Before</button>
         <button type="button" id="frame-after" aria-pressed="true">After</button>
@@ -69,7 +70,8 @@ toolbar = '''
         <option value="break">On a break</option><option value="ready">Ready</option>
         <option value="quiet">Quiet guild</option><option value="offline">Offline</option>
       </select></label>
-      <button type="button" id="frame-view-cards">View cards ↓</button>
+      <button type="button" id="frame-view-podium">View podium</button>
+      <button type="button" id="frame-view-cards">View cards</button>
       <p class="sr-only" role="status" id="frame-announcement"></p>
     </aside>
 '''
@@ -81,7 +83,7 @@ for component in ["focus", "community"]:
 html = html.replace('</body>', f'    <script src="{prefix}preview.js"></script>\n</body>', 1)
 (study / "index.html").write_text(html, encoding="utf-8")
 manifest.write_text(json.dumps({
-    "commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
+    "commit": baseline_commit,
     "files": hashes,
 }, indent=2) + "\n", encoding="utf-8")
 print("Created frozen full-page frame comparison; production files unchanged.")

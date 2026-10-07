@@ -63,3 +63,45 @@
 :root[data-frame-view="after"] .guild-member:is(:hover, :focus-visible)::before {
   background: var(--accent);
 }
+
+/* Keep the smoothed source artwork proportionate and separate each pair. */
+:root[data-frame-view="after"] .podium-avatars { width: calc(100% + 36px); gap: 0; }
+:root[data-frame-view="after"] .podium :is(.trainer-avatar, .focumon-avatar) {
+  flex: 0 0 auto;
+  image-rendering: auto;
+  filter: drop-shadow(0 4px 2px rgb(38 28 51 / 20%));
+}
+:root[data-frame-view="after"] .podium .trainer-avatar { width: 152px; height: 152px; }
+:root[data-frame-view="after"] .podium .focumon-avatar {
+  width: 104px; height: 104px; margin-left: -32px; margin-bottom: 3px; opacity: 1;
+}
+/* Give the illustration, identity, and timer consistent breathing room. */
+:root[data-frame-view="after"] .guild-roster { gap: 12px; }
+:root[data-frame-view="after"] .guild-member { min-height: 218px; padding: 20px 16px 18px; gap: 10px; }
+:root[data-frame-view="after"] .guild-member-art { height: 82px; }
+:root[data-frame-view="after"] .guild-member-info { gap: 14px; }
+:root[data-frame-view="after"] .guild-member-task { margin-top: 6px; }
+:root[data-frame-view="after"] .guild-rest-member { padding: 12px 8px; }
+@media (max-width: 1199px) and (min-width: 761px) {
+  :root[data-frame-view="after"] .podium .trainer-avatar { width: 128px; height: 128px; }
+  :root[data-frame-view="after"] .podium .focumon-avatar { width: 88px; height: 88px; margin-left: -24px; }
+}
+@media (max-width: 760px) {
+  :root[data-frame-view="after"] .podium-avatars { width: calc(100% + 24px); }
+  :root[data-frame-view="after"] .podium .trainer-avatar { width: 80px; height: 80px; }
+  :root[data-frame-view="after"] .podium .focumon-avatar { display: block; width: 56px; height: 56px; margin-left: -28px; margin-bottom: 2px; }
+}
+@media (max-width: 600px) {
+  :root[data-frame-view="after"] .guild-roster { gap: 8px; }
+  :root[data-frame-view="after"] .guild-member { min-height: 204px; padding: 16px 8px 14px; gap: 8px; }
+  :root[data-frame-view="after"] .guild-member-art { height: 72px; }
+  :root[data-frame-view="after"] .guild-member-info { gap: 12px; }
+}
+@media (max-width: 359px) {
+  :root[data-frame-view="after"] .podium .trainer-avatar { width: 64px; height: 64px; }
+  :root[data-frame-view="after"] .podium .focumon-avatar { width: 48px; height: 48px; margin-left: -24px; }
+  :root[data-frame-view="after"] .guild-member { padding: 14px 6px 12px; }
+  :root[data-frame-view="after"] .guild-member-art { width: 74px; height: 66px; }
+  :root[data-frame-view="after"] .guild-member-avatar { width: 60px; height: 60px; left: -4px; }
+  :root[data-frame-view="after"] .guild-member-companion { width: 46px; height: 46px; right: -3px; }
+}

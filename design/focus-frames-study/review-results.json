@@ -1,317 +1,1034 @@
 {
   "baselineCommit": "871d48b7088cf573d3611bae7e55558725e88c7a",
-  "scope": "Design preview only; production sources unchanged.",
-  "root": "ready for review = frame design AND faithful before/after comparison AND visual verification",
-  "comparisonCases": [
+  "scope": "Design preview only. Podium artwork presentation, focusing-card padding, stepped frames, and the familiar full-page comparison.",
+  "root": "review-ready design = faithful artwork AND balanced focus padding AND familiar full-page comparison",
+  "checks": [
     {
-      "allSessionRequestsMocked": true,
+      "cards": [
+        {
+          "height": 230.890625,
+          "padding": [
+            "20px",
+            "16px",
+            "18px",
+            "16px"
+          ]
+        },
+        {
+          "height": 230.890625,
+          "padding": [
+            "20px",
+            "16px",
+            "18px",
+            "16px"
+          ]
+        },
+        {
+          "height": 230.890625,
+          "padding": [
+            "20px",
+            "16px",
+            "18px",
+            "16px"
+          ]
+        }
+      ],
       "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 26,
-      "members": 3,
       "overflow": false,
-      "phase": "focus",
+      "podiumBlocksUnchanged": true,
       "sample": "focus",
+      "sourcesIdentical": true,
+      "sprites": [
+        {
+          "height": 152,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 152
+        },
+        {
+          "height": 104,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 104
+        },
+        {
+          "height": 152,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 152
+        },
+        {
+          "height": 104,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 104
+        },
+        {
+          "height": 152,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 152
+        },
+        {
+          "height": 104,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 104
+        }
+      ],
       "textIdentical": true,
       "theme": "light",
-      "viewport": 1440
+      "toolbarFits": true,
+      "width": 1440
     },
     {
-      "allSessionRequestsMocked": true,
+      "cards": [
+        {
+          "height": 230.890625,
+          "padding": [
+            "20px",
+            "16px",
+            "18px",
+            "16px"
+          ]
+        },
+        {
+          "height": 230.890625,
+          "padding": [
+            "20px",
+            "16px",
+            "18px",
+            "16px"
+          ]
+        },
+        {
+          "height": 230.890625,
+          "padding": [
+            "20px",
+            "16px",
+            "18px",
+            "16px"
+          ]
+        }
+      ],
       "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 26,
-      "members": 3,
       "overflow": false,
-      "phase": "focus",
+      "podiumBlocksUnchanged": true,
       "sample": "focus",
+      "sourcesIdentical": true,
+      "sprites": [
+        {
+          "height": 152,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 152
+        },
+        {
+          "height": 104,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 104
+        },
+        {
+          "height": 152,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 152
+        },
+        {
+          "height": 104,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 104
+        },
+        {
+          "height": 152,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 152
+        },
+        {
+          "height": 104,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 104
+        }
+      ],
       "textIdentical": true,
       "theme": "dark",
-      "viewport": 1440
+      "toolbarFits": true,
+      "width": 1440
     },
     {
-      "allSessionRequestsMocked": true,
+      "cards": [
+        {
+          "height": 204,
+          "padding": [
+            "16px",
+            "8px",
+            "14px",
+            "8px"
+          ]
+        },
+        {
+          "height": 204,
+          "padding": [
+            "16px",
+            "8px",
+            "14px",
+            "8px"
+          ]
+        },
+        {
+          "height": 204,
+          "padding": [
+            "16px",
+            "8px",
+            "14px",
+            "8px"
+          ]
+        }
+      ],
       "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 26,
-      "members": 3,
       "overflow": false,
-      "phase": "focus",
+      "podiumBlocksUnchanged": true,
       "sample": "focus",
+      "sourcesIdentical": true,
+      "sprites": [
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        }
+      ],
       "textIdentical": true,
       "theme": "light",
-      "viewport": 390
+      "toolbarFits": true,
+      "width": 390
     },
     {
-      "allSessionRequestsMocked": true,
+      "cards": [
+        {
+          "height": 204,
+          "padding": [
+            "16px",
+            "8px",
+            "14px",
+            "8px"
+          ]
+        },
+        {
+          "height": 204,
+          "padding": [
+            "16px",
+            "8px",
+            "14px",
+            "8px"
+          ]
+        },
+        {
+          "height": 204,
+          "padding": [
+            "16px",
+            "8px",
+            "14px",
+            "8px"
+          ]
+        }
+      ],
       "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 26,
-      "members": 3,
       "overflow": false,
-      "phase": "focus",
+      "podiumBlocksUnchanged": true,
       "sample": "focus",
+      "sourcesIdentical": true,
+      "sprites": [
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        }
+      ],
       "textIdentical": true,
       "theme": "dark",
-      "viewport": 390
+      "toolbarFits": true,
+      "width": 390
     },
     {
-      "allSessionRequestsMocked": true,
+      "cards": [
+        {
+          "height": 204,
+          "padding": [
+            "14px",
+            "6px",
+            "12px",
+            "6px"
+          ]
+        },
+        {
+          "height": 204,
+          "padding": [
+            "14px",
+            "6px",
+            "12px",
+            "6px"
+          ]
+        },
+        {
+          "height": 204,
+          "padding": [
+            "14px",
+            "6px",
+            "12px",
+            "6px"
+          ]
+        }
+      ],
       "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 26,
-      "members": 3,
       "overflow": false,
-      "phase": "focus",
+      "podiumBlocksUnchanged": true,
       "sample": "focus",
+      "sourcesIdentical": true,
+      "sprites": [
+        {
+          "height": 64,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 64
+        },
+        {
+          "height": 48,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 48
+        },
+        {
+          "height": 64,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 64
+        },
+        {
+          "height": 48,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 48
+        },
+        {
+          "height": 64,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 64
+        },
+        {
+          "height": 48,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 48
+        }
+      ],
       "textIdentical": true,
       "theme": "light",
-      "viewport": 320
+      "toolbarFits": true,
+      "width": 320
     },
     {
-      "allSessionRequestsMocked": true,
+      "cards": [
+        {
+          "height": 230.890625,
+          "padding": [
+            "20px",
+            "16px",
+            "18px",
+            "16px"
+          ]
+        },
+        {
+          "height": 230.890625,
+          "padding": [
+            "20px",
+            "16px",
+            "18px",
+            "16px"
+          ]
+        },
+        {
+          "height": 230.890625,
+          "padding": [
+            "20px",
+            "16px",
+            "18px",
+            "16px"
+          ]
+        }
+      ],
       "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 26,
-      "members": 3,
       "overflow": false,
-      "phase": "focus",
+      "podiumBlocksUnchanged": true,
       "sample": "focus",
+      "sourcesIdentical": true,
+      "sprites": [
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        }
+      ],
       "textIdentical": true,
       "theme": "light",
-      "viewport": 760
+      "toolbarFits": true,
+      "width": 760
     },
     {
-      "allSessionRequestsMocked": true,
+      "cards": [
+        {
+          "height": 230.890625,
+          "padding": [
+            "20px",
+            "16px",
+            "18px",
+            "16px"
+          ]
+        },
+        {
+          "height": 230.890625,
+          "padding": [
+            "20px",
+            "16px",
+            "18px",
+            "16px"
+          ]
+        },
+        {
+          "height": 230.890625,
+          "padding": [
+            "20px",
+            "16px",
+            "18px",
+            "16px"
+          ]
+        }
+      ],
       "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 22,
-      "members": 3,
       "overflow": false,
-      "phase": "choose",
+      "podiumBlocksUnchanged": true,
+      "sample": "focus",
+      "sourcesIdentical": true,
+      "sprites": [
+        {
+          "height": 128,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 128
+        },
+        {
+          "height": 88,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 88
+        },
+        {
+          "height": 128,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 128
+        },
+        {
+          "height": 88,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 88
+        },
+        {
+          "height": 128,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 128
+        },
+        {
+          "height": 88,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 88
+        }
+      ],
+      "textIdentical": true,
+      "theme": "light",
+      "toolbarFits": true,
+      "width": 1024
+    },
+    {
+      "cards": [
+        {
+          "height": 204,
+          "padding": [
+            "16px",
+            "8px",
+            "14px",
+            "8px"
+          ]
+        },
+        {
+          "height": 204,
+          "padding": [
+            "16px",
+            "8px",
+            "14px",
+            "8px"
+          ]
+        },
+        {
+          "height": 204,
+          "padding": [
+            "16px",
+            "8px",
+            "14px",
+            "8px"
+          ]
+        }
+      ],
+      "errors": [],
+      "overflow": false,
+      "podiumBlocksUnchanged": true,
       "sample": "choose",
+      "sourcesIdentical": true,
+      "sprites": [
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        }
+      ],
       "textIdentical": true,
       "theme": "light",
-      "viewport": 1440
+      "toolbarFits": true,
+      "width": 390
     },
     {
-      "allSessionRequestsMocked": true,
+      "cards": [
+        {
+          "height": 204,
+          "padding": [
+            "16px",
+            "8px",
+            "14px",
+            "8px"
+          ]
+        },
+        {
+          "height": 204,
+          "padding": [
+            "16px",
+            "8px",
+            "14px",
+            "8px"
+          ]
+        }
+      ],
       "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 22,
-      "members": 3,
       "overflow": false,
-      "phase": "choose",
-      "sample": "choose",
-      "textIdentical": true,
-      "theme": "light",
-      "viewport": 390
-    },
-    {
-      "allSessionRequestsMocked": true,
-      "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 23,
-      "members": 2,
-      "overflow": false,
-      "phase": "break",
+      "podiumBlocksUnchanged": true,
       "sample": "break",
+      "sourcesIdentical": true,
+      "sprites": [
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        }
+      ],
       "textIdentical": true,
       "theme": "light",
-      "viewport": 1440
+      "toolbarFits": true,
+      "width": 390
     },
     {
-      "allSessionRequestsMocked": true,
+      "cards": [
+        {
+          "height": 204,
+          "padding": [
+            "16px",
+            "8px",
+            "14px",
+            "8px"
+          ]
+        },
+        {
+          "height": 204,
+          "padding": [
+            "16px",
+            "8px",
+            "14px",
+            "8px"
+          ]
+        }
+      ],
       "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 23,
-      "members": 2,
       "overflow": false,
-      "phase": "break",
-      "sample": "break",
-      "textIdentical": true,
-      "theme": "light",
-      "viewport": 390
-    },
-    {
-      "allSessionRequestsMocked": true,
-      "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 19,
-      "members": 2,
-      "overflow": false,
-      "phase": "idle",
+      "podiumBlocksUnchanged": true,
       "sample": "ready",
+      "sourcesIdentical": true,
+      "sprites": [
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        }
+      ],
       "textIdentical": true,
       "theme": "light",
-      "viewport": 1440
+      "toolbarFits": true,
+      "width": 390
     },
     {
-      "allSessionRequestsMocked": true,
+      "cards": [],
       "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 19,
-      "members": 2,
       "overflow": false,
-      "phase": "idle",
-      "sample": "ready",
-      "textIdentical": true,
-      "theme": "light",
-      "viewport": 390
-    },
-    {
-      "allSessionRequestsMocked": true,
-      "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 11,
-      "members": 0,
-      "overflow": false,
-      "phase": "idle",
+      "podiumBlocksUnchanged": true,
       "sample": "quiet",
+      "sourcesIdentical": true,
+      "sprites": [
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        }
+      ],
       "textIdentical": true,
       "theme": "light",
-      "viewport": 1440
+      "toolbarFits": true,
+      "width": 390
     },
     {
-      "allSessionRequestsMocked": true,
+      "cards": [],
       "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 11,
-      "members": 0,
       "overflow": false,
-      "phase": "idle",
-      "sample": "quiet",
-      "textIdentical": true,
-      "theme": "light",
-      "viewport": 390
-    },
-    {
-      "allSessionRequestsMocked": true,
-      "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 11,
-      "members": 0,
-      "overflow": false,
-      "phase": "stale",
+      "podiumBlocksUnchanged": true,
       "sample": "offline",
+      "sourcesIdentical": true,
+      "sprites": [
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        },
+        {
+          "height": 80,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 80
+        },
+        {
+          "height": 56,
+          "loaded": true,
+          "rendering": "auto",
+          "shrink": "0",
+          "visible": true,
+          "width": 56
+        }
+      ],
       "textIdentical": true,
       "theme": "light",
-      "viewport": 1440
-    },
-    {
-      "allSessionRequestsMocked": true,
-      "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 11,
-      "members": 0,
-      "overflow": false,
-      "phase": "stale",
-      "sample": "offline",
-      "textIdentical": true,
-      "theme": "light",
-      "viewport": 390
+      "toolbarFits": true,
+      "width": 390
     }
   ],
-  "finalFrameMaskChecks": [
-    {
-      "allSessionRequestsMocked": true,
-      "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 26,
-      "members": 3,
-      "overflow": false,
-      "phase": "focus",
-      "sample": "focus",
-      "textIdentical": true,
-      "theme": "light",
-      "viewport": 1440
-    },
-    {
-      "allSessionRequestsMocked": true,
-      "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 26,
-      "members": 3,
-      "overflow": false,
-      "phase": "focus",
-      "sample": "focus",
-      "textIdentical": true,
-      "theme": "dark",
-      "viewport": 1440
-    },
-    {
-      "allSessionRequestsMocked": true,
-      "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 26,
-      "members": 3,
-      "overflow": false,
-      "phase": "focus",
-      "sample": "focus",
-      "textIdentical": true,
-      "theme": "light",
-      "viewport": 390
-    },
-    {
-      "allSessionRequestsMocked": true,
-      "errors": [],
-      "frameHasSteppedOutline": true,
-      "layoutDifferences": [],
-      "measuredElements": 26,
-      "members": 3,
-      "overflow": false,
-      "phase": "focus",
-      "sample": "focus",
-      "textIdentical": true,
-      "theme": "dark",
-      "viewport": 390
-    }
-  ],
-  "keyboardFocus": {
-    "clipPath": "none",
-    "errors": [],
-    "keyboardFocus": true,
-    "offset": "3px",
-    "outline": "2px",
-    "trainer": "saamm_qpme"
-  },
   "interactions": {
-    "beforeAfterToggle": true,
+    "beforeAfterButtons": true,
     "themeToggle": true,
-    "sampleScenarioSelector": true,
-    "memberDialogOpensWithTask": true,
-    "escapeRestoresCardFocus": true,
-    "previewFragmentJumpStaysOnPage": true,
-    "galleryDeviceThemeAndDetailControls": true,
-    "galleryNoHorizontalOverflowAt320And390": true
+    "keyboardMemberDetails": true,
+    "escapeRestoresFocus": true,
+    "oldComparisonUrlRedirects": true
   },
-  "captureEvidence": "capture-states.json",
-  "pixelEvidence": "pixel-comparison.json",
+  "comparisonContext": {
+    "anchor": "spotlights",
+    "beforeTop": 23.578125,
+    "afterTop": 23.578125,
+    "preserved": true
+  },
   "productionPreservation": {
     "unchangedSourceHashes": 11,
     "changesConfinedTo": "design/focus-frames-study"
   },
   "limitations": [
-    "Each final image pair has two interior pixels differing by one RGB level; larger pixel differences occur only at card edges.",
-    "Sessions are fixed sample data, not live activity."
+    "Sessions are deterministic examples, not live activity.",
+    "The proposed padding intentionally changes focus-card height; the comparison preserves the visible section when toggled."
   ]
 }

@@ -4,8 +4,9 @@
   function updateControls() {
     $('frame-before').setAttribute('aria-pressed', String(review.view === 'before'));
     $('frame-after').setAttribute('aria-pressed', String(review.view === 'after'));
-    $('frame-caption').textContent = review.view === 'before' ? 'Current rounded frames.' : 'Stepped corners. Same content.';
+    $('frame-caption').textContent = review.view === 'before' ? 'Current UI. Same sample sessions.' : 'Artwork, spacing, and stepped frames.';
     $('frame-theme').textContent = review.theme === 'light' ? 'Dark theme' : 'Light theme';
+    $('frame-theme').dataset.shortLabel = review.theme === 'light' ? 'Dark' : 'Light';
     $('frame-sample').value = review.scenario;
   }
   function saveUrl() {
@@ -16,12 +17,17 @@
     try { history.replaceState(null, '', url); } catch { /* A file preview still works. */ }
   }
   function compare(view) {
+    const anchor = [...document.querySelectorAll('.hero,.focus-hub,.spotlights,#standings')].find(section => {
+      const rect = section.getBoundingClientRect();
+      return rect.top <= 100 && rect.bottom > 100;
+    });
+    const offset = anchor?.getBoundingClientRect().top;
     const top = scrollY;
     review.view = view;
     document.documentElement.dataset.frameView = view;
     updateControls();
     saveUrl();
-    window.scrollTo({ top, behavior: 'instant' });
+    window.scrollTo({ top: anchor ? anchor.getBoundingClientRect().top + scrollY - offset : top, behavior: 'instant' });
     $('frame-announcement').textContent = `${view === 'before' ? 'Current' : 'Proposed'} frames. Same sample sessions.`;
   }
   $('frame-before').addEventListener('click', () => compare('before'));
@@ -44,6 +50,7 @@
     location.href = url.href;
   });
   $('frame-view-cards').addEventListener('click', () => document.querySelector('.focus-hub').scrollIntoView({ behavior: 'smooth' }));
+  $('frame-view-podium').addEventListener('click', () => document.querySelector('.podium').scrollIntoView({ behavior: 'smooth', block: 'center' }));
   // The asset base points to the repo root. Keep fragment jumps in this preview.
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     const target = document.getElementById(anchor.getAttribute('href').slice(1));
@@ -82,9 +89,7 @@
         return image.decode().catch(() => review.errors.push(`Artwork did not load: ${image.getAttribute('src')}`));
       }));
     review.ready = true;
-    if (!document.documentElement.hasAttribute('data-frame-capture')) {
-      document.querySelector('.focus-hub').scrollIntoView({ behavior: 'instant' });
-    }
+    if (location.hash === '#focus-session') document.querySelector('.focus-hub').scrollIntoView({ behavior: 'instant' });
   }
   settle();
 })();
