@@ -34,7 +34,7 @@ html { overflow-anchor: none; }
 .frame-toolbar button:hover { border-color: var(--border-strong); }
 .frame-sample { display: grid; gap: 2px; color: var(--text-3); font-size: 9px; }
 .frame-sample select { min-height: 30px; padding: 3px 6px; border: 1px solid var(--border); border-radius: 4px; color: var(--text); background: var(--surface-2); font: 11px var(--font); }
-.frame-study .focus-hub { scroll-margin-top: 92px; }
+.frame-study :is(.focus-hub, #focus-session, #focusing-now, #standings) { scroll-margin-top: 92px; }
 :root[data-frame-capture] .frame-toolbar { display: none; }
 :root[data-frame-capture] { scroll-behavior: auto; }
 @media (max-width: 700px) {
@@ -45,7 +45,7 @@ html { overflow-anchor: none; }
   .frame-toolbar button { min-height: 44px; padding: 6px 8px; font-size: 11px; }
   .frame-sample { flex: 1; max-width: 125px; }
   #frame-view-cards { display: none; }
-  .frame-study .focus-hub { scroll-margin-top: 118px; }
+  .frame-study :is(.focus-hub, #focus-session, #focusing-now, #standings) { scroll-margin-top: 118px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .frame-study *, .frame-study *::before, .frame-study *::after {

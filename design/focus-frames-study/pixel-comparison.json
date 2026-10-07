@@ -5,8 +5,10 @@
       1440,
       1000
     ],
-    "changedPixels": 2401,
-    "changedPixelsOutsideCards": 0
+    "changedPixels": 2113,
+    "changedPixelsOutsideCards": 0,
+    "changedPixelsAwayFromEdges": 2,
+    "maxChannelDifferenceAwayFromEdges": 1
   },
   {
     "pair": "desktop-dark",
@@ -14,8 +16,10 @@
       1440,
       1000
     ],
-    "changedPixels": 2394,
-    "changedPixelsOutsideCards": 0
+    "changedPixels": 2113,
+    "changedPixelsOutsideCards": 0,
+    "changedPixelsAwayFromEdges": 2,
+    "maxChannelDifferenceAwayFromEdges": 1
   },
   {
     "pair": "mobile-light",
@@ -23,8 +27,10 @@
       390,
       844
     ],
-    "changedPixels": 2412,
-    "changedPixelsOutsideCards": 0
+    "changedPixels": 2313,
+    "changedPixelsOutsideCards": 0,
+    "changedPixelsAwayFromEdges": 2,
+    "maxChannelDifferenceAwayFromEdges": 1
   },
   {
     "pair": "mobile-dark",
@@ -32,7 +38,9 @@
       390,
       844
     ],
-    "changedPixels": 2077,
-    "changedPixelsOutsideCards": 0
+    "changedPixels": 2141,
+    "changedPixelsOutsideCards": 0,
+    "changedPixelsAwayFromEdges": 2,
+    "maxChannelDifferenceAwayFromEdges": 1
   }
 ]

@@ -49,8 +49,10 @@
 }
 /* Clip only the scene/action backgrounds. Card focus outlines stay outside. */
 :root[data-frame-view="after"] .focus-scene {
-  clip-path: polygon(0 0, calc(100% - 7px) 0, calc(100% - 7px) 3px,
-    calc(100% - 3px) 3px, calc(100% - 3px) 7px, 100% 7px, 100% 100%, 0 100%);
+  /* Extend untouched edges beyond the box to avoid another antialias seam. */
+  clip-path: polygon(-2px -2px, calc(100% - 7px) -2px, calc(100% - 7px) 3px,
+    calc(100% - 3px) 3px, calc(100% - 3px) 7px, calc(100% + 2px) 7px,
+    calc(100% + 2px) calc(100% + 2px), -2px calc(100% + 2px));
 }
 :root[data-frame-view="after"] .focus-actions {
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 7px),
