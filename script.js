@@ -38,7 +38,6 @@
             var next = currentTheme() === 'dark' ? 'light' : 'dark';
             root.setAttribute('data-theme', next);
             store('woh-theme', next);
-            if (!read('woh-sky')) { sky = skyForTheme(); setSky(sky); }
         });
     }
 
@@ -47,10 +46,9 @@
     var SKIES = ['dawn', 'day', 'dusk', 'night'];
     var skyToggle = document.getElementById('sky-toggle');
 
-    // Without a chosen sky, the garden matches the page: daylight for the
-    // light theme, night for the dark theme.
-    function skyForTheme() {
-        return currentTheme() === 'dark' ? 'night' : 'day';
+    function skyForNow() {
+        var hour = new Date().getHours();
+        return hour >= 5 && hour < 8 ? 'dawn' : hour >= 8 && hour < 17 ? 'day' : hour >= 17 && hour < 20 ? 'dusk' : 'night';
     }
 
     function setSky(name) {
@@ -70,8 +68,8 @@
         }
     }
 
-    var sky = read('woh-sky') || skyForTheme();
-    if (SKIES.indexOf(sky) === -1) sky = skyForTheme();
+    var sky = read('woh-sky') || skyForNow();
+    if (SKIES.indexOf(sky) === -1) sky = skyForNow();
     setSky(sky);
 
     if (skyToggle) {

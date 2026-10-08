@@ -151,10 +151,9 @@ function initializeCommunity() {
         $('guild-coverage').textContent = summary.loading ? `Checking the guild · ${summary.checked} of ${summary.total} confirmed.` : `${summary.checked} of ${summary.total} trainers checked.${summary.unknown ? ` ${summary.unknown} unconfirmed.` : ''}`;
         $('guild-empty').hidden = loading || focused.length + breaks.length > 0;
         const uncertain = summary.unknown > 0 || summary.loading > 0;
-        const pending = summary.loading > 0 && !summary.unknown;
-        $('guild-empty-title').textContent = pending ? 'Looking for the party…' : uncertain ? 'Some signals are quiet.' : filter === 'break' ? 'No breaks right now.' : 'A quiet moment before the next quest.';
-        $('guild-empty-description').textContent = pending ? `${summary.checked} of ${summary.total} trainers checked so far.` : uncertain ? 'We can’t confirm every trainer’s status yet. Refresh to check again.' : filter === 'break' ? 'Focus time stays put whenever someone takes a breather.' : 'No one is focusing right now. Make a little room for your next chapter.';
-        section.querySelector('.guild-empty .guild-kicker').textContent = pending ? 'CHECKING THE GUILD' : uncertain ? 'WAITING FOR THE GUILD' : 'THE FIRE IS STILL WARM';
+        $('guild-empty-title').textContent = uncertain ? 'Some signals are quiet.' : filter === 'break' ? 'No breaks right now.' : 'A quiet moment before the next quest.';
+        $('guild-empty-description').textContent = uncertain ? 'We can’t confirm every trainer’s status yet. Refresh to check again.' : filter === 'break' ? 'Focus time stays put whenever someone takes a breather.' : 'No one is focusing right now. Make a little room for your next chapter.';
+        section.querySelector('.guild-empty .guild-kicker').textContent = uncertain ? 'WAITING FOR THE GUILD' : 'THE FIRE IS STILL WARM';
         section.querySelector('.guild-empty .guild-join').hidden = uncertain;
         section.querySelectorAll('.guild-filters button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === filter)));
         if (dialog.open) renderDialog();

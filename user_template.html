@@ -20,7 +20,7 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <!-- Google tag (gtag.js) -->
@@ -137,10 +137,10 @@
         const allFlowers = {{ flowers }};
         const allRanks = {{ ranks }};
 
-        // ---- Sky: a chosen sky, otherwise one that matches the theme ----
+        // ---- Sky by time of day ----
         (function () {
-            const theme = document.documentElement.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            let sky = theme === 'dark' ? 'night' : 'day';
+            const hour = new Date().getHours();
+            let sky = hour >= 5 && hour < 8 ? 'dawn' : hour >= 8 && hour < 17 ? 'day' : hour >= 17 && hour < 20 ? 'dusk' : 'night';
             try { const saved = localStorage.getItem('woh-sky'); if (['dawn', 'day', 'dusk', 'night'].includes(saved)) sky = saved; } catch (e) {}
             const el = document.getElementById('profile');
             el.className = el.className.replace(/sky-\w+/, 'sky-' + sky);

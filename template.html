@@ -19,11 +19,11 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="focus.css?v=balance-1">
     <link rel="stylesheet" href="community.css?v=tasks-1">
-    <link rel="stylesheet" href="focus-layout.css?v=scene-6">
+    <link rel="stylesheet" href="focus-layout.css?v=tasks-1">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4NJMY5MRXY"></script>
     <script>
@@ -65,8 +65,10 @@
             <div class="hero-copy">
                 <h1>Consistency Leaderboard</h1>
                 <p class="lede">
-                    This week <span class="count num" data-count="{{ total_participants }}">{{ total_participants }}</span> trainers grew <span class="count num" data-count="{{ total_flowers }}">{{ total_flowers }}</span> flowers in <span class="count num" data-count="{{ total_hours }}">{{ total_hours }}</span> hours of focus.
-                    <span class="lede-line"><span class="count num" data-count="{{ above_line }}">{{ above_line }}</span> cleared the <span class="nowrap">{{ line }}&#8209;flower line</span>.</span>
+                    <span class="nowrap"><span class="count num" data-count="{{ total_participants }}">{{ total_participants }}</span> trainers &middot;</span>
+                    <span class="nowrap"><span class="count num" data-count="{{ total_flowers }}">{{ total_flowers }}</span> flowers &middot;</span>
+                    <span class="nowrap"><span class="count num" data-count="{{ total_hours }}">{{ total_hours }}</span> hours this week.</span>
+                    <span class="lede-line"><span class="count num" data-count="{{ above_line }}">{{ above_line }}</span> trainers above the <span class="nowrap">{{ line }}&#8209;flower line</span>.</span>
                 </p>
                 <p class="hero-hint">Every flower is a trainer. Tap one.</p>
             </div>
@@ -92,9 +94,7 @@
         {{ community_panel }}
         </div>
 
-        <section class="spotlights" aria-labelledby="week-title">
-            <h2 class="section-title" id="week-title">This week</h2>
-            <div class="week-board">
+        <section class="spotlights" aria-label="This week's spotlights">
             <div class="spot-list">{{ spotlights }}</div>
             <div class="community">
                 <div class="community-text">
@@ -102,9 +102,8 @@
                     <span class="community-value"><span class="count num" data-count="{{ total_flowers }}">{{ total_flowers }}</span> flowers this week</span>
                     {{ community_delta }}
                 </div>
-                <div class="community-chart" aria-label="Community flowers over the last 30 days"><span class="community-ticks"><span>{{ community_high }}</span><span>{{ community_low }}</span></span>{{ group_chart }}<span class="community-axis"><span>30 days ago &middot; <b>{{ community_start }}</b></span><span class="community-axis-end">last 7 days in gold &middot; <b>{{ total_flowers }}</b> today</span></span></div>
+                <div class="community-chart" aria-label="Community flowers over the last 30 days"><span class="community-ticks"><span>{{ community_high }}</span><span>{{ community_low }}</span></span>{{ group_chart }}<span class="community-axis"><span>30 days ago &middot; <b>{{ community_start }}</b></span><span class="community-axis-end">last 7 days highlighted &middot; <b>{{ total_flowers }}</b> today</span></span></div>
             </div>
-        </div>
         </section>
 
         <section class="standings" id="standings">
@@ -173,6 +172,6 @@
     <script type="application/json" id="trainer-data">{{ trainer_json }}</script>
     <script src="script.js?v=focus-1"></script>
     <script type="module" src="focus.js?v=cards-1"></script>
-    <script type="module" src="community.js?v=scene-1"></script>
+    <script type="module" src="community.js?v=tasks-1"></script>
 </body>
 </html>

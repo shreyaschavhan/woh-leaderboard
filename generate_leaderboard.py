@@ -346,10 +346,10 @@ def podium_change_html(d):
     gtxt = '&plusmn;0' if g == 0 else ('&#8212;' if g is None else (f'+{g}' if g > 0 else f'&minus;{abs(g)}'))
     gcls = 'delta-up' if (g or 0) > 0 else ('delta-down' if (g or 0) < 0 else 'delta-flat')
     if rc is None or rc == 0:
-        return f'<span class="delta {gcls}"><span class="delta-say">Held #{d["rank"]} &middot; </span><span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
+        return f'<span class="delta {gcls}">Held #{d["rank"]} &middot; <span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
     if rc > 0:
-        return f'<span class="delta {gcls}"><span class="delta-arrow" aria-hidden="true">&#9650;</span><span class="delta-say">Up </span>{rc}<span class="delta-say"> to #{d["rank"]}</span> &middot; <span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
-    return f'<span class="delta {gcls}"><span class="delta-arrow" aria-hidden="true">&#9660;</span><span class="delta-say">Down </span>{abs(rc)}<span class="delta-say"> to #{d["rank"]}</span> &middot; <span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
+        return f'<span class="delta {gcls}"><span class="delta-arrow" aria-hidden="true">&#9650;</span>Up {rc} to #{d["rank"]} &middot; <span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
+    return f'<span class="delta {gcls}"><span class="delta-arrow" aria-hidden="true">&#9660;</span>Down {abs(rc)} to #{d["rank"]} &middot; <span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
     # (unreachable legacy branches kept below for reference)
     if g is None:
         first = '<span class="delta delta-flat">First week on the board</span>'
@@ -454,24 +454,15 @@ def pick_spotlights(data):
 # Inline SVG generators
 # ---------------------------------------------------------------------------
 
-def _path_from_points(points, stepped=False):
-    """SVG path through points; gaps (None) lift the pen.
-
-    With `stepped`, each change happens halfway between days as a vertical
-    riser, which matches the site's pixel drawing style.
-    """
-    d, pen_down, prev = [], False, None
+def _path_from_points(points):
+    d, pen_down = [], False
     for p in points:
         if p is None:
             pen_down = False
             continue
         x, y = p
-        if pen_down and stepped:
-            mid = (prev[0] + x) / 2
-            d.append(f"H{mid:.1f}V{y:.1f}H{x:.1f}")
-        else:
-            d.append(f"{'L' if pen_down else 'M'}{x:.1f},{y:.1f}")
-        pen_down, prev = True, p
+        d.append(f"{'L' if pen_down else 'M'}{x:.1f},{y:.1f}")
+        pen_down = True
     return ' '.join(d)
 
 def sparkline_svg(values, scale_max, width=160, height=36, line=CONSISTENCY_LINE):
@@ -484,7 +475,7 @@ def sparkline_svg(values, scale_max, width=160, height=36, line=CONSISTENCY_LINE
     points = [(x(i), y(v)) if v is not None else None for i, v in enumerate(values)]
     path = _path_from_points(points)
     last = next((p for p in reversed(points) if p is not None), None)
-    dot = f'<rect class="spark-dot" x="{last[0] - 2.5:.1f}" y="{last[1] - 2.5:.1f}" width="5" height="5"/>' if last else ''
+    dot = f'<circle class="spark-dot" cx="{last[0]:.1f}" cy="{last[1]:.1f}" r="2.2"/>' if last else ''
     line_svg = ''
     if line <= scale_max:
         ly = y(line)
@@ -493,35 +484,28 @@ def sparkline_svg(values, scale_max, width=160, height=36, line=CONSISTENCY_LINE
             f'{line_svg}<path class="spark-path" d="{path}"/>{dot}</svg>')
 
 def group_chart_svg(series, width=600, height=110):
-    """Pixel column chart of the group's total flowers over the last 30 days.
-
-    Each day is one segmented column; the last seven days use the week colour.
-    """
+    """Full-width area chart of the group's total flowers over the last 30 days."""
     vals = [v for v in series if v is not None]
     if not vals:
         return ''
-    n = max(len(series), 1)
+    pad = 3
+    n = max(len(series), 2)
     top = max(vals) or 1
-    lo = min(vals) * 0.6
+    lo = min(vals) * 0.8
     span = max(top - lo, 1)
-    step = 6  # one segment: 4 units of colour and a 2-unit gap
-    slot = width / n
-    bar_w = max(slot - 4, 2)
-    cols = []
-    for i, v in enumerate(series):
-        x = i * slot + (slot - bar_w) / 2
-        cls = 'gc-col is-week' if i >= n - 7 else 'gc-col'
-        if v is None:
-            # A faint full-height ghost marks a day with no record.
-            cols.append(f'<rect class="gc-col gc-none" x="{x:.1f}" y="0" width="{bar_w:.1f}" height="{height}"/>')
-            continue
-        h = max(step, round(((v - lo) / span) * (height - step) / step) * step)
-        cols.append(f'<rect class="{cls}" x="{x:.1f}" y="{height - h}" width="{bar_w:.1f}" height="{h}"/>')
-    return (f'<svg class="group-spark group-cols" viewBox="0 0 {width} {height}" preserveAspectRatio="none" aria-hidden="true">'
-            f'<defs><pattern id="gc-seg" width="{width}" height="{step}" patternUnits="userSpaceOnUse" y="{height % step}">'
-            f'<rect width="{width}" height="{step - 2}" fill="#fff"/></pattern>'
-            f'<mask id="gc-mask"><rect width="{width}" height="{height}" fill="url(#gc-seg)"/></mask></defs>'
-            f'<g mask="url(#gc-mask)">{"".join(cols)}</g></svg>')
+    x = lambda i: pad + i * (width - 2 * pad) / (n - 1)
+    y = lambda v: height - pad - ((v - lo) / span) * (height - 2 * pad)
+    points = [(x(i), y(v)) if v is not None else None for i, v in enumerate(series)]
+    line = _path_from_points(points)
+    solid = [p for p in points if p is not None]
+    area = f"M{solid[0][0]:.1f},{height} " + ' '.join(f"L{px:.1f},{py:.1f}" for px, py in solid) + f" L{solid[-1][0]:.1f},{height} Z"
+    last = solid[-1]
+    band_x = x(max(0, n - 7))
+    return (f'<svg class="group-spark" viewBox="0 0 {width} {height}" preserveAspectRatio="none" aria-hidden="true">'
+            f'<defs><linearGradient id="bandg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity="0.22"/><stop offset="1" stop-color="currentColor" stop-opacity="0.02"/></linearGradient></defs>'
+            f'<rect class="group-band" x="{band_x:.1f}" y="0" width="{width - band_x:.1f}" height="{height}"/>'
+            f'<path class="group-area" d="{area}"/><path class="group-line" d="{line}" vector-effect="non-scaling-stroke"/></svg>'
+            f'<span class="group-dot" style="left:{last[0] / width * 100:.1f}%;top:{last[1] / height * 100:.1f}%"></span>')
 
 def community_delta(series):
     """Week-on-week change of the community total, as (delta, percent) or None."""
@@ -619,7 +603,7 @@ def garden_svg(data, max_flowers):
     if max_flowers >= CONSISTENCY_LINE:
         line_y = back_ground - (22 + (CONSISTENCY_LINE / max_flowers) * 208)
         parts.append(f'<g class="line75"><line x1="0" x2="{W}" y1="{line_y:.1f}" y2="{line_y:.1f}"/>'
-                     f'<text x="{W - 12}" y="{line_y - 6:.1f}" text-anchor="end">{CONSISTENCY_LINE}-flower line</text>'
+                     f'<text x="{W - 12}" y="{line_y - 6:.1f}" text-anchor="end">{CONSISTENCY_LINE} flowers</text>'
                      f'<text class="line75-m" x="706" y="{line_y - 6:.1f}" text-anchor="end">{CONSISTENCY_LINE}</text></g>')
 
     # Flowers: leader in the centre, then alternating outward by rank
