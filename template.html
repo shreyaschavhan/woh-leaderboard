@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="focus.css?v=balance-1">
     <link rel="stylesheet" href="community.css?v=tasks-1">
-    <link rel="stylesheet" href="focus-layout.css?v=scene-2">
+    <link rel="stylesheet" href="focus-layout.css?v=scene-3">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4NJMY5MRXY"></script>
     <script>
@@ -92,7 +92,9 @@
         {{ community_panel }}
         </div>
 
-        <section class="spotlights" aria-label="This week's spotlights">
+        <section class="spotlights" aria-labelledby="week-title">
+            <h2 class="section-title" id="week-title">This week</h2>
+            <div class="week-board">
             <div class="spot-list">{{ spotlights }}</div>
             <div class="community">
                 <div class="community-text">
@@ -102,6 +104,7 @@
                 </div>
                 <div class="community-chart" aria-label="Community flowers over the last 30 days"><span class="community-ticks"><span>{{ community_high }}</span><span>{{ community_low }}</span></span>{{ group_chart }}<span class="community-axis"><span>30 days ago &middot; <b>{{ community_start }}</b></span><span class="community-axis-end">last 7 days in gold &middot; <b>{{ total_flowers }}</b> today</span></span></div>
             </div>
+        </div>
         </section>
 
         <section class="standings" id="standings">

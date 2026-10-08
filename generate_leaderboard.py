@@ -454,15 +454,24 @@ def pick_spotlights(data):
 # Inline SVG generators
 # ---------------------------------------------------------------------------
 
-def _path_from_points(points):
-    d, pen_down = [], False
+def _path_from_points(points, stepped=False):
+    """SVG path through points; gaps (None) lift the pen.
+
+    With `stepped`, each change happens halfway between days as a vertical
+    riser, which matches the site's pixel drawing style.
+    """
+    d, pen_down, prev = [], False, None
     for p in points:
         if p is None:
             pen_down = False
             continue
         x, y = p
-        d.append(f"{'L' if pen_down else 'M'}{x:.1f},{y:.1f}")
-        pen_down = True
+        if pen_down and stepped:
+            mid = (prev[0] + x) / 2
+            d.append(f"H{mid:.1f}V{y:.1f}H{x:.1f}")
+        else:
+            d.append(f"{'L' if pen_down else 'M'}{x:.1f},{y:.1f}")
+        pen_down, prev = True, p
     return ' '.join(d)
 
 def sparkline_svg(values, scale_max, width=160, height=36, line=CONSISTENCY_LINE):
@@ -473,9 +482,9 @@ def sparkline_svg(values, scale_max, width=160, height=36, line=CONSISTENCY_LINE
     x = lambda i: pad + i * (width - 2 * pad) / (n - 1)
     y = lambda v: height - pad - (min(v, scale_max) / scale_max) * (height - 2 * pad)
     points = [(x(i), y(v)) if v is not None else None for i, v in enumerate(values)]
-    path = _path_from_points(points)
+    path = _path_from_points(points, stepped=True)
     last = next((p for p in reversed(points) if p is not None), None)
-    dot = f'<circle class="spark-dot" cx="{last[0]:.1f}" cy="{last[1]:.1f}" r="2.2"/>' if last else ''
+    dot = f'<rect class="spark-dot" x="{last[0] - 2.5:.1f}" y="{last[1] - 2.5:.1f}" width="5" height="5"/>' if last else ''
     line_svg = ''
     if line <= scale_max:
         ly = y(line)
