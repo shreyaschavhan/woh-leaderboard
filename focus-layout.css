@@ -239,25 +239,25 @@
    The board is one night meadow; each focusing trainer stands on a small
    island of ground, so one session reads as a scene rather than an empty grid. */
 .guild-board {
-  --camp-ink: #f6efe4;
-  --camp-ink-2: #cfc3d8;
-  --camp-ink-3: #a99cb8;
+  --camp-ink: var(--scene-ink);
+  --camp-ink-2: var(--scene-ink-2);
+  --camp-ink-3: var(--scene-ink-3);
   color: var(--camp-ink);
-  background: linear-gradient(180deg, #171536 0%, #2a2452 46%, #3b3061 78%, #2b3a37 78.2%, #22302d 100%);
+  background: var(--scene-sky);
   clip-path: polygon(8px 0, calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px, 100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px), calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px), calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 4px), 4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px), 0 8px, 4px 8px, 4px 4px, 8px 4px);
   min-height: 268px;
 }
-.guild-board .guild-atmosphere { display: block; opacity: .9; background: none; }
-.guild-board .guild-atmosphere::after { background: linear-gradient(0deg, #22302d 0 22%, transparent 60%); }
+.guild-board .guild-atmosphere { display: block; opacity: var(--scene-hills); background: none; }
+.guild-board .guild-atmosphere::after { background: none; }
 .guild-board .guild-horizon { top: auto; bottom: 0; height: 100%; opacity: .7; }
 .guild-board .guild-moon { display: none; }
 .guild-board .guild-controls { position: relative; z-index: 2; padding: 12px 14px 0; }
 .guild-board .guild-filters button { color: var(--camp-ink-2); border-radius: 0; }
-.guild-board .guild-filters button:hover { color: #fff; }
-.guild-board .guild-filters button[aria-pressed="true"] { color: #2a2040; background: #f0dba6; border-color: #f0dba6; }
+.guild-board .guild-filters button:hover { color: var(--camp-ink); }
+.guild-board .guild-filters button[aria-pressed="true"] { color: var(--scene-cta-ink); background: var(--scene-cta); border-color: var(--scene-cta); }
 .guild-board .guild-filters button span { color: inherit; font-size: 11px; }
 .guild-board .guild-refresh { color: var(--camp-ink-3); font-size: 11px; }
-.guild-board .guild-refresh:hover { color: #fff; }
+.guild-board .guild-refresh:hover { color: var(--camp-ink); }
 .guild-board .guild-notice { color: var(--camp-ink); background: rgb(240 219 166 / 12%); border-color: rgb(240 219 166 / 30%); border-radius: 0; margin: 10px 14px 0; }
 
 .guild-board .guild-roster, .guild-board .guild-roster.is-busy {
@@ -280,36 +280,44 @@
 .guild-board .guild-member-info { flex-direction: column; gap: 2px; }
 .guild-board .guild-member-name { color: var(--camp-ink); font: 600 16px/1.3 var(--pixel); letter-spacing: 0; }
 .guild-board .guild-task-preview { color: var(--camp-ink-2); font-size: 12px; }
-.guild-board .guild-member-time strong, .guild-board .guild-member-time.is-long strong { color: #f0dba6; font: 700 34px/1 var(--display); letter-spacing: -.04em; }
+.guild-board .guild-member-time strong, .guild-board .guild-member-time.is-long strong { color: var(--scene-figure); font: 700 34px/1 var(--display); letter-spacing: -.04em; }
 .guild-board .guild-member-time span { color: var(--camp-ink-3); font-size: 12px; }
 .guild-board .guild-member.is-stale .guild-member-time strong { color: var(--camp-ink-3); }
-.guild-board .guild-member :focus-visible, .guild-board .guild-member:focus-visible { outline: 2px solid #f0dba6; outline-offset: 2px; }
+.guild-board .guild-member :focus-visible, .guild-board .guild-member:focus-visible { outline: 2px solid var(--scene-figure); outline-offset: 2px; }
 
 .guild-board .guild-rest { position: relative; z-index: 1; margin: 0 14px; padding: 8px 0 10px; border-top: 2px solid rgb(255 255 255 / 8%); }
 .guild-board .guild-rest-name { color: var(--camp-ink); font-size: 13px; }
 .guild-board .guild-rest-task, .guild-board .guild-rest-detail { color: var(--camp-ink-3); font-size: 11px; }
-.guild-board .guild-rest-duration { color: #dac1e9; }
+.guild-board .guild-rest-duration { color: var(--scene-figure); }
 .guild-board .guild-rest-portrait { background: rgb(255 255 255 / 8%); }
 .guild-board .guild-loading, .guild-board .guild-empty { position: relative; z-index: 1; border: 0; border-radius: 0; background: transparent; color: var(--camp-ink); }
 .guild-board .guild-empty p:not(.guild-kicker) { color: var(--camp-ink-2); }
-.guild-board .guild-kicker { color: #f0dba6; }
-.guild-board .guild-empty .guild-join { background: #f0dba6; border-color: #f0dba6; color: #2a2040; border-radius: 0; }
+.guild-board .guild-kicker { color: var(--scene-figure); }
+.guild-board .guild-empty .guild-join { background: var(--scene-cta); border-color: var(--scene-cta); color: var(--scene-cta-ink); border-radius: 0; }
 
 /* Your training shares the same night frame. */
 .focus-card {
   border: 0; border-radius: 0;
   clip-path: polygon(8px 0, calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px, 100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px), calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px), calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 4px), 4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px), 0 8px, 4px 8px, 4px 4px, 8px 4px);
-  background: linear-gradient(180deg, #1d1a40, #2f2752);
+  background: var(--scene-sky);
+  color: var(--scene-ink);
   min-height: 268px;
 }
-.focus-sky { background: linear-gradient(90deg, #241f49, #3a3062); }
-.focus-scene::after { background: linear-gradient(90deg, #221d46, transparent 30%); }
-.focus-actions { background: #22302d; border-top: 2px solid #3f5a45; }
+.focus-sky, .focus-scene::after { background: none; }
+.focus-landscape { opacity: var(--scene-hills); }
+.focus-actions { background: var(--scene-ground); border-top: 2px solid var(--scene-ground-rim); }
+.focus-status, .focus-card[data-state] .focus-status { color: var(--scene-ink-2); }
+.focus-description, #focus-time-caption, .focus-card .focus-action-note { color: var(--scene-ink-2); }
+.focus-task p { color: var(--scene-ink); }
+#focus-minutes, .focus-time.is-long #focus-minutes, #focus-unit { color: var(--scene-figure); }
+.focus-card .focus-secondary { color: var(--scene-ink); }
+.focus-card .focus-action-note { background: var(--scene-ground); }
+.focus-card :focus-visible { outline-color: var(--scene-figure); }
 .focus-details h3 { font: 600 24px/1.15 var(--pixel); letter-spacing: 0; }
 .focus-description, #focus-time-caption { font-size: 12px; }
 .focus-status { font-size: 12px; }
-.focus-primary { border-radius: 0; box-shadow: 0 3px 0 #a68d55; }
-.focus-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 #a68d55; }
+.focus-primary, .focus-primary:hover { border-radius: 0; border-color: var(--scene-cta); background: var(--scene-cta); color: var(--scene-cta-ink); box-shadow: 0 3px 0 var(--scene-cta-edge); }
+.focus-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--scene-cta-edge); }
 
 /* One heading voice across sections. */
 .focus-section-head h2, .guild-heading-row h2 { font: 600 24px/1.2 var(--pixel); letter-spacing: 0; }

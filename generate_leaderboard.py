@@ -484,28 +484,34 @@ def sparkline_svg(values, scale_max, width=160, height=36, line=CONSISTENCY_LINE
             f'{line_svg}<path class="spark-path" d="{path}"/>{dot}</svg>')
 
 def group_chart_svg(series, width=600, height=110):
-    """Full-width area chart of the group's total flowers over the last 30 days."""
+    """Pixel column chart of the group's total flowers over the last 30 days.
+
+    Each day is one segmented column; the last seven days use the week colour.
+    """
     vals = [v for v in series if v is not None]
     if not vals:
         return ''
-    pad = 3
-    n = max(len(series), 2)
+    n = max(len(series), 1)
     top = max(vals) or 1
-    lo = min(vals) * 0.8
+    lo = min(vals) * 0.6
     span = max(top - lo, 1)
-    x = lambda i: pad + i * (width - 2 * pad) / (n - 1)
-    y = lambda v: height - pad - ((v - lo) / span) * (height - 2 * pad)
-    points = [(x(i), y(v)) if v is not None else None for i, v in enumerate(series)]
-    line = _path_from_points(points)
-    solid = [p for p in points if p is not None]
-    area = f"M{solid[0][0]:.1f},{height} " + ' '.join(f"L{px:.1f},{py:.1f}" for px, py in solid) + f" L{solid[-1][0]:.1f},{height} Z"
-    last = solid[-1]
-    band_x = x(max(0, n - 7))
-    return (f'<svg class="group-spark" viewBox="0 0 {width} {height}" preserveAspectRatio="none" aria-hidden="true">'
-            f'<defs><linearGradient id="bandg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity="0.22"/><stop offset="1" stop-color="currentColor" stop-opacity="0.02"/></linearGradient></defs>'
-            f'<rect class="group-band" x="{band_x:.1f}" y="0" width="{width - band_x:.1f}" height="{height}"/>'
-            f'<path class="group-area" d="{area}"/><path class="group-line" d="{line}" vector-effect="non-scaling-stroke"/></svg>'
-            f'<span class="group-dot" style="left:{last[0] / width * 100:.1f}%;top:{last[1] / height * 100:.1f}%"></span>')
+    step = 6  # one segment: 4 units of colour and a 2-unit gap
+    slot = width / n
+    bar_w = max(slot - 4, 2)
+    cols = []
+    for i, v in enumerate(series):
+        x = i * slot + (slot - bar_w) / 2
+        cls = 'gc-col is-week' if i >= n - 7 else 'gc-col'
+        if v is None:
+            cols.append(f'<rect class="gc-col gc-none" x="{x:.1f}" y="{height - 2}" width="{bar_w:.1f}" height="2"/>')
+            continue
+        h = max(step, round(((v - lo) / span) * (height - step) / step) * step)
+        cols.append(f'<rect class="{cls}" x="{x:.1f}" y="{height - h}" width="{bar_w:.1f}" height="{h}"/>')
+    return (f'<svg class="group-spark group-cols" viewBox="0 0 {width} {height}" preserveAspectRatio="none" aria-hidden="true">'
+            f'<defs><pattern id="gc-seg" width="{width}" height="{step}" patternUnits="userSpaceOnUse" y="{height % step}">'
+            f'<rect width="{width}" height="{step - 2}" fill="#fff"/></pattern>'
+            f'<mask id="gc-mask"><rect width="{width}" height="{height}" fill="url(#gc-seg)"/></mask></defs>'
+            f'<g mask="url(#gc-mask)">{"".join(cols)}</g></svg>')
 
 def community_delta(series):
     """Week-on-week change of the community total, as (delta, percent) or None."""
