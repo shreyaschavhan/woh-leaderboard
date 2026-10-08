@@ -6,9 +6,9 @@
 :root {
     color-scheme: light;
 
-    --bg: #e1edd2;
-    --bg-2: #d5e4c3;
-    --bg-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='160' shape-rendering='crispEdges'%3E%3Cg fill='%23c9dcb1'%3E%3Cpath d='M20 34h2v-6h2v6h2v-8h2v8h2v-4h2v6H20z'/%3E%3Cpath d='M120 18h2v-4h2v4h2v-6h2v6h2v2h-10z'/%3E%3Cpath d='M150 104h2v-6h2v6h2v-4h2v6h-8z'/%3E%3Cpath d='M60 128h2v-4h2v4h2v-6h2v6h2v-3h2v5H60z'/%3E%3Cpath d='M96 74h2v-4h2v4h2v2h-6z'/%3E%3Cpath d='M8 96h2v-3h2v3h2v2H8z'/%3E%3C/g%3E%3Cg fill='%23e9b3c3'%3E%3Cpath d='M172 58h2v2h2v2h-2v2h-2v-2h-2v-2h2z'/%3E%3Cpath d='M44 72h2v2h2v2h-2v2h-2v-2h-2v-2h2z'/%3E%3C/g%3E%3Cg fill='%23f6e7a8'%3E%3Crect x='172' y='60' width='2' height='2'/%3E%3Crect x='44' y='74' width='2' height='2'/%3E%3C/g%3E%3C/svg%3E");
+    --bg: #d4e6bf;
+    --bg-2: #c8dcb0;
+    --bg-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='160' shape-rendering='crispEdges'%3E%3Cg fill='%23c4dcaa'%3E%3Cpath d='M20 34h2v-6h2v6h2v-8h2v8h2v-4h2v6H20z'/%3E%3Cpath d='M120 18h2v-4h2v4h2v-6h2v6h2v2h-10z'/%3E%3Cpath d='M150 104h2v-6h2v6h2v-4h2v6h-8z'/%3E%3Cpath d='M60 128h2v-4h2v4h2v-6h2v6h2v-3h2v5H60z'/%3E%3Cpath d='M96 74h2v-4h2v4h2v2h-6z'/%3E%3Cpath d='M8 96h2v-3h2v3h2v2H8z'/%3E%3C/g%3E%3Cg fill='%23e9b3c3'%3E%3Cpath d='M172 58h2v2h2v2h-2v2h-2v-2h-2v-2h2z'/%3E%3Cpath d='M44 72h2v2h2v2h-2v2h-2v-2h-2v-2h2z'/%3E%3C/g%3E%3Cg fill='%23f6e7a8'%3E%3Crect x='172' y='60' width='2' height='2'/%3E%3Crect x='44' y='74' width='2' height='2'/%3E%3C/g%3E%3C/svg%3E");
     --surface: #fffef8;
     --surface-2: #f3f6ea;
     --surface-3: #e2e9d6;
@@ -166,7 +166,7 @@ body {
     font-size: 15px;
     line-height: 1.55;
     color: var(--text);
-    background: var(--bg-art) 0 0 / 192px 160px, var(--bg);
+    background: var(--bg-art) 0 0 / 384px 320px, var(--bg);
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
@@ -1739,4 +1739,23 @@ body.drawer-open { overflow: hidden; }
 @media (max-width: 760px) {
     .spotlights { margin: 40px auto 44px; }
     .standings-head { padding-bottom: 18px; }
+}
+
+/* ---------- Quieter rows ----------
+   Each row keeps one strong mark (the flower bar); movement reads as text. */
+.bar { background: none; }
+.standings-table .pill { padding: 0; background: none; clip-path: none; font-size: 0.85rem; }
+.standings-table .pill-flat { color: var(--text-3); }
+.spark-line { opacity: 0.35; }
+.standings-table td { border-bottom-color: color-mix(in srgb, var(--border) 60%, transparent); }
+
+/* Spotlights swipe sideways on phones instead of stacking three tall cards. */
+@media (max-width: 760px) {
+    .week-board .spot-list {
+        display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+    .week-board .spot-list::-webkit-scrollbar { display: none; }
+    .week-board .spot { flex: 0 0 86%; scroll-snap-align: start; }
+    .week-board .spot + .spot { box-shadow: inset 3px 0 0 var(--frame-ink); }
 }
