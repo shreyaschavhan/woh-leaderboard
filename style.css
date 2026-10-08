@@ -6,18 +6,18 @@
 :root {
     color-scheme: light;
 
-    --bg: #d4e6bf;
-    --bg-2: #c8dcb0;
-    --bg-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='160' shape-rendering='crispEdges'%3E%3Cg fill='%23c4dcaa'%3E%3Cpath d='M20 34h2v-6h2v6h2v-8h2v8h2v-4h2v6H20z'/%3E%3Cpath d='M120 18h2v-4h2v4h2v-6h2v6h2v2h-10z'/%3E%3Cpath d='M150 104h2v-6h2v6h2v-4h2v6h-8z'/%3E%3Cpath d='M60 128h2v-4h2v4h2v-6h2v6h2v-3h2v5H60z'/%3E%3Cpath d='M96 74h2v-4h2v4h2v2h-6z'/%3E%3Cpath d='M8 96h2v-3h2v3h2v2H8z'/%3E%3C/g%3E%3Cg fill='%23e9b3c3'%3E%3Cpath d='M172 58h2v2h2v2h-2v2h-2v-2h-2v-2h2z'/%3E%3Cpath d='M44 72h2v2h2v2h-2v2h-2v-2h-2v-2h2z'/%3E%3C/g%3E%3Cg fill='%23f6e7a8'%3E%3Crect x='172' y='60' width='2' height='2'/%3E%3Crect x='44' y='74' width='2' height='2'/%3E%3C/g%3E%3C/svg%3E");
-    --surface: #fffef8;
-    --surface-2: #f3f6ea;
+    --bg: #c9dfae;
+    --bg-2: #bcd59f;
+    --bg-art: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='160' shape-rendering='crispEdges'%3E%3Cg fill='%23bcd6a0'%3E%3Cpath d='M20 34h2v-6h2v6h2v-8h2v8h2v-4h2v6H20z'/%3E%3Cpath d='M120 18h2v-4h2v4h2v-6h2v6h2v2h-10z'/%3E%3Cpath d='M150 104h2v-6h2v6h2v-4h2v6h-8z'/%3E%3Cpath d='M60 128h2v-4h2v4h2v-6h2v6h2v-3h2v5H60z'/%3E%3Cpath d='M96 74h2v-4h2v4h2v2h-6z'/%3E%3Cpath d='M8 96h2v-3h2v3h2v2H8z'/%3E%3C/g%3E%3Cg fill='%23e9b3c3'%3E%3Cpath d='M172 58h2v2h2v2h-2v2h-2v-2h-2v-2h2z'/%3E%3Cpath d='M44 72h2v2h2v2h-2v2h-2v-2h-2v-2h2z'/%3E%3C/g%3E%3Cg fill='%23f6e7a8'%3E%3Crect x='172' y='60' width='2' height='2'/%3E%3Crect x='44' y='74' width='2' height='2'/%3E%3C/g%3E%3C/svg%3E");
+    --surface: #ffffff;
+    --surface-2: #f4f7ee;
     --surface-3: #e2e9d6;
     --border: #bdcbae;
     --border-strong: #7f8f73;
 
     --text: #241c30;
-    --text-2: #4b4356;
-    --text-3: #5f5869;
+    --text-2: #433b4e;
+    --text-3: #544d5e;
 
     --accent: #6c4b98;
     --accent-soft: rgb(108 75 152 / 12%);
@@ -691,7 +691,7 @@ button { cursor: pointer; }
     pointer-events: none;
     display: none;
 }
-.podium-title { font-size: 0.8rem; margin-top: 2px; font-weight: 600; }
+.podium-title { font-size: 0.84rem; margin-top: 2px; font-weight: 600; color: color-mix(in srgb, var(--ink) 88%, transparent); }
 .podium-week { display: flex; align-items: flex-end; gap: 4px; height: 26px; width: 92px; margin-top: 12px; }
 .wb { flex: 1; background: var(--cap); box-shadow: 0 2px 0 var(--shade); }
 .wb-low { background: var(--shade); }
@@ -701,7 +701,7 @@ button { cursor: pointer; }
 .podium-stat { display: flex; flex-direction: column; align-items: center; }
 .podium-stat .num { font-weight: 700; font-size: 1.6rem; line-height: 1; letter-spacing: -0.03em; }
 .place-1 .podium-stat .num { font-size: 2.2rem; }
-.podium-stat .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.85; margin-top: 3px; }
+.podium-stat .label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
 
 .podium-change { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-top: 10px; font-size: 0.78rem; }
 .delta { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; color: var(--ink); }
@@ -1701,7 +1701,6 @@ body.drawer-open { overflow: hidden; }
 .standings-table th { background: var(--frame-ink); color: #f3ecf7; border-bottom: 0; }
 .standings-table th .sort:hover { color: #fff; background: rgb(255 255 255 / 12%); }
 .standings-table th .sort.is-active { color: #fff; }
-.spark-path { stroke-linejoin: miter; stroke-linecap: square; }
 .spark-dot { shape-rendering: crispEdges; }
 
 /* A pixel cursor marks the row under the pointer or keyboard. */
@@ -1729,10 +1728,10 @@ body.drawer-open { overflow: hidden; }
    Fewer, larger words: secondary notes step aside and small text has a floor. */
 
 .standings-note { font-size: 0.92rem; color: var(--text-2); }
-.legend { font-size: 0.85rem; }
+.legend { font-size: 0.88rem; color: var(--text-2); }
 .spot-label { font-size: 0.78rem; }
 .spot-detail { font-size: 0.86rem; }
-.player-title { font-size: 0.8rem; }
+.player-title { font-size: 0.84rem; color: var(--text-2); }
 .community-axis, .community-ticks { font-size: 0.8rem; }
 .site-footer { font-size: 0.88rem; }
 .site-footer time { font-size: 0.88rem; }
@@ -1749,13 +1748,9 @@ body.drawer-open { overflow: hidden; }
 .spark-line { opacity: 0.35; }
 .standings-table td { border-bottom-color: color-mix(in srgb, var(--border) 60%, transparent); }
 
-/* Spotlights swipe sideways on phones instead of stacking three tall cards. */
-@media (max-width: 760px) {
-    .week-board .spot-list {
-        display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
-        scrollbar-width: none;
-    }
-    .week-board .spot-list::-webkit-scrollbar { display: none; }
-    .week-board .spot { flex: 0 0 86%; scroll-snap-align: start; }
-    .week-board .spot + .spot { box-shadow: inset 3px 0 0 var(--frame-ink); }
+/* Phones show the flower count alone; tapping a row opens the full trend. */
+@media (max-width: 480px) {
+    .col-flowers .bar { visibility: hidden; height: 0; margin: 0; }
+    .col-flowers .num { font-size: 1.15rem; }
+    .col-flowers { width: 84px; }
 }

@@ -482,7 +482,7 @@ def sparkline_svg(values, scale_max, width=160, height=36, line=CONSISTENCY_LINE
     x = lambda i: pad + i * (width - 2 * pad) / (n - 1)
     y = lambda v: height - pad - (min(v, scale_max) / scale_max) * (height - 2 * pad)
     points = [(x(i), y(v)) if v is not None else None for i, v in enumerate(values)]
-    path = _path_from_points(points, stepped=True)
+    path = _path_from_points(points)
     last = next((p for p in reversed(points) if p is not None), None)
     dot = f'<rect class="spark-dot" x="{last[0] - 2.5:.1f}" y="{last[1] - 2.5:.1f}" width="5" height="5"/>' if last else ''
     line_svg = ''
