@@ -34,8 +34,8 @@
     --bronze: #cd9978;
     --bronze-2: #c96f3c;
 
-    --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    --mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+    --font: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --mono: 'Space Grotesk', system-ui, sans-serif;
     --display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
     --pixel: 'Pixelify Sans', 'Space Grotesk', system-ui, sans-serif;
 
@@ -292,11 +292,11 @@ button { cursor: pointer; }
     --scene-water: #8fd0e6; --scene-water-rim: #4f8fb0;
 }
 .hero.sky-night {
-    --scene-hill: #293b3d; --scene-hill-near: #304643;
-    --scene-bed: #354c46; --scene-meadow: #3e514b;
-    --scene-ledge: #626f67; --scene-tree: #283d39;
-    --scene-leaf: #82958c; --scene-stem: #6c8178;
-    --scene-water: #748398; --scene-water-rim: #465c70;
+    --scene-hill: #24473f; --scene-hill-near: #2b5446;
+    --scene-bed: #31604c; --scene-meadow: #386a52;
+    --scene-ledge: #7fa883; --scene-tree: #1f3d36;
+    --scene-leaf: #8fc49a; --scene-stem: #6fa07e;
+    --scene-water: #7b8fc4; --scene-water-rim: #4a5c94;
 }
 .sky { position: absolute; inset: 0; z-index: 0; opacity: 0; transition: opacity 1.4s var(--ease); }
 .sky-layer-dawn { background: linear-gradient(180deg, #2f2a57 0%, #7d5d8c 46%, #e39a8a 78%, #f7cf9a 100%); }
@@ -440,7 +440,7 @@ button { cursor: pointer; }
 .garden .flower [fill="#3f9d4c"] { fill: var(--scene-stem); }
 .garden .flower [fill="#57b85f"] { fill: var(--scene-leaf); }
 .garden .sprout { opacity: 0.62; }
-.garden .flower-count { font-size: var(--scene-count-size, 16px); stroke-width: 2px; }
+.garden .flower-count { font-size: var(--scene-count-size, 16px); stroke: rgb(30 24 52 / 70%); stroke-width: 3px; stroke-linejoin: round; }
 .garden .line75 line { stroke: rgb(255 248 230 / 62%); stroke-width: 2; stroke-dasharray: 6 6; }
 .garden .line75 text {
     font-size: calc(var(--scene-line-size, 10px) * 1.3); fill: #fff8e6;
@@ -1720,4 +1720,20 @@ body.drawer-open { overflow: hidden; }
 }
 @media (min-width: 761px) and (max-width: 1100px) {
     .week-board .spot { padding: 16px 14px; }
+}
+
+/* ---------- Calmer reading layer ----------
+   Fewer, larger words: secondary notes step aside and small text has a floor. */
+
+.standings-note { font-size: 0.92rem; color: var(--text-2); }
+.legend { font-size: 0.85rem; }
+.spot-label { font-size: 0.78rem; }
+.spot-detail { font-size: 0.86rem; }
+.player-title { font-size: 0.8rem; }
+.community-axis, .community-ticks { font-size: 0.8rem; }
+.site-footer { font-size: 0.88rem; }
+.site-footer time { font-size: 0.88rem; }
+@media (max-width: 760px) {
+    .spotlights { margin: 40px auto 44px; }
+    .standings-head { padding-bottom: 18px; }
 }

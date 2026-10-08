@@ -342,3 +342,19 @@
   .guild-section-note, .focus-section-note { font-size: 11px; }
   .guild-board .guild-filters button { font-size: 11px; }
 }
+
+/* Readable control sizes inside the scenes. */
+.focus-primary, .focus-secondary { font-size: 13px; }
+.guild-board .guild-filters button { font-size: 13px; }
+.guild-board .guild-refresh { font-size: 12px; }
+.focus-status, .focus-description, #focus-time-caption { font-size: 13px; }
+.focus-trainer-picker select { font-size: 13px; }
+.guild-totals { font-size: 13px; }
+.guild-board .guild-task-preview { font-size: 13px; }
+@media (max-width: 600px) {
+  .focus-hub { margin: 36px auto 8px; gap: 40px; }
+  .guild-board .guild-filters button { font-size: 12px; }
+}
+
+.focus-section-note, .guild-section-note { display: none; }
+.guild-section:is([data-state="partial"], [data-state="offline"]) .guild-section-note { display: flex; }
