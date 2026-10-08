@@ -512,7 +512,8 @@ def group_chart_svg(series, width=600, height=110):
         x = i * slot + (slot - bar_w) / 2
         cls = 'gc-col is-week' if i >= n - 7 else 'gc-col'
         if v is None:
-            cols.append(f'<rect class="gc-col gc-none" x="{x:.1f}" y="{height - 2}" width="{bar_w:.1f}" height="2"/>')
+            # A faint full-height ghost marks a day with no record.
+            cols.append(f'<rect class="gc-col gc-none" x="{x:.1f}" y="0" width="{bar_w:.1f}" height="{height}"/>')
             continue
         h = max(step, round(((v - lo) / span) * (height - step) / step) * step)
         cols.append(f'<rect class="{cls}" x="{x:.1f}" y="{height - h}" width="{bar_w:.1f}" height="{h}"/>')

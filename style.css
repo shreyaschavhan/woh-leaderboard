@@ -58,7 +58,8 @@
     --scene-cta: #ffe58f;
     --scene-cta-ink: #3a2a10;
     --scene-cta-edge: #c9a447;
-    --scene-hills: 0.32;
+    --scene-hills: 0.2;
+    --scene-plaque: rgb(255 255 255 / 66%);
 }
 
 /* ---------- Tokens: dark (plum soil) ---------- */
@@ -104,6 +105,7 @@
         --scene-cta-ink: #2a2040;
         --scene-cta-edge: #a68d55;
         --scene-hills: 0.7;
+        --scene-plaque: rgb(14 11 34 / 50%);
     }
 }
 :root[data-theme="dark"] {
@@ -147,6 +149,7 @@
     --scene-cta-ink: #2a2040;
     --scene-cta-edge: #a68d55;
     --scene-hills: 0.7;
+    --scene-plaque: rgb(14 11 34 / 50%);
 }
 
 /* ---------- Base ---------- */
@@ -365,7 +368,7 @@ button { cursor: pointer; }
 .lede-line { display: block; margin-top: 4px; }
 
 .hero-hint {
-    display: inline-block;
+    display: none;
     padding: 5px 10px;
     background: rgb(22 18 48 / 48%);
     clip-path: polygon(0 3px, 3px 3px, 3px 0, calc(100% - 3px) 0, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0 calc(100% - 3px));
@@ -824,7 +827,7 @@ button { cursor: pointer; }
 .group-cols .gc-col { fill: var(--accent); opacity: 0.45; }
 .group-cols .gc-col.is-week { fill: var(--gold); opacity: 1; }
 .group-cols .gc-col.is-week:last-child { fill: var(--gold-2); }
-.group-cols .gc-none { fill: var(--text-3); opacity: 0.4; }
+.group-cols .gc-none { fill: var(--text-3); opacity: 0.14; }
 .group-spark .group-area { fill: var(--accent); opacity: 0.08; }
 .group-spark .group-line { fill: none; stroke: var(--accent); stroke-width: 2; }
 .group-spark .group-band { fill: var(--accent); fill-opacity: 0.06; stroke: var(--accent); stroke-width: 1; stroke-dasharray: 4 3; stroke-opacity: 0.25; vector-effect: non-scaling-stroke; color: var(--accent); }
@@ -1012,20 +1015,47 @@ tr.is-me:hover { background: rgba(242, 183, 49, 0.16); }
 tr.is-flash { animation: flash 1.6s var(--ease); }
 
 .col-flowers .num { font-weight: 700; font-size: 0.98rem; }
-/* Bars are counted out in pixel segments, like a game meter. */
+/* Bars are counted out in pixel segments, like a game meter, and each one
+   ends in the trainer's flower: in bloom above the line, a sprout below. */
 .bar {
-    display: block; height: 8px; margin-top: 7px; border-radius: 0; overflow: hidden;
+    position: relative;
+    display: block; height: 8px; margin: 7px 20px 0 0; border-radius: 0;
     background: repeating-linear-gradient(90deg, var(--surface-3) 0 6px, transparent 6px 8px);
 }
 .bar-fill {
+    --bloom: #ff6b8a;
+    position: relative;
     display: block; height: 100%; border-radius: 0;
+    animation: bar-reveal 0.9s 0.5s var(--ease) both;
+}
+.bar-fill::before {
+    content: ""; position: absolute; inset: 0;
     background: var(--accent);
     -webkit-mask: repeating-linear-gradient(90deg, #000 0 6px, transparent 6px 8px);
     mask: repeating-linear-gradient(90deg, #000 0 6px, transparent 6px 8px);
-    transform-origin: left;
-    animation: grow 0.9s 0.5s var(--ease) both;
 }
-tr.is-low .bar-fill { background: var(--warn); }
+.bar-fill::after {
+    content: ""; position: absolute; right: -11px; top: 50%;
+    width: 20px; height: 20px; margin-top: -10px;
+    background: linear-gradient(#fff3b0, #fff3b0) center / 4px 4px no-repeat, var(--bloom);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 5'%3E%3Cpath d='M2 0h1v1h1v1h1v1H4v1H3v1H2V4H1V3H0V2h1V1h1z'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 5'%3E%3Cpath d='M2 0h1v1h1v1h1v1H4v1H3v1H2V4H1V3H0V2h1V1h1z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+tr.place-1 .bar-fill { --bloom: var(--gold-2); }
+tr.place-2 .bar-fill { --bloom: var(--silver-2); }
+tr.place-3 .bar-fill { --bloom: var(--bronze-2); }
+tr.is-low .bar-fill::before { background: var(--warn); }
+tr.is-low .bar-fill::after {
+    width: 15px; height: 15px; margin-top: -11px; right: -8px;
+    background: #5fa452;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 5'%3E%3Cpath d='M0 0h1v1h1v1h1V1h1V0h1v1H4v1H3v3H2V2H1V1H0z'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 5'%3E%3Cpath d='M0 0h1v1h1v1h1V1h1V0h1v1H4v1H3v3H2V2H1V1H0z'/%3E%3C/svg%3E");
+}
+tr.is-inactive .bar-fill::after { display: none; }
+@keyframes bar-reveal {
+    from { clip-path: inset(-12px 100% -12px 0); }
+    to { clip-path: inset(-12px -24px -12px 0); }
+}
 
 .spark { display: block; overflow: visible; }
 .spark-path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
@@ -1315,7 +1345,6 @@ tr.is-inactive .avatar { opacity: 0.5; }
     .delta-flat { font-size: 0.72rem; }
     .legend li:nth-child(n+2) { display: inline-flex; }
     .hero { min-height: 696px; }
-    .hero-hint { display: block; }
     .garden { height: 78%; }
     .podium { --avatar-h: 100px; }
     .trainer-avatar, .focumon-avatar { height: 96px; width: 96px; }
@@ -1353,6 +1382,7 @@ tr.is-inactive .avatar { opacity: 0.5; }
     .updated { flex-direction: column; align-items: flex-start; }
     .rank-num { min-width: 26px; height: 26px; font-size: 0.85rem; }
     .pill { padding: 2px 6px; font-size: 0.7rem; }
+    .m-chip .pill { display: none; }
     .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .profile-avatars { height: 112px; }
     .profile-avatars .focumon-avatar { display: none; }
