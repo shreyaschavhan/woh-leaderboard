@@ -6,20 +6,20 @@
 :root {
     color-scheme: light;
 
-    --bg: #eee8e7;
-    --bg-2: #e5dcdf;
-    --surface: #fbf6ee;
-    --surface-2: #f0e8eb;
-    --surface-3: #e1d6df;
-    --border: #cbbbc9;
-    --border-strong: #9b7f9d;
+    --bg: #ece7f0;
+    --bg-2: #e2dbe8;
+    --surface: #fffcf9;
+    --surface-2: #f3eef4;
+    --surface-3: #e2d9e6;
+    --border: #c6b7cc;
+    --border-strong: #8f739a;
 
-    --text: #302638;
-    --text-2: #5f5068;
-    --text-3: #79677f;
+    --text: #261d33;
+    --text-2: #54465f;
+    --text-3: #6d5f78;
 
-    --accent: #80618f;
-    --accent-soft: rgb(128 97 143 / 12%);
+    --accent: #6c4b98;
+    --accent-soft: rgb(108 75 152 / 12%);
     --accent-2: #9e664e;
     --accent-2-soft: rgb(158 102 78 / 12%);
     --up: #357155;
@@ -116,6 +116,7 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
     margin: 0;
+    font-variant-ligatures: no-common-ligatures;
     font-family: var(--font);
     font-size: 15px;
     line-height: 1.55;
@@ -626,10 +627,10 @@ button { cursor: pointer; }
 }
 
 .podium-name {
-    font-family: var(--display); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.01em;
+    font-family: var(--pixel); font-weight: 600; font-size: 1.2rem; letter-spacing: 0;
     max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-.place-1 .podium-name { font-size: 1.35rem; }
+.place-1 .podium-name { font-size: 1.5rem; }
 /* A quiet pixel stamp repeats the medal's rank on the block face. */
 .podium-name::after {
     content: "";
@@ -638,6 +639,7 @@ button { cursor: pointer; }
     background: var(--ink); opacity: 0.12;
     mask: var(--rank-pixel) center / contain no-repeat;
     pointer-events: none;
+    display: none;
 }
 .podium-title { font-size: 0.76rem; opacity: 0.9; margin-top: 2px; font-weight: 500; }
 .podium-week { display: flex; align-items: flex-end; gap: 4px; height: 26px; width: 92px; margin-top: 12px; }
@@ -647,8 +649,8 @@ button { cursor: pointer; }
 
 .podium-stats { display: flex; gap: 22px; margin-top: 12px; }
 .podium-stat { display: flex; flex-direction: column; align-items: center; }
-.podium-stat .num { font-weight: 700; font-size: 1.5rem; line-height: 1; letter-spacing: -0.02em; }
-.place-1 .podium-stat .num { font-size: 1.9rem; }
+.podium-stat .num { font-weight: 700; font-size: 1.6rem; line-height: 1; letter-spacing: -0.03em; }
+.place-1 .podium-stat .num { font-size: 2.2rem; }
 .podium-stat .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.85; margin-top: 3px; }
 
 .podium-change { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-top: 10px; font-size: 0.78rem; }
@@ -753,7 +755,7 @@ button { cursor: pointer; }
 .spot-chev { color: var(--text-3); font-size: 1.2rem; line-height: 1; }
 .spot-text { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
 .spot-label { font-size: 0.75rem; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); font-weight: 600; }
-.spot-name { font-family: var(--display); font-weight: 700; font-size: 1.2rem; letter-spacing: -0.01em; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.spot-name { font-family: var(--pixel); font-weight: 600; font-size: 1.3rem; letter-spacing: 0; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .spot:hover .spot-name { color: var(--accent); }
 .spot-detail { font-size: 0.8rem; color: var(--text-2); }
 
@@ -763,8 +765,8 @@ button { cursor: pointer; }
     animation: rise 0.6s 2.1s var(--ease) both;
 }
 .community-text { display: flex; flex-direction: column; gap: 4px; }
-.community-value { font-family: var(--display); font-weight: 700; font-size: 1.2rem; letter-spacing: -0.01em; }
-.community-value .num { font-size: 1.5rem; }
+.community-value { font-family: var(--pixel); font-weight: 600; font-size: 1.3rem; letter-spacing: 0; }
+.community-value .num { font-family: var(--display); font-weight: 700; font-size: 2rem; letter-spacing: -0.03em; }
 .community-chart { position: relative; height: 110px; padding-left: 34px; }
 .group-spark { display: block; width: 100%; height: 110px; }
 .community-ticks { position: absolute; left: 0; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: space-between; font-size: 0.75rem; line-height: 1.4; color: var(--text-3); font-family: var(--display); }
@@ -786,7 +788,7 @@ button { cursor: pointer; }
     display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap;
     padding: 0 4px 14px;
 }
-.standings h2 { font-family: var(--display); font-weight: 700; font-size: 1.75rem; letter-spacing: -0.02em; }
+.standings h2 { font-family: var(--pixel); font-weight: 600; font-size: 2rem; letter-spacing: 0; line-height: 1.1; }
 .standings-note { margin-top: 2px; color: var(--text-3); font-size: 0.85rem; max-width: 56ch; }
 .standings-tools { display: flex; align-items: center; gap: 8px; }
 .standings-tools .chip { border-radius: 4px; }
