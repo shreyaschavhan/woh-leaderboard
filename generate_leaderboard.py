@@ -346,10 +346,10 @@ def podium_change_html(d):
     gtxt = '&plusmn;0' if g == 0 else ('&#8212;' if g is None else (f'+{g}' if g > 0 else f'&minus;{abs(g)}'))
     gcls = 'delta-up' if (g or 0) > 0 else ('delta-down' if (g or 0) < 0 else 'delta-flat')
     if rc is None or rc == 0:
-        return f'<span class="delta {gcls}">Held #{d["rank"]} &middot; <span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
+        return f'<span class="delta {gcls}"><span class="delta-say">Held #{d["rank"]} &middot; </span><span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
     if rc > 0:
-        return f'<span class="delta {gcls}"><span class="delta-arrow" aria-hidden="true">&#9650;</span>Up {rc} to #{d["rank"]} &middot; <span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
-    return f'<span class="delta {gcls}"><span class="delta-arrow" aria-hidden="true">&#9660;</span>Down {abs(rc)} to #{d["rank"]} &middot; <span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
+        return f'<span class="delta {gcls}"><span class="delta-arrow" aria-hidden="true">&#9650;</span><span class="delta-say">Up </span>{rc}<span class="delta-say"> to #{d["rank"]}</span> &middot; <span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
+    return f'<span class="delta {gcls}"><span class="delta-arrow" aria-hidden="true">&#9660;</span><span class="delta-say">Down </span>{abs(rc)}<span class="delta-say"> to #{d["rank"]}</span> &middot; <span class="delta-num">{gtxt}</span><span class="delta-word"> flowers</span></span>'
     # (unreachable legacy branches kept below for reference)
     if g is None:
         first = '<span class="delta delta-flat">First week on the board</span>'
@@ -603,7 +603,7 @@ def garden_svg(data, max_flowers):
     if max_flowers >= CONSISTENCY_LINE:
         line_y = back_ground - (22 + (CONSISTENCY_LINE / max_flowers) * 208)
         parts.append(f'<g class="line75"><line x1="0" x2="{W}" y1="{line_y:.1f}" y2="{line_y:.1f}"/>'
-                     f'<text x="{W - 12}" y="{line_y - 6:.1f}" text-anchor="end">{CONSISTENCY_LINE} flowers</text>'
+                     f'<text x="{W - 12}" y="{line_y - 6:.1f}" text-anchor="end">{CONSISTENCY_LINE}-flower line</text>'
                      f'<text class="line75-m" x="706" y="{line_y - 6:.1f}" text-anchor="end">{CONSISTENCY_LINE}</text></g>')
 
     # Flowers: leader in the centre, then alternating outward by rank
