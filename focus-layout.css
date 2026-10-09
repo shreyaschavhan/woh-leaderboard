@@ -1,14 +1,20 @@
 /* Compact focus composition, promoted from design/focus-b-study/concept.css.
-   Load after the individual focus and community component styles. */
+   Load after the individual focus and community component styles.
+   The hub shares the spotlight grid below it: three 14px-gapped columns,
+   with your training in the first and the guild across the other two. */
 .focus-hub {
   display: grid;
-  grid-template-columns: minmax(0, 440fr) minmax(0, 712fr);
-  gap: 28px;
-  align-items: start;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
   max-width: 1180px;
-  margin: 28px auto 36px;
+  margin: 36px auto;
 }
-.focus-hub .focus-section, .focus-hub .guild-section { min-width: 0; width: 100%; margin: 0; }
+.focus-hub .focus-section, .focus-hub .guild-section { display: flex; flex-direction: column; min-width: 0; width: 100%; margin: 0; }
+.focus-hub .guild-section { grid-column: span 2; }
+/* Your card keeps its own height; a single row of tiles stretches to meet it. */
+.focus-hub .focus-section { align-self: start; }
+.focus-hub .guild-board { flex: 1 1 auto; }
 .focus-section-head, .guild-heading-row { min-height: 38px; margin-bottom: 12px; gap: 10px; }
 .focus-emblem, .focus-eyebrow, .guild-emblem, .guild-eyebrow { display: none; }
 .focus-section-head h2, .guild-heading-row h2 { font-size: 20px; }
@@ -20,7 +26,7 @@
 .focus-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(126px, 43%);
-  grid-template-rows: minmax(180px, auto) auto;
+  grid-template-rows: minmax(180px, 1fr) auto;
   border-color: #514457;
   color: #faf4e8;
   background: #342d40;
@@ -69,7 +75,7 @@
   justify-content: space-between;
   gap: 8px;
   margin: 0;
-  padding: 11px 16px;
+  padding: 11px 20px;
   border-top: 1px solid #534455;
   background: #2c2536;
 }
@@ -80,28 +86,41 @@
 .focus-secondary > span { display: none; }
 .focus-secondary:hover { color: #fff6e8; background: transparent; border-color: transparent; text-decoration: underline; text-underline-offset: 3px; }
 .focus-card :focus-visible { outline-color: #f0dba6; }
-.focus-section-note { line-height: 1.5; }
+.focus-section-note { margin-top: 8px; line-height: 1.5; }
 
-/* Three equal illustrated cards, followed by a quieter break row. */
+/* Three equal illustrated cards, followed by a quieter break row.
+   Each card subgrids its art, name, task, caption and minutes so they share lines across a row.
+   Spacing is margin, not row-gap, so the caption row costs nothing while it is hidden. */
 .guild-heading-row { flex-wrap: nowrap; }
+/* The filters share the heading row, so the tiles start level with your card. */
+.guild-heading-row .guild-controls { display: contents; }
+.guild-heading-lockup { order: 0; }
+.guild-filters { order: 1; margin-right: auto; }
+.guild-totals { order: 2; }
+.guild-refresh { order: 3; }
+.guild-heading-row h2, .guild-filters button, .guild-refresh { white-space: nowrap; }
 .guild-totals { margin: 0; gap: 9px; font-size: 10px; }
 .guild-totals strong { font-size: 15px; }
 .guild-totals > span { gap: 4px; }
 .guild-break-total { padding-left: 9px; }
-.guild-board { border: 0; border-radius: 0; background: transparent; overflow: visible; }
+.guild-board { display: flex; flex-direction: column; border: 0; border-radius: 0; background: transparent; overflow: visible; }
+.guild-board > .guild-roster, .guild-board > .guild-loading, .guild-board > .guild-empty { flex: 1 1 auto; }
 .guild-atmosphere { display: none; }
 .guild-controls { min-height: 36px; padding: 0 0 8px; border: 0; background: none; gap: 4px; }
 .guild-filters { gap: 3px; }
 .guild-filters button { min-height: 32px; padding: 6px 9px; font-size: 11px; }
 .guild-refresh { min-height: 32px; font-size: 10px; }
-.guild-roster, .guild-roster.is-busy { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 0; }
+.guild-roster, .guild-roster.is-busy { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr auto auto auto auto; align-content: start; gap: 14px; padding: 0; }
 .guild-member {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 5px;
-  min-height: 194px;
-  padding: 10px 8px 12px;
+  --tile-gap: 8px;
+  display: grid;
+  grid-row: span 5;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: subgrid;
+  justify-items: center;
+  row-gap: 0;
+  min-height: 0;
+  padding: 18px 18px 14px;
   border: 1px solid var(--border);
   border-radius: 6px;
   background: var(--surface);
@@ -110,20 +129,21 @@
 .guild-member:last-child { border-bottom-color: var(--border); }
 .guild-member:hover { border-color: var(--accent); background: var(--surface); }
 .guild-member-status, .guild-member-link { display: none; }
-.guild-member-art { flex: none; width: 110px; max-width: 100%; height: 78px; margin: 0 auto; }
+.guild-member-info, .guild-member-identity { display: contents; }
+.guild-member-art { align-self: end; width: 110px; max-width: 100%; height: 78px; margin: 0 auto; }
 .guild-member-ground { bottom: 3px; left: 6px; right: 3px; width: auto; height: 10px; border-radius: 50%; background: var(--surface-2); }
 .guild-member-art img { bottom: 8px; }
 .guild-member-avatar { width: 80px; height: 80px; left: -4px; }
 .guild-member-companion { width: 62px; height: 62px; right: -2px; }
-.guild-member-info { display: flex; align-items: center; gap: 5px; width: 100%; padding: 0; }
-.guild-member-name { justify-content: center; gap: 4px; font-size: 14px; line-height: 1.4; }
-.guild-member-task { min-height: 2.8em; }
+.guild-member-name { justify-content: center; gap: 4px; max-width: 100%; margin-top: var(--tile-gap); font-size: 14px; line-height: 1.4; }
+.guild-member-task { align-self: start; max-width: 100%; margin: var(--tile-gap) 0 0; }
 .guild-you { padding: 1px 3px; font-size: 7px; }
-.guild-member-caption { display: none; }
-.guild-member-time { justify-content: center; gap: 4px; }
+.guild-member-caption { display: none; align-self: end; margin-top: var(--tile-gap); }
+.guild-member-time { align-self: end; justify-content: center; gap: 4px; margin-top: var(--tile-gap); }
 .guild-member-time strong, .guild-member-time.is-long strong { color: var(--text); font-size: 28px; }
 .guild-member-time span { color: var(--text-3); font-size: 10px; }
-.guild-member.is-stale .guild-member-caption { font-size: 9px; }
+.guild-member.is-stale .guild-member-caption { margin-top: var(--tile-gap); font-size: 9px; }
+.guild-member.is-stale .guild-member-time { margin-top: 2px; }
 .guild-rest { display: block; margin: 10px 0 0; padding: 0; border-top: 1px solid var(--border); }
 .guild-rest-heading { display: none; }
 .guild-rest-list { display: grid; grid-template-columns: 1fr; gap: 0; margin: 0; }
@@ -135,14 +155,19 @@
 .guild-rest-duration { margin-left: auto; color: var(--text-2); font-size: 20px; }
 .guild-rest-duration small { display: inline; font-size: 9px; }
 .guild-rest-arrow, .guild-footer { display: none; }
-.guild-section-note { align-items: baseline; flex-wrap: wrap; gap: 3px 5px; margin-top: 7px; font-size: 9px; line-height: 1.5; }
+.guild-section-note { align-items: baseline; flex-wrap: wrap; gap: 3px 5px; margin-top: 8px; font-size: 10px; line-height: 1.5; }
 .guild-section-note > span:last-child { flex-basis: auto; margin-left: auto; }
 .guild-notice { margin: 0 0 10px; }
 .guild-empty { min-height: 207px; padding: 16px; gap: 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
 .guild-empty h3 { font-size: 22px; }
 
+/* Below about 1100px the shared row is too narrow for the refresh label; the icon stays. */
+@media(min-width:1001px) and (max-width:1100px) {
+  .guild-refresh span { display: none; }
+}
 @media(max-width:1000px) {
   .focus-hub { grid-template-columns: 1fr; gap: 28px; }
+  .focus-hub .guild-section { grid-column: auto; }
   .focus-card { grid-template-columns: minmax(0, 1fr) minmax(150px, 43%); }
   .focus-scene { min-height: 180px; }
 }
@@ -165,18 +190,20 @@
   .focus-party { transform: translateX(-50%) scale(.46); }
   .focus-landscape { width: 300px; height: 214px; bottom: -35px; }
   .focus-moon { top: 18px; right: 21px; width: 21px; height: 21px; }
-  .focus-actions { padding: 10px 13px; }
+  .focus-actions { padding: 10px 17px; }
   .focus-primary, .focus-secondary { min-height: 44px; }
   .guild-totals { gap: 7px; font-size: 9px; }
   .guild-totals strong { font-size: 14px; }
   .guild-totals > span { gap: 3px; }
   .guild-break-total { padding-left: 7px; }
-  .guild-controls { padding-bottom: 8px; }
+  .guild-heading-row { flex-wrap: wrap; row-gap: 8px; }
+  .guild-heading-row .guild-controls { display: flex; order: 3; flex-basis: 100%; padding: 0; }
+  .guild-filters { margin-right: 0; }
   .guild-filters button { min-height: 44px; padding-inline: 8px; font-size: 10px; }
   .guild-refresh { min-width: 44px; min-height: 44px; padding: 6px; }
   .guild-refresh span { display: none; }
   .guild-roster, .guild-roster.is-busy { gap: 7px; }
-  .guild-member { min-height: 179px; padding: 8px 4px 10px; }
+  .guild-member { --tile-gap: 6px; padding: 14px 6px 12px; }
   .guild-member-art { width: 91px; height: 69px; }
   .guild-member-avatar { width: 70px; height: 70px; left: -6px; }
   .guild-member-companion { width: 53px; height: 53px; right: -3px; }
@@ -192,7 +219,7 @@
 @media(max-width:359px) {
   .guild-heading-row { flex-wrap: wrap; gap: 4px; }
   .guild-totals { margin-left: 0; }
-  .guild-member { min-height: 171px; padding-inline: 2px; }
+  .guild-member { padding-inline: 4px; }
   .guild-member-art { width: 80px; height: 64px; }
   .guild-member-avatar { width: 63px; height: 63px; left: -5px; }
   .guild-member-companion { width: 48px; height: 48px; right: -3px; }
@@ -202,7 +229,7 @@
   .focus-time { flex-wrap: wrap; gap: 0 5px; }
   .focus-time-label { max-width: 70px; }
   #focus-minutes, .focus-time.is-long #focus-minutes { font-size: 40px; }
-  .focus-actions { padding-inline: 10px; }
+  .focus-actions { padding-inline: 14px; }
   .focus-primary, .focus-secondary { padding-inline: 8px; font-size: 10px; }
 }
 
@@ -219,7 +246,8 @@
   line-height: 1.5;
 }
 .focus-card[data-state="stale"] .focus-sync { display: inline; color: #d4c5d5; font-size: 9px; }
-.focus-time { flex-wrap: wrap; }
+.focus-time { flex-wrap: nowrap; }
+.focus-time-label { min-width: 0; }
 .focus-time.is-very-long #focus-minutes { font-size: 36px; }
 .guild-member-time.is-very-long strong { font-size: 22px; }
 .guild-rest-portrait { overflow: hidden; border-radius: 4px; }
@@ -233,4 +261,7 @@
 @media(pointer:coarse) {
   .focus-primary, .focus-secondary, .focus-trainer-picker select,
   .guild-filters button, .guild-refresh { min-height: 44px; }
+}
+@media(max-width:359px) {
+  .focus-time { flex-wrap: wrap; }
 }

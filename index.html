@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="focus.css?v=balance-1">
     <link rel="stylesheet" href="community.css?v=tasks-1">
-    <link rel="stylesheet" href="focus-layout.css?v=tasks-1">
+    <link rel="stylesheet" href="focus-layout.css?v=grid-1">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-4NJMY5MRXY"></script>
     <script>
@@ -199,6 +199,10 @@
       <header class="guild-heading-row">
         <div class="guild-heading-lockup"><span class="guild-emblem" aria-hidden="true">✧</span><div><p class="guild-eyebrow">ALONGSIDE YOU</p><h2 id="guild-heading">Focusing now</h2></div></div>
         <div class="guild-totals" aria-label="Current session counts"><span class="guild-focus-total"><i aria-hidden="true"></i><strong id="guild-focus-count">—</strong> focusing</span><span class="guild-break-total"><strong id="guild-break-count">—</strong> on a break</span></div>
+        <div class="guild-controls">
+          <div class="guild-filters" role="group" aria-label="Filter current sessions"><button type="button" data-filter="all" aria-pressed="true">All sessions <span id="guild-all-count">—</span></button><button type="button" data-filter="focus" aria-pressed="false">Focusing</button><button type="button" data-filter="break" aria-pressed="false">On a break</button></div>
+          <button class="guild-refresh" type="button" id="guild-refresh" aria-label="Refresh session status"><span id="guild-updated">Checking…</span><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 8a6 6 0 1 0 .2 4M16 3v5h-5"/></svg></button>
+        </div>
       </header>
       <div class="guild-board" data-state="loading">
         <div class="guild-atmosphere" aria-hidden="true">
@@ -218,10 +222,6 @@
           <div class="guild-motes"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
         <p class="sr-only" id="guild-live-label">CHECKING THE GUILD</p>
-        <div class="guild-controls">
-          <div class="guild-filters" role="group" aria-label="Filter current sessions"><button type="button" data-filter="all" aria-pressed="true">All sessions <span id="guild-all-count">—</span></button><button type="button" data-filter="focus" aria-pressed="false">Focusing</button><button type="button" data-filter="break" aria-pressed="false">On a break</button></div>
-          <button class="guild-refresh" type="button" id="guild-refresh" aria-label="Refresh session status"><span id="guild-updated">Checking…</span><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 8a6 6 0 1 0 .2 4M16 3v5h-5"/></svg></button>
-        </div>
         <div class="guild-notice" id="guild-notice" hidden><span aria-hidden="true">◌</span><p id="guild-notice-copy"></p></div>
         <p class="guild-loading" id="guild-loading" role="status"><span aria-hidden="true">✧</span> Gathering the party…</p>
         <div class="guild-roster" id="guild-roster" aria-label="Focusing trainers"></div>
